@@ -7,24 +7,34 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+struct FoundImagesViewModel: Codable {
+    var pageURL: String
+    var type: String
+    var tags: String
+}
+
+class MainViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var mainTitleLabel: UILabel!
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var bottomInfoLabel: UILabel!
     
+    private var pixabayData = PixabayData()
+    
+    private var foundImages: [FoundImagesViewModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
+        
+        getPixabayData(request: "car")
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        searchButton.titleLabel?.font = UIFont(name: "OpenSans-Regular", size: 18)
     }
 
     // MARK: - Setup UI
@@ -134,8 +144,24 @@ class MainViewController: UIViewController {
     private func setupSearchButton() {
         searchButton.backgroundColor = UIColor.buttonBackgroundColor
         searchButton.layer.cornerRadius = 5
+
         searchButton.setTitle("Search", for: .normal)
         searchButton.setTitleColor(.white, for: .normal)
+        
+        let searchImage = UIImage(systemName: "magnifyingglass")
+        let resizedSearchImage = searchImage?.withTintColor(.white).aspectFitToSize(CGSize(width: 17, height: 17))
+        searchButton.setImage(resizedSearchImage, for: .normal)
+
+        searchButton.titleLabel?.font = UIFont(name: "OpenSans-Regular", size: 18)
+
+        searchButton.imageEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: 0, right: 13)
+        searchButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 0)
+    }
+    
+    @IBAction func showResults(_ sender: Any) {
+        let resultsRepresentVC = ResultsRepresentVC()
+        resultsRepresentVC.modalPresentationStyle = .fullScreen
+        present(resultsRepresentVC, animated: false)
     }
     
     private func setupBottomInfoLabel() {
@@ -143,11 +169,33 @@ class MainViewController: UIViewController {
         bottomInfoLabel.textColor = UIColor.bottomLabelColor
         bottomInfoLabel.font = UIFont(name: "OpenSans-Light", size: 12)
     }
-
-}
-
-// MARK: - Text Field Properties
-
-extension MainViewController: UITextFieldDelegate {
     
+    // MARK: - Private methods
+    
+    private func getPixabayData(request: String) {
+        let session = URLSession.shared
+        let url = URL(string: "https://pixabay.com/api/?key=42641694-e1b511cb1c14ec9fc839ed366&q=\(request)")!
+        let task = session.dataTask(with: url) { (data, response, error) in
+            guard error == nil else {
+                print(error!.localizedDescription)
+                return
+            }
+            
+            do {
+                self.pixabayData = try JSONDecoder().decode(PixabayData.self, from: data!)
+//                print(self.pixabayData)
+                self.foundImages = self.pixabayData.hits.map { hit in
+                    FoundImagesViewModel(pageURL: hit.pageURL, type: hit.type, tags: hit.tags)
+                }
+                
+                DispatchQueue.main.async {
+                    print(self.foundImages.count)
+                }
+            
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        task.resume()
+    }
 }
