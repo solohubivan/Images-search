@@ -7,12 +7,6 @@
 
 import UIKit
 
-struct FoundImagesViewModel: Codable {
-    var pageURL: String
-    var type: String
-    var tags: String
-}
-
 class MainViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var mainTitleLabel: UILabel!
@@ -20,21 +14,11 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var searchButton: UIButton!
     @IBOutlet weak var bottomInfoLabel: UILabel!
     
-    private var pixabayData = PixabayData()
-    
-    private var foundImages: [FoundImagesViewModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupUI()
-        
-        getPixabayData(request: "car")
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
     }
 
     // MARK: - Setup UI
@@ -128,19 +112,6 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         return attributedString
     }
 
-    @objc func showMenu(_ sender: UIButton) {
-        let menuItems: [UIAction] = [
-            UIAction(title: "Пункт 1", handler: { _ in print("Выбран Пункт 1") }),
-            UIAction(title: "Пункт 2", handler: { _ in print("Выбран Пункт 2") }),
-            UIAction(title: "Пункт 3", handler: { _ in print("Выбран Пункт 3") }),
-            UIAction(title: "Пункт 4", handler: { _ in print("Выбран Пункт 4") })
-        ]
-
-        let menu = UIMenu(children: menuItems)
-        sender.menu = menu
-        sender.showsMenuAsPrimaryAction = true
-    }
-
     private func setupSearchButton() {
         searchButton.backgroundColor = UIColor.buttonBackgroundColor
         searchButton.layer.cornerRadius = 5
@@ -158,44 +129,35 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         searchButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 0)
     }
     
-    @IBAction func showResults(_ sender: Any) {
-        let resultsRepresentVC = ResultsRepresentVC()
-        resultsRepresentVC.modalPresentationStyle = .fullScreen
-        present(resultsRepresentVC, animated: false)
-    }
-    
     private func setupBottomInfoLabel() {
         bottomInfoLabel.text = "Photo by Free-Photos"
         bottomInfoLabel.textColor = UIColor.bottomLabelColor
         bottomInfoLabel.font = UIFont(name: "OpenSans-Light", size: 12)
     }
     
-    // MARK: - Private methods
+    // MARK: - Button actions
+
+    @IBAction func showResults(_ sender: Any) {
+        let resultsRepresentVC = ResultsRepresentVC()
+        resultsRepresentVC.modalPresentationStyle = .fullScreen
     
-    private func getPixabayData(request: String) {
-        let session = URLSession.shared
-        let url = URL(string: "https://pixabay.com/api/?key=42641694-e1b511cb1c14ec9fc839ed366&q=\(request)")!
-        let task = session.dataTask(with: url) { (data, response, error) in
-            guard error == nil else {
-                print(error!.localizedDescription)
-                return
-            }
-            
-            do {
-                self.pixabayData = try JSONDecoder().decode(PixabayData.self, from: data!)
-//                print(self.pixabayData)
-                self.foundImages = self.pixabayData.hits.map { hit in
-                    FoundImagesViewModel(pageURL: hit.pageURL, type: hit.type, tags: hit.tags)
-                }
-                
-                DispatchQueue.main.async {
-                    print(self.foundImages.count)
-                }
-            
-            } catch {
-                print(error.localizedDescription)
-            }
+        PixabayDataMeneger.shared.getPixabayData(request: "fly") { [weak resultsRepresentVC] pixabayData in
+            resultsRepresentVC?.updateUI(with: pixabayData)
         }
-        task.resume()
+        
+        present(resultsRepresentVC, animated: false)
+    }
+    
+    @objc func showMenu(_ sender: UIButton) {
+        let menuItems: [UIAction] = [
+            UIAction(title: "Пункт 1", handler: { _ in print("Выбран Пункт 1") }),
+            UIAction(title: "Пункт 2", handler: { _ in print("Выбран Пункт 2") }),
+            UIAction(title: "Пункт 3", handler: { _ in print("Выбран Пункт 3") }),
+            UIAction(title: "Пункт 4", handler: { _ in print("Выбран Пункт 4") })
+        ]
+
+        let menu = UIMenu(children: menuItems)
+        sender.menu = menu
+        sender.showsMenuAsPrimaryAction = true
     }
 }

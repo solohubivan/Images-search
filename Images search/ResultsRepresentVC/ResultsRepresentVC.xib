@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,9 +11,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ResultsRepresentVC" customModule="Images_search" customModuleProvider="target">
             <connections>
+                <outlet property="availableImagesInfoLabel" destination="0Iw-9i-dHc" id="fV8-vg-Sby"/>
                 <outlet property="filterButton" destination="jNN-ka-zTW" id="EIU-Sw-Sd2"/>
+                <outlet property="relatedRequstCollectionView" destination="n9w-Cd-W30" id="KMA-bQ-15u"/>
                 <outlet property="searchTextField" destination="88l-0i-v2y" id="Mfp-y2-RZg"/>
                 <outlet property="separateLineView" destination="93E-1G-RJL" id="Yvp-o7-WYi"/>
+                <outlet property="showResultsCollectionView" destination="fQ8-gQ-eSk" id="TOb-SI-LiC"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -53,6 +56,35 @@
                         <constraint firstAttribute="height" constant="1" id="LAT-Ap-PE1"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Found Images Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Iw-9i-dHc" userLabel="Found Images Amount">
+                    <rect key="frame" x="16" y="142" width="171.66666666666666" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="n9w-Cd-W30" userLabel="related Info Collection View">
+                    <rect key="frame" x="0.0" y="171" width="393" height="28"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="28" id="kY9-Ud-W1g"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="m8H-01-KcT">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="fQ8-gQ-eSk" userLabel="Show preview images Collection View">
+                    <rect key="frame" x="0.0" y="214" width="393" height="638"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="nLi-nZ-psL">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -61,14 +93,24 @@
                 <constraint firstAttribute="trailing" secondItem="93E-1G-RJL" secondAttribute="trailing" id="68K-jd-RMY"/>
                 <constraint firstItem="88l-0i-v2y" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="6" id="BlJ-7E-qgx"/>
                 <constraint firstItem="88l-0i-v2y" firstAttribute="leading" secondItem="c7f-vW-G9s" secondAttribute="trailing" constant="16" id="DEt-pd-M1Z"/>
+                <constraint firstItem="fQ8-gQ-eSk" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="JOX-Ni-A1F"/>
                 <constraint firstItem="c7f-vW-G9s" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="6" id="Q3M-mk-yTI"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="fQ8-gQ-eSk" secondAttribute="trailing" id="TWd-A1-VLm"/>
+                <constraint firstItem="fQ8-gQ-eSk" firstAttribute="top" secondItem="n9w-Cd-W30" secondAttribute="bottom" constant="15" id="bPI-yc-qgY"/>
+                <constraint firstItem="n9w-Cd-W30" firstAttribute="top" secondItem="0Iw-9i-dHc" secondAttribute="bottom" constant="8" id="dgm-Cs-GG6"/>
                 <constraint firstItem="jNN-ka-zTW" firstAttribute="leading" secondItem="88l-0i-v2y" secondAttribute="trailing" constant="8" id="epI-PG-hH8"/>
+                <constraint firstAttribute="bottom" secondItem="fQ8-gQ-eSk" secondAttribute="bottom" id="fcC-vi-3XZ"/>
+                <constraint firstItem="0Iw-9i-dHc" firstAttribute="top" secondItem="93E-1G-RJL" secondAttribute="bottom" constant="8" id="fme-oa-aIk"/>
+                <constraint firstItem="n9w-Cd-W30" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="l8D-vm-QKn"/>
                 <constraint firstItem="93E-1G-RJL" firstAttribute="top" secondItem="88l-0i-v2y" secondAttribute="bottom" constant="16" id="ojZ-TT-ZJu"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="0Iw-9i-dHc" secondAttribute="trailing" constant="16" id="qeP-pK-YyH"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="jNN-ka-zTW" secondAttribute="trailing" constant="16" id="qgl-C0-v3l"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="n9w-Cd-W30" secondAttribute="trailing" id="qx8-wL-8KT"/>
                 <constraint firstItem="jNN-ka-zTW" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="6" id="tfW-rh-Ou7"/>
                 <constraint firstItem="c7f-vW-G9s" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="xZ4-dQ-tgp"/>
+                <constraint firstItem="0Iw-9i-dHc" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="ygn-UJ-1tE"/>
             </constraints>
-            <point key="canvasLocation" x="138" y="20"/>
+            <point key="canvasLocation" x="136.64122137404578" y="19.718309859154932"/>
         </view>
     </objects>
     <resources>
@@ -78,7 +120,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

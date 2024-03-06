@@ -9,17 +9,17 @@ import Foundation
 
 struct PixabayData: Codable {
     var total: Int = 0
-    var totalHits: Int = 0
     var hits: [Hit] = []
 }
 
 struct Hit: Codable {
-//    var id: Int
+    var id: Int
     var pageURL: String
     var type: String
     var tags: String
-//    var previewURL: String?
-//    var previewWidth: Int?
+}
+//    var previewURL: String
+//    var previewWidth: Int
 //    var previewHeight: Int?
 //    var webformatURL: String?
 //    var webformatWidth: Int?
@@ -34,4 +34,4 @@ struct Hit: Codable {
 //    var collections: Int?
 //    var likes: Int?
 //    var userImageURL: String?
-}
+
