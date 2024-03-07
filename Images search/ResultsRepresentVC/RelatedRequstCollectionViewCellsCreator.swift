@@ -9,14 +9,7 @@ import UIKit
 
 class RelatedRequstCollectionViewCellsCreator: UICollectionViewCell {
     
-    var mainLabel = UILabel()
-    var relatedTags: UILabel = {
-        let label = UILabel()
-        label.text = "Ivan"
-        label.textColor = .orange
-        label.font = UIFont.systemFont(ofSize: 20)
-        return label
-    }()
+    var relatedTags = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,12 +20,35 @@ class RelatedRequstCollectionViewCellsCreator: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupSubviews() {
-        addSubview(relatedTags)
-        setupLabel()
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        let labelSize = relatedTags.sizeThatFits(CGSize(width: size.width, height: .greatestFiniteMagnitude))
+        return CGSize(width: size.width, height: labelSize.height)
     }
     
-    private func setupLabel() {
-        relatedTags.addConstraints(to_view: self)
+    // MARK: - Setup UI
+    
+    private func setupSubviews() {
+        setupRelatedTagsLabels()
+    }
+
+    private func setupRelatedTagsLabels() {
+        let labelContainer = UIView()
+        labelContainer.layer.borderWidth = 1
+        labelContainer.layer.borderColor = UIColor.hexD2D2D2.cgColor
+        labelContainer.layer.cornerRadius = 3
+        labelContainer.layer.backgroundColor = UIColor.hexE2E2E2.cgColor
+        
+        labelContainer.addSubview(relatedTags)
+        relatedTags.addConstraints(to_view: labelContainer, [
+            .leading(anchor: labelContainer.leadingAnchor, constant: 10),
+            .trailing(anchor: labelContainer.trailingAnchor, constant: 10)
+            ])
+        
+        relatedTags.text = ""
+        relatedTags.textColor = .black
+        relatedTags.font = UIFont(name: "OpenSans-Regular", size: 14)
+
+        addSubview(labelContainer)
+        labelContainer.addConstraints(to_view: self)
     }
 }

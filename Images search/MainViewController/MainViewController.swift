@@ -9,10 +9,10 @@ import UIKit
 
 class MainViewController: UIViewController, UITextFieldDelegate {
     
-    @IBOutlet weak var mainTitleLabel: UILabel!
-    @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var searchButton: UIButton!
-    @IBOutlet weak var bottomInfoLabel: UILabel!
+    @IBOutlet weak private var mainTitleLabel: UILabel!
+    @IBOutlet weak private var searchTextField: UITextField!
+    @IBOutlet weak private var searchButton: UIButton!
+    @IBOutlet weak private var bottomInfoLabel: UILabel!
     
     
     override func viewDidLoad() {
@@ -44,7 +44,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         searchTextField.backgroundColor = .white
         searchTextField.borderStyle = .none
         searchTextField.layer.borderWidth = 1
-        searchTextField.layer.borderColor = UIColor.borderColorTF.cgColor
+        searchTextField.layer.borderColor = UIColor.hexE2E2E2.cgColor
         searchTextField.layer.cornerRadius = 4
         
         searchTextField.font = UIFont(name: "OpenSans-Regular", size: 18)
@@ -56,7 +56,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     private func setupPlaceHolder() {
         let attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.placeHolderTextColor,
+            .foregroundColor: UIColor.hex747474,
             .font: UIFont(name: "OpenSans-Regular", size: 14)!
         ]
         searchTextField.attributedPlaceholder = NSAttributedString(string: "Search images, vectors and more", attributes: attributes)
@@ -76,14 +76,14 @@ class MainViewController: UIViewController, UITextFieldDelegate {
 
     private func setupTFCategoryButton() {
         let separatorView = UIView(frame: CGRect(x: .zero, y: .zero, width: 1, height: searchTextField.frame.height - 27))
-        separatorView.backgroundColor = UIColor.separatorTFColor
+        separatorView.backgroundColor = UIColor.hexD2D2D2
         let separatorImage = separatorView.toImage()
 
         let menuButton = UIButton()
         menuButton.setImage(separatorImage, for: .normal)
         
         menuButton.setAttributedTitle(createTFRightButtonName(name: "Images"), for: .normal)
-        menuButton.setTitleColor(UIColor.menuButtonColor, for: .normal)
+        menuButton.setTitleColor(UIColor.hex2D2D2D, for: .normal)
         menuButton.titleLabel?.font = UIFont(name: "OpenSans-Regular", size: 14)
         menuButton.frame = CGRect(x: 0, y: 0, width: 0, height: searchTextField.frame.height)
         
@@ -113,7 +113,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func setupSearchButton() {
-        searchButton.backgroundColor = UIColor.buttonBackgroundColor
+        searchButton.backgroundColor = UIColor.hex430BE0
         searchButton.layer.cornerRadius = 5
 
         searchButton.setTitle("Search", for: .normal)
@@ -131,13 +131,13 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     private func setupBottomInfoLabel() {
         bottomInfoLabel.text = "Photo by Free-Photos"
-        bottomInfoLabel.textColor = UIColor.bottomLabelColor
+        bottomInfoLabel.textColor = UIColor.hexE5E5E5
         bottomInfoLabel.font = UIFont(name: "OpenSans-Light", size: 12)
     }
     
     // MARK: - Button actions
 
-    @IBAction func showResults(_ sender: Any) {
+    @IBAction private func showResults(_ sender: Any) {
         let resultsRepresentVC = ResultsRepresentVC()
         resultsRepresentVC.modalPresentationStyle = .fullScreen
     
@@ -148,7 +148,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         present(resultsRepresentVC, animated: false)
     }
     
-    @objc func showMenu(_ sender: UIButton) {
+    @objc private func showMenu(_ sender: UIButton) {
         let menuItems: [UIAction] = [
             UIAction(title: "Пункт 1", handler: { _ in print("Выбран Пункт 1") }),
             UIAction(title: "Пункт 2", handler: { _ in print("Выбран Пункт 2") }),

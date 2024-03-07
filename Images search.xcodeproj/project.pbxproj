@@ -19,6 +19,8 @@
 		226024E12B8EB204008DF799 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226024E02B8EB204008DF799 /* UIViewExtensions.swift */; };
 		226024E32B8EB225008DF799 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226024E22B8EB225008DF799 /* UIImageExtensions.swift */; };
 		2268E4DD2B8551AF00792F66 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2268E4DC2B8551AF00792F66 /* OpenSans-Bold.ttf */; };
+		22849B652B9A382E00B315A7 /* OpenSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22849B642B9A382E00B315A7 /* OpenSans-Medium.ttf */; };
+		22849B672B9A38B300B315A7 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22849B662B9A38B300B315A7 /* OpenSans-SemiBold.ttf */; };
 		2291F0FF2B856922004FF5EB /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2291F0FE2B856922004FF5EB /* UIColorExtensions.swift */; };
 		2291F1012B8571B3004FF5EB /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2291F1002B8571B3004FF5EB /* OpenSans-Light.ttf */; };
 		22D82B8E2B8EF5A1003BA27A /* ResultsRepresentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D82B8C2B8EF5A1003BA27A /* ResultsRepresentVC.swift */; };
@@ -44,6 +46,8 @@
 		226024E02B8EB204008DF799 /* UIViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		226024E22B8EB225008DF799 /* UIImageExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtensions.swift; sourceTree = "<group>"; };
 		2268E4DC2B8551AF00792F66 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		22849B642B9A382E00B315A7 /* OpenSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Medium.ttf"; sourceTree = "<group>"; };
+		22849B662B9A38B300B315A7 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		2291F0FE2B856922004FF5EB /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		2291F1002B8571B3004FF5EB /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		22D82B8C2B8EF5A1003BA27A /* ResultsRepresentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsRepresentVC.swift; sourceTree = "<group>"; };
@@ -122,6 +126,8 @@
 				2268E4DC2B8551AF00792F66 /* OpenSans-Bold.ttf */,
 				2291F1002B8571B3004FF5EB /* OpenSans-Light.ttf */,
 				22E173EF2B85880B0021200B /* OpenSans-Regular.ttf */,
+				22849B642B9A382E00B315A7 /* OpenSans-Medium.ttf */,
+				22849B662B9A38B300B315A7 /* OpenSans-SemiBold.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -216,9 +222,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				22D82B8F2B8EF5A1003BA27A /* ResultsRepresentVC.xib in Resources */,
+				22849B672B9A38B300B315A7 /* OpenSans-SemiBold.ttf in Resources */,
 				2256B4702B83F5690055C284 /* LaunchScreen.storyboard in Resources */,
 				22F979F62B8412ED004CF466 /* MainViewController.xib in Resources */,
 				2268E4DD2B8551AF00792F66 /* OpenSans-Bold.ttf in Resources */,
+				22849B652B9A382E00B315A7 /* OpenSans-Medium.ttf in Resources */,
 				2291F1012B8571B3004FF5EB /* OpenSans-Light.ttf in Resources */,
 				22E173F02B85880B0021200B /* OpenSans-Regular.ttf in Resources */,
 				2256B46D2B83F5690055C284 /* Assets.xcassets in Resources */,

@@ -9,13 +9,16 @@ import UIKit
 
 class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
 
-    @IBOutlet weak var searchTextField: UITextField!
-    @IBOutlet weak var filterButton: UIButton!
-    @IBOutlet weak var separateLineView: UIView!
-    @IBOutlet weak var showResultsCollectionView: UICollectionView!
-    @IBOutlet weak var availableImagesInfoLabel: UILabel!
-    @IBOutlet weak var relatedRequstCollectionView: UICollectionView!
+    @IBOutlet weak private var searchTextField: UITextField!
+    @IBOutlet weak private var filterButton: UIButton!
+    @IBOutlet weak private var separateLineView: UIView!
+    @IBOutlet weak private var showResultsCollectionView: UICollectionView!
+    @IBOutlet weak private var availableImagesInfoLabel: UILabel!
+    @IBOutlet weak private var relatedRequstCollectionView: UICollectionView!
+    @IBOutlet weak private var relatedLabel: UILabel!
+    @IBOutlet weak private var backGroundView: UIView!
     
+    private var relatedResultsLabels: [String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,8 +34,21 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
         setupAvailableImagesInfoLabel()
         setupRelatedRequstCollectionView()
         setupShowResultsCollectionView()
+        setupRelatedLabel()
         
         setupKeyboardDismissGesture()
+        backGroundView.backgroundColor = UIColor.hexF6F6F6
+    }
+    
+    private func setupRelatedLabel() {
+        relatedLabel.text = "Related"
+        relatedLabel.font = UIFont(name: "OpenSans-Regular", size: 16)
+        relatedLabel.textColor = UIColor.hex747474
+    }
+
+    private func setupAvailableImagesInfoLabel() {
+        availableImagesInfoLabel.text = ""
+        availableImagesInfoLabel.font = UIFont(name: "OpenSans-Semibold", size: 18)
     }
     
     private func setupRelatedRequstCollectionView() {
@@ -40,11 +56,7 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
         relatedRequstCollectionView.delegate = self
         relatedRequstCollectionView.register(RelatedRequstCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "RelatedTagsCellId")
         relatedRequstCollectionView.accessibilityIdentifier = "RelatedRequstCollectionViewCellsCreator"
-    }
-    
-    private func setupAvailableImagesInfoLabel() {
-        availableImagesInfoLabel.text = ""
-        availableImagesInfoLabel.font = UIFont(name: "OpenSans-Bold", size: 18)
+        relatedRequstCollectionView.backgroundColor = .clear
     }
     
     private func setupShowResultsCollectionView() {
@@ -52,6 +64,7 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
         showResultsCollectionView.delegate = self
         showResultsCollectionView.register(ShowResultsCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "CellId")
         showResultsCollectionView.accessibilityIdentifier = "ShowResultsCollectionViewCellsCreator"
+        showResultsCollectionView.backgroundColor = .clear
     }
     
     private func setupSearchTextField() {
@@ -59,9 +72,9 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
         searchTextField.overrideUserInterfaceStyle = .light
         searchTextField.clearButtonMode = .whileEditing
         searchTextField.borderStyle = .none
-        searchTextField.backgroundColor = UIColor(red: 0.9647, green: 0.9647, blue: 0.9647, alpha: 1)
+        searchTextField.backgroundColor = UIColor.hexF6F6F6
         searchTextField.layer.borderWidth = 1
-        searchTextField.layer.borderColor = UIColor.borderColorTF.cgColor
+        searchTextField.layer.borderColor = UIColor.hexE2E2E2.cgColor
         searchTextField.layer.cornerRadius = 5
         
         searchTextField.font = UIFont(name: "OpenSans-Regular", size: 18)
@@ -86,7 +99,7 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
     }
     
     private func setupSeparateLineView() {
-        separateLineView.backgroundColor = UIColor.separatorTFColor
+        separateLineView.backgroundColor = UIColor.hexD2D2D2
     }
     
     // MARK: - Public methods
@@ -94,8 +107,14 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
     func updateUI(with pixabayData: PixabayData) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+            
             let availableAmountPictures = pixabayData.total
             self.availableImagesInfoLabel.text = "\(availableAmountPictures) Free Images"
+            
+            self.relatedResultsLabels = PixabayDataMeneger.shared.creatingRelatedStrings()
+
+            self.relatedRequstCollectionView.reloadData()
+            self.showResultsCollectionView.reloadData()
         }
     }
 }
@@ -109,9 +128,9 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
             return PixabayDataMeneger.shared.getFoundImagesCount()
         }
         else if collectionView == relatedRequstCollectionView {
-            return 4
+            return relatedResultsLabels.count
         }
-        return 0
+        return .zero
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -119,32 +138,35 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
         if collectionView == showResultsCollectionView {
             let cell = showResultsCollectionView.dequeueReusableCell(withReuseIdentifier: "CellId", for: indexPath) as! ShowResultsCollectionViewCellsCreator
             cell.layer.borderWidth = 1
-            cell.layer.borderColor = UIColor.clear.cgColor
+  //          cell.layer.borderColor = UIColor.clear.cgColor
+            cell.layer.borderColor = UIColor.black.cgColor
             cell.layer.cornerRadius = 8
             cell.layer.masksToBounds = true
             return cell
         }
         else if collectionView == relatedRequstCollectionView {
             let cell = relatedRequstCollectionView.dequeueReusableCell(withReuseIdentifier: "RelatedTagsCellId", for: indexPath) as! RelatedRequstCollectionViewCellsCreator
-            cell.layer.borderWidth = 1
-            cell.layer.borderColor = UIColor.black.cgColor
-            cell.layer.cornerRadius = 8
-            cell.layer.masksToBounds = true
+            
+            cell.relatedTags.text = relatedResultsLabels[indexPath.item]
             return cell
         }
         fatalError("unsupported collection view")
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
         if collectionView == showResultsCollectionView {
             let width = collectionView.frame.width - 32
             let height = width * 0.6
             return CGSize(width: width, height: height)
         }
         else if collectionView == relatedRequstCollectionView {
-//            let width = collectionView.frame.width - 32
-//            let height = width * 0.6
-            return CGSize(width: 50, height: 22)
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RelatedTagsCellId", for: indexPath) as? RelatedRequstCollectionViewCellsCreator else {
+                return CGSize.zero
+            }
+            cell.relatedTags.text = relatedResultsLabels[indexPath.item]
+            let size = cell.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height))
+            return CGSize(width: size.width, height: size.height + 7)
         }
         fatalError("unsupported collection view")
     }

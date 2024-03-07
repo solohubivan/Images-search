@@ -15,6 +15,17 @@ class PixabayDataMeneger {
     private var foundImages: [FoundImagesViewModel] = []
     
     
+    func creatingRelatedStrings() -> [String] {
+        var resultArray: [String] = []
+        var array: [String] = []
+        array = pixabayData.hits.map { $0.tags }
+        let combinedString = array.joined(separator: ", ")
+        let words = combinedString.components(separatedBy: ", ")
+        let uniqueWords = Array(Set(words))
+        resultArray = uniqueWords
+        return resultArray
+    }
+
     func getFoundImagesCount() -> Int {
         return foundImages.count
     }
@@ -31,13 +42,11 @@ class PixabayDataMeneger {
             do {
                 self.pixabayData = try JSONDecoder().decode(PixabayData.self, from: data)
                 
-                completion(self.pixabayData)
-                
                 self.foundImages = self.pixabayData.hits.map { hit in
                     FoundImagesViewModel(pageURL: hit.pageURL, type: hit.type, tags: hit.tags)
+                    
                 }
-            //    print(self.foundImages.count)
-                print(Int(self.getFoundImagesCount()))
+                completion(self.pixabayData)
 
             } catch {
                 print(error.localizedDescription)
@@ -45,5 +54,4 @@ class PixabayDataMeneger {
         }
         task.resume()
     }
-    
 }
