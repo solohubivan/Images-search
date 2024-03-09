@@ -8,7 +8,8 @@
 import Foundation
 
 struct FoundImagesViewModel: Codable {
-    var pageURL: String
     var type: String
     var tags: String
+    var webformatUrl: String
+    var largeImageUrl: String
 }

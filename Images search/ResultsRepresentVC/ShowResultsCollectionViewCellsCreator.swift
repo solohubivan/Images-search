@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ShowResultsCollectionViewCellsCreator: UICollectionViewCell {
     
-    var previewImageView: UIImageView = {
+    private var previewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -36,7 +37,10 @@ class ShowResultsCollectionViewCellsCreator: UICollectionViewCell {
         previewImageView.addConstraints(to_view: self)
     }
     
-    // MARK: - Private methods
+    // MARK: - Public method to set image
 
+    func setImage(with url: URL) {
+        previewImageView.sd_setImage(with: url, placeholderImage: nil, options: [.continueInBackground,.progressiveLoad], completed: nil)
+    }
 }
 

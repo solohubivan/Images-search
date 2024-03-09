@@ -15,6 +15,13 @@ class PixabayDataMeneger {
     private var foundImages: [FoundImagesViewModel] = []
     
     
+    
+    func getLinksToPreviewImages() -> [String] {
+        var array: [String] = []
+        array = pixabayData.hits.map { $0.webformatURL }
+        return array
+    }
+    
     func creatingRelatedStrings() -> [String] {
         var resultArray: [String] = []
         var array: [String] = []
@@ -27,7 +34,7 @@ class PixabayDataMeneger {
     }
 
     func getFoundImagesCount() -> Int {
-        return foundImages.count
+        return pixabayData.hits.count
     }
 
     func getPixabayData(request: String, completion: @escaping (PixabayData) -> Void) {
@@ -41,11 +48,6 @@ class PixabayDataMeneger {
             
             do {
                 self.pixabayData = try JSONDecoder().decode(PixabayData.self, from: data)
-                
-                self.foundImages = self.pixabayData.hits.map { hit in
-                    FoundImagesViewModel(pageURL: hit.pageURL, type: hit.type, tags: hit.tags)
-                    
-                }
                 completion(self.pixabayData)
 
             } catch {

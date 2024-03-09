@@ -19,6 +19,7 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak private var backGroundView: UIView!
     
     private var relatedResultsLabels: [String] = []
+    private var previewImageUrls: [String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,6 +113,8 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
             self.availableImagesInfoLabel.text = "\(availableAmountPictures) Free Images"
             
             self.relatedResultsLabels = PixabayDataMeneger.shared.creatingRelatedStrings()
+            
+            self.previewImageUrls = PixabayDataMeneger.shared.getLinksToPreviewImages()
 
             self.relatedRequstCollectionView.reloadData()
             self.showResultsCollectionView.reloadData()
@@ -138,10 +141,15 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
         if collectionView == showResultsCollectionView {
             let cell = showResultsCollectionView.dequeueReusableCell(withReuseIdentifier: "CellId", for: indexPath) as! ShowResultsCollectionViewCellsCreator
             cell.layer.borderWidth = 1
-  //          cell.layer.borderColor = UIColor.clear.cgColor
-            cell.layer.borderColor = UIColor.black.cgColor
+            cell.layer.borderColor = UIColor.clear.cgColor
             cell.layer.cornerRadius = 8
             cell.layer.masksToBounds = true
+
+            let currentImageUrlString = previewImageUrls[indexPath.row]
+            if let url = URL(string: currentImageUrlString) {
+                cell.setImage(with: url)
+            }
+            
             return cell
         }
         else if collectionView == relatedRequstCollectionView {

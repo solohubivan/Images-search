@@ -13,10 +13,10 @@ struct PixabayData: Codable {
 }
 
 struct Hit: Codable {
-    var id: Int
-    var pageURL: String
     var type: String
     var tags: String
+    var webformatURL: String
+    var largeImageURL: String
 }
 //    var previewURL: String
 //    var previewWidth: Int

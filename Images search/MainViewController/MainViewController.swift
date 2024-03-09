@@ -141,7 +141,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         let resultsRepresentVC = ResultsRepresentVC()
         resultsRepresentVC.modalPresentationStyle = .fullScreen
     
-        PixabayDataMeneger.shared.getPixabayData(request: "fly") { [weak resultsRepresentVC] pixabayData in
+        PixabayDataMeneger.shared.getPixabayData(request: "sportcar") { [weak resultsRepresentVC] pixabayData in
             resultsRepresentVC?.updateUI(with: pixabayData)
         }
         
