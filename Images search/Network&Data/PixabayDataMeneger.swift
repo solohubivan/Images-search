@@ -12,8 +12,6 @@ class PixabayDataMeneger {
     static let shared = PixabayDataMeneger()
     
     private var pixabayData = PixabayData()
-    private var foundImages: [FoundImagesViewModel] = []
-    
     
     
     func getLinksToPreviewImages() -> [String] {

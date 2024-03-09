@@ -16,6 +16,8 @@ class ShowResultsCollectionViewCellsCreator: UICollectionViewCell {
         imageView.clipsToBounds = true
         return imageView
     }()
+    
+    private var shareButton = UIButton()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,14 +35,35 @@ class ShowResultsCollectionViewCellsCreator: UICollectionViewCell {
         setupImageView()
     }
     
+    private func setupShareButton() {
+        shareButton.titleLabel?.text = ""
+        shareButton.setImage(UIImage(named: "share"), for: .normal)
+        shareButton.layer.borderWidth = 1
+        shareButton.layer.borderColor = UIColor.clear.cgColor
+        shareButton.layer.cornerRadius = 3
+        
+        addSubview(shareButton)
+        shareButton.addConstraints(to_view: self, [
+            .top(anchor: self.topAnchor, constant: 16),
+            .trailing(anchor: self.trailingAnchor, constant: 16),
+            .width(constant: 40),
+            .height(constant: 40)
+        ])
+    }
+    
     private func setupImageView() {
         previewImageView.addConstraints(to_view: self)
     }
     
     // MARK: - Public method to set image
-
+//уточни в іі що означають оті вінзєля в гарді
     func setImage(with url: URL) {
-        previewImageView.sd_setImage(with: url, placeholderImage: nil, options: [.continueInBackground,.progressiveLoad], completed: nil)
+        previewImageView.sd_setImage(with: url, placeholderImage: nil, options: [.continueInBackground,.progressiveLoad]) { [weak self] (image, error, cacheType, imageUrl) in
+            guard let self = self else { return }
+            if error == nil {
+                self.setupShareButton()
+            }
+        }
     }
 }
 

@@ -17,6 +17,7 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak private var relatedRequstCollectionView: UICollectionView!
     @IBOutlet weak private var relatedLabel: UILabel!
     @IBOutlet weak private var backGroundView: UIView!
+    private var activityIndicator: UIActivityIndicatorView!
     
     private var relatedResultsLabels: [String] = []
     private var previewImageUrls: [String] = []
@@ -24,6 +25,7 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setActivityIndicatorHidden(false)
     }
     
     // MARK: - setup UI
@@ -36,9 +38,17 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
         setupRelatedRequstCollectionView()
         setupShowResultsCollectionView()
         setupRelatedLabel()
+        setupActivityIndicator()
         
         setupKeyboardDismissGesture()
         backGroundView.backgroundColor = UIColor.hexF6F6F6
+    }
+    
+    private func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
     }
     
     private func setupRelatedLabel() {
@@ -49,7 +59,7 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
 
     private func setupAvailableImagesInfoLabel() {
         availableImagesInfoLabel.text = ""
-        availableImagesInfoLabel.font = UIFont(name: "OpenSans-Semibold", size: 18)
+        availableImagesInfoLabel.font = UIFont(name: "OpenSans-Semibold", size: 20)
     }
     
     private func setupRelatedRequstCollectionView() {
@@ -103,6 +113,18 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
         separateLineView.backgroundColor = UIColor.hexD2D2D2
     }
     
+    // MARK: - Private methods
+
+    private func setActivityIndicatorHidden(_ isHidden: Bool) {
+        if isHidden {
+            activityIndicator.stopAnimating()
+            view.isUserInteractionEnabled = true
+        } else {
+            activityIndicator.startAnimating()
+            view.isUserInteractionEnabled = false
+        }
+    }
+    
     // MARK: - Public methods
     
     func updateUI(with pixabayData: PixabayData) {
@@ -118,6 +140,8 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
 
             self.relatedRequstCollectionView.reloadData()
             self.showResultsCollectionView.reloadData()
+            
+            self.setActivityIndicatorHidden(true)
         }
     }
 }
