@@ -91,6 +91,15 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
         searchTextField.font = UIFont(name: "OpenSans-Regular", size: 18)
         
         setupIconViews()
+        setupPlaceHolder()
+    }
+    
+    private func setupPlaceHolder() {
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.hex747474,
+            .font: UIFont(name: "OpenSans-Regular", size: 14)!
+        ]
+        searchTextField.attributedPlaceholder = NSAttributedString(string: "Search images, vectors and more", attributes: attributes)
     }
     
     private func setupIconViews() {
@@ -173,7 +182,7 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
             if let url = URL(string: currentImageUrlString) {
                 cell.setImage(with: url)
             }
-            
+            cell.parentViewController = self
             return cell
         }
         else if collectionView == relatedRequstCollectionView {

@@ -10,6 +10,8 @@ import SDWebImage
 
 class ShowResultsCollectionViewCellsCreator: UICollectionViewCell {
     
+    weak var parentViewController: ResultsRepresentVC?
+    
     private var previewImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -49,6 +51,8 @@ class ShowResultsCollectionViewCellsCreator: UICollectionViewCell {
             .width(constant: 40),
             .height(constant: 40)
         ])
+        
+        shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
     }
     
     private func setupImageView() {
@@ -56,13 +60,28 @@ class ShowResultsCollectionViewCellsCreator: UICollectionViewCell {
     }
     
     // MARK: - Public method to set image
-//уточни в іі що означають оті вінзєля в гарді
+
     func setImage(with url: URL) {
         previewImageView.sd_setImage(with: url, placeholderImage: nil, options: [.continueInBackground,.progressiveLoad]) { [weak self] (image, error, cacheType, imageUrl) in
             guard let self = self else { return }
             if error == nil {
                 self.setupShareButton()
             }
+        }
+    }
+    
+    // MARK: - Share Button action
+    
+    @objc private func shareButtonTapped() {
+        guard let imageToShare = previewImageView.image else { return }
+            
+        let shareViewController = ShareUtility.createShareViewController(imageToShare: imageToShare, sourceView: self)
+        shareViewController.popoverPresentationController?.sourceRect = shareButton.frame
+        shareViewController.popoverPresentationController?.sourceView = self
+        shareViewController.popoverPresentationController?.permittedArrowDirections = [.down, .up]
+            
+        if let parentViewController = parentViewController {
+            parentViewController.present(shareViewController, animated: true, completion: nil)
         }
     }
 }

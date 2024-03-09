@@ -45,7 +45,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         searchTextField.borderStyle = .none
         searchTextField.layer.borderWidth = 1
         searchTextField.layer.borderColor = UIColor.hexE2E2E2.cgColor
-        searchTextField.layer.cornerRadius = 4
+        searchTextField.layer.cornerRadius = 5
         
         searchTextField.font = UIFont(name: "OpenSans-Regular", size: 18)
         
