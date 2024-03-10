@@ -14,6 +14,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak private var searchButton: UIButton!
     @IBOutlet weak private var bottomInfoLabel: UILabel!
     
+    private var selectedImageCategory: String = "All"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         setupSearchButton()
         setupBottomInfoLabel()
 
+        updateTFCategoryButton()
         setupKeyboardDismissGesture()
     }
     
@@ -82,7 +84,7 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         let menuButton = UIButton()
         menuButton.setImage(separatorImage, for: .normal)
         
-        menuButton.setAttributedTitle(createTFRightButtonName(name: "Images"), for: .normal)
+        menuButton.setAttributedTitle(createTFRightButtonName(name: "All"), for: .normal)
         menuButton.setTitleColor(UIColor.hex2D2D2D, for: .normal)
         menuButton.titleLabel?.font = UIFont(name: "OpenSans-Regular", size: 14)
         menuButton.frame = CGRect(x: 0, y: 0, width: 0, height: searchTextField.frame.height)
@@ -141,7 +143,10 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         let resultsRepresentVC = ResultsRepresentVC()
         resultsRepresentVC.modalPresentationStyle = .fullScreen
     
-        PixabayDataMeneger.shared.getPixabayData(request: "girls") { [weak resultsRepresentVC] pixabayData in
+        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchTextField.text ?? "", selectedImageCategory)
+
+        
+        PixabayDataMeneger.shared.getPixabayData(request: request) { [weak resultsRepresentVC] pixabayData in
             resultsRepresentVC?.updateUI(with: pixabayData)
         }
         
@@ -150,14 +155,36 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
     @objc private func showMenu(_ sender: UIButton) {
         let menuItems: [UIAction] = [
-            UIAction(title: "Пункт 1", handler: { _ in print("Выбран Пункт 1") }),
-            UIAction(title: "Пункт 2", handler: { _ in print("Выбран Пункт 2") }),
-            UIAction(title: "Пункт 3", handler: { _ in print("Выбран Пункт 3") }),
-            UIAction(title: "Пункт 4", handler: { _ in print("Выбран Пункт 4") })
+            UIAction(title: "Vector", image: UIImage(systemName: "line.diagonal.arrow"), handler: { [weak self] _ in
+                self?.selectedImageCategory = "Vector"
+                self?.updateTFCategoryButton()
+            }),
+            UIAction(title: "Illustration", image: UIImage(systemName: "photo"), handler: { [weak self] _ in
+                self?.selectedImageCategory = "Illustration"
+                self?.updateTFCategoryButton()
+            }),
+            UIAction(title: "Photo", image: UIImage(systemName: "camera"), handler: { [weak self] _ in
+                self?.selectedImageCategory = "Photo"
+                self?.updateTFCategoryButton()
+            }),
+            UIAction(title: "All", image: UIImage(systemName: "photo.on.rectangle.angled"), handler: { [weak self] _ in
+                self?.selectedImageCategory = "All"
+                self?.updateTFCategoryButton()
+            })
         ]
-
+        
         let menu = UIMenu(children: menuItems)
         sender.menu = menu
         sender.showsMenuAsPrimaryAction = true
+    }
+    
+    // MARK: - Private methods
+
+    private func updateTFCategoryButton() {
+        let buttonTitle = selectedImageCategory
+        let attributedString = createTFRightButtonName(name: buttonTitle)
+        if let menuButton = searchTextField.rightView as? UIButton {
+            menuButton.setAttributedTitle(attributedString, for: .normal)
+        }
     }
 }

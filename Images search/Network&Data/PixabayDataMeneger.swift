@@ -14,6 +14,11 @@ class PixabayDataMeneger {
     private var pixabayData = PixabayData()
     
     
+    func createSearchRequest(userRequest: String, _ imageTypeCategory: String) -> String {
+        let resultRequest = "\(userRequest)&image_type=\(imageTypeCategory)"
+        return resultRequest
+    }
+    
     func getLinksToPreviewImages() -> [String] {
         var array: [String] = []
         array = pixabayData.hits.map { $0.webformatURL }
