@@ -7,8 +7,9 @@
 
 import UIKit
 
-class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
+class ResultsRepresentVC: UIViewController {
 
+    @IBOutlet weak private var logoButton: UIButton!
     @IBOutlet weak private var searchTextField: UITextField!
     @IBOutlet weak private var filterButton: UIButton!
     @IBOutlet weak private var separateLineView: UIView!
@@ -16,7 +17,6 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
     @IBOutlet weak private var availableImagesInfoLabel: UILabel!
     @IBOutlet weak private var relatedRequstCollectionView: UICollectionView!
     @IBOutlet weak private var relatedLabel: UILabel!
-    @IBOutlet weak private var backGroundView: UIView!
     private var activityIndicator: UIActivityIndicatorView!
     
     private var relatedResultsLabels: [String] = []
@@ -31,6 +31,7 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
     // MARK: - setup UI
     
     private func setupUI() {
+        setupLogoButton()
         setupSearchTextField()
         setupFilterButton()
         setupSeparateLineView()
@@ -41,41 +42,10 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
         setupActivityIndicator()
         
         setupKeyboardDismissGesture()
-        backGroundView.backgroundColor = UIColor.hexF6F6F6
     }
     
-    private func setupActivityIndicator() {
-        activityIndicator = UIActivityIndicatorView(style: .large)
-        activityIndicator.center = view.center
-        activityIndicator.hidesWhenStopped = true
-        view.addSubview(activityIndicator)
-    }
-    
-    private func setupRelatedLabel() {
-        relatedLabel.text = "Related"
-        relatedLabel.font = UIFont(name: "OpenSans-Regular", size: 16)
-        relatedLabel.textColor = UIColor.hex747474
-    }
-
-    private func setupAvailableImagesInfoLabel() {
-        availableImagesInfoLabel.text = ""
-        availableImagesInfoLabel.font = UIFont(name: "OpenSans-Semibold", size: 20)
-    }
-    
-    private func setupRelatedRequstCollectionView() {
-        relatedRequstCollectionView.dataSource = self
-        relatedRequstCollectionView.delegate = self
-        relatedRequstCollectionView.register(RelatedRequstCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "RelatedTagsCellId")
-        relatedRequstCollectionView.accessibilityIdentifier = "RelatedRequstCollectionViewCellsCreator"
-        relatedRequstCollectionView.backgroundColor = .clear
-    }
-    
-    private func setupShowResultsCollectionView() {
-        showResultsCollectionView.dataSource = self
-        showResultsCollectionView.delegate = self
-        showResultsCollectionView.register(ShowResultsCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "CellId")
-        showResultsCollectionView.accessibilityIdentifier = "ShowResultsCollectionViewCellsCreator"
-        showResultsCollectionView.backgroundColor = .clear
+    private func setupLogoButton() {
+        logoButton.setTitle("", for: .normal)
     }
     
     private func setupSearchTextField() {
@@ -122,6 +92,48 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
         separateLineView.backgroundColor = UIColor.hexD2D2D2
     }
     
+    private func setupAvailableImagesInfoLabel() {
+        availableImagesInfoLabel.text = ""
+        availableImagesInfoLabel.font = UIFont(name: "OpenSans-Semibold", size: 20)
+    }
+    
+    private func setupRelatedLabel() {
+        relatedLabel.text = "Related"
+        relatedLabel.font = UIFont(name: "OpenSans-Regular", size: 16)
+        relatedLabel.textColor = UIColor.hex747474
+    }
+    
+    private func setupRelatedRequstCollectionView() {
+        relatedRequstCollectionView.dataSource = self
+        relatedRequstCollectionView.delegate = self
+        relatedRequstCollectionView.register(RelatedRequstCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "RelatedTagsCellId")
+        relatedRequstCollectionView.accessibilityIdentifier = "RelatedRequstCollectionViewCellsCreator"
+        relatedRequstCollectionView.backgroundColor = .clear
+    }
+    
+    private func setupShowResultsCollectionView() {
+        showResultsCollectionView.dataSource = self
+        showResultsCollectionView.delegate = self
+        showResultsCollectionView.register(ShowResultsCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "CellId")
+        showResultsCollectionView.accessibilityIdentifier = "ShowResultsCollectionViewCellsCreator"
+        showResultsCollectionView.backgroundColor = .clear
+    }
+    
+    private func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+    }
+    
+    // MARK: - Actions
+    
+    @IBAction func backToMainVC(_ sender: Any) {
+        let mainVC = MainViewController()
+        mainVC.modalPresentationStyle = .fullScreen
+        present(mainVC, animated: true)
+    }
+    
     // MARK: - Private methods
 
     private func setActivityIndicatorHidden(_ isHidden: Bool) {
@@ -134,6 +146,22 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
         }
     }
     
+    private func performSearch() {
+        guard let searchText = searchTextField.text, !searchText.isEmpty else { return }
+        setActivityIndicatorHidden(false)
+ 
+        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchText, "All" )
+        PixabayDataMeneger.shared.getPixabayData(request: request) { [weak self] pixabayData in
+            self?.updateUI(with: pixabayData)
+        }
+    }
+    
+    private func formatNumberWithSpaces(_ number: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        return formatter.string(from: NSNumber(value: number)) ?? ""
+    }
+    
     // MARK: - Public methods
     
     func updateUI(with pixabayData: PixabayData) {
@@ -141,10 +169,10 @@ class ResultsRepresentVC: UIViewController, UITextFieldDelegate {
             guard let self = self else { return }
             
             let availableAmountPictures = pixabayData.total
-            self.availableImagesInfoLabel.text = "\(availableAmountPictures) Free Images"
+            let formattedNumber = formatNumberWithSpaces(availableAmountPictures)
+            self.availableImagesInfoLabel.text = "\(formattedNumber) Free Images"
             
             self.relatedResultsLabels = PixabayDataMeneger.shared.creatingRelatedStrings()
-            
             self.previewImageUrls = PixabayDataMeneger.shared.getLinksToPreviewImages()
 
             self.relatedRequstCollectionView.reloadData()
@@ -161,9 +189,8 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == showResultsCollectionView {
-            return PixabayDataMeneger.shared.getFoundImagesCount()
-        }
-        else if collectionView == relatedRequstCollectionView {
+            return previewImageUrls.count
+        } else if collectionView == relatedRequstCollectionView {
             return relatedResultsLabels.count
         }
         return .zero
@@ -210,5 +237,38 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
             return CGSize(width: size.width, height: size.height + 7)
         }
         fatalError("unsupported collection view")
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if collectionView == showResultsCollectionView {
+
+            let showImageVC = ShowImageVC()
+            showImageVC.modalPresentationStyle = .fullScreen
+            present(showImageVC, animated: true, completion: nil)
+            print("выбрана ячейка: \(indexPath.row)")
+        }
+    }
+}
+
+// MARK: - TextField Properties
+
+extension ResultsRepresentVC: UITextFieldDelegate {
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 абвгдеєїіёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЄЇІЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ")
+        let characterSet = CharacterSet(charactersIn: string)
+        if !allowedCharacters.isSuperset(of: characterSet) {
+            return false
+        }
+        
+        guard let text = textField.text else { return true }
+        let newLength = text.count + string.count - range.length
+        return newLength <= 99
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        performSearch()
+        return true
     }
 }

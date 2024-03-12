@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController, UITextFieldDelegate {
+class MainViewController: UIViewController {
     
     @IBOutlet weak private var mainTitleLabel: UILabel!
     @IBOutlet weak private var searchTextField: UITextField!
@@ -145,9 +145,8 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     
         let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchTextField.text ?? "", selectedImageCategory)
 
-        
-        PixabayDataMeneger.shared.getPixabayData(request: request) { [weak resultsRepresentVC] pixabayData in
-            resultsRepresentVC?.updateUI(with: pixabayData)
+        PixabayDataMeneger.shared.getPixabayData(request: request) { [resultsRepresentVC] pixabayData in
+            resultsRepresentVC.updateUI(with: pixabayData)
         }
         
         present(resultsRepresentVC, animated: false)
@@ -156,18 +155,22 @@ class MainViewController: UIViewController, UITextFieldDelegate {
     @objc private func showMenu(_ sender: UIButton) {
         let menuItems: [UIAction] = [
             UIAction(title: "Vector", image: UIImage(systemName: "line.diagonal.arrow"), handler: { [weak self] _ in
+                self?.dismissKeyboard()
                 self?.selectedImageCategory = "Vector"
                 self?.updateTFCategoryButton()
             }),
             UIAction(title: "Illustration", image: UIImage(systemName: "photo"), handler: { [weak self] _ in
+                self?.dismissKeyboard()
                 self?.selectedImageCategory = "Illustration"
                 self?.updateTFCategoryButton()
             }),
             UIAction(title: "Photo", image: UIImage(systemName: "camera"), handler: { [weak self] _ in
+                self?.dismissKeyboard()
                 self?.selectedImageCategory = "Photo"
                 self?.updateTFCategoryButton()
             }),
             UIAction(title: "All", image: UIImage(systemName: "photo.on.rectangle.angled"), handler: { [weak self] _ in
+                self?.dismissKeyboard()
                 self?.selectedImageCategory = "All"
                 self?.updateTFCategoryButton()
             })
@@ -186,5 +189,11 @@ class MainViewController: UIViewController, UITextFieldDelegate {
         if let menuButton = searchTextField.rightView as? UIButton {
             menuButton.setAttributedTitle(attributedString, for: .normal)
         }
+    }
+}
+
+extension MainViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }

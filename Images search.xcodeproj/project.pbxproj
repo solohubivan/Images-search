@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2211DADA2BA09635009F8A57 /* ShowImageVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2211DAD92BA09635009F8A57 /* ShowImageVC.xib */; };
+		2211DADB2BA09635009F8A57 /* ShowImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2211DAD82BA09635009F8A57 /* ShowImageVC.swift */; };
 		223E1E0C2B94FB3800B70BBB /* PixabayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E1E0B2B94FB3800B70BBB /* PixabayData.swift */; };
 		223E1E0E2B973E2900B70BBB /* ShowResultsCollectionViewCellsCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E1E0D2B973E2900B70BBB /* ShowResultsCollectionViewCellsCreator.swift */; };
 		223E1E132B9768F800B70BBB /* FoundImagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E1E122B9768F800B70BBB /* FoundImagesViewModel.swift */; };
@@ -34,6 +36,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2211DAD82BA09635009F8A57 /* ShowImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowImageVC.swift; sourceTree = "<group>"; };
+		2211DAD92BA09635009F8A57 /* ShowImageVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowImageVC.xib; sourceTree = "<group>"; };
 		223E1E0B2B94FB3800B70BBB /* PixabayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixabayData.swift; sourceTree = "<group>"; };
 		223E1E0D2B973E2900B70BBB /* ShowResultsCollectionViewCellsCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowResultsCollectionViewCellsCreator.swift; sourceTree = "<group>"; };
 		223E1E122B9768F800B70BBB /* FoundImagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoundImagesViewModel.swift; sourceTree = "<group>"; };
@@ -76,6 +80,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2211DAD72BA0957C009F8A57 /* ShowImageVC */ = {
+			isa = PBXGroup;
+			children = (
+				2211DAD82BA09635009F8A57 /* ShowImageVC.swift */,
+				2211DAD92BA09635009F8A57 /* ShowImageVC.xib */,
+			);
+			path = ShowImageVC;
+			sourceTree = "<group>";
+		};
 		223E1E112B97686600B70BBB /* Network&Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -125,6 +138,7 @@
 				223E1E112B97686600B70BBB /* Network&Data */,
 				22F979F72B8413B5004CF466 /* MainViewController */,
 				22D82B8B2B8EF498003BA27A /* ResultsRepresentVC */,
+				2211DAD72BA0957C009F8A57 /* ShowImageVC */,
 			);
 			path = "Images search";
 			sourceTree = "<group>";
@@ -263,6 +277,7 @@
 				2256B4702B83F5690055C284 /* LaunchScreen.storyboard in Resources */,
 				22F979F62B8412ED004CF466 /* MainViewController.xib in Resources */,
 				2268E4DD2B8551AF00792F66 /* OpenSans-Bold.ttf in Resources */,
+				2211DADA2BA09635009F8A57 /* ShowImageVC.xib in Resources */,
 				22849B652B9A382E00B315A7 /* OpenSans-Medium.ttf in Resources */,
 				2291F1012B8571B3004FF5EB /* OpenSans-Light.ttf in Resources */,
 				22E173F02B85880B0021200B /* OpenSans-Regular.ttf in Resources */,
@@ -329,6 +344,7 @@
 				2291F0FF2B856922004FF5EB /* UIColorExtensions.swift in Sources */,
 				223E1E152B976BCF00B70BBB /* PixabayDataMeneger.swift in Sources */,
 				2256B4642B83F5680055C284 /* AppDelegate.swift in Sources */,
+				2211DADB2BA09635009F8A57 /* ShowImageVC.swift in Sources */,
 				226024E12B8EB204008DF799 /* UIViewExtensions.swift in Sources */,
 				223E1E0C2B94FB3800B70BBB /* PixabayData.swift in Sources */,
 				22D82B8E2B8EF5A1003BA27A /* ResultsRepresentVC.swift in Sources */,
