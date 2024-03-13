@@ -26,6 +26,7 @@
 		22849B672B9A38B300B315A7 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22849B662B9A38B300B315A7 /* OpenSans-SemiBold.ttf */; };
 		2291F0FF2B856922004FF5EB /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2291F0FE2B856922004FF5EB /* UIColorExtensions.swift */; };
 		2291F1012B8571B3004FF5EB /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2291F1002B8571B3004FF5EB /* OpenSans-Light.ttf */; };
+		22A8DE122BA0FA9700BE608E /* NumberFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A8DE112BA0FA9700BE608E /* NumberFormatterExtension.swift */; };
 		22D82B8E2B8EF5A1003BA27A /* ResultsRepresentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D82B8C2B8EF5A1003BA27A /* ResultsRepresentVC.swift */; };
 		22D82B8F2B8EF5A1003BA27A /* ResultsRepresentVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22D82B8D2B8EF5A1003BA27A /* ResultsRepresentVC.xib */; };
 		22E173F02B85880B0021200B /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 22E173EF2B85880B0021200B /* OpenSans-Regular.ttf */; };
@@ -57,6 +58,7 @@
 		22849B662B9A38B300B315A7 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		2291F0FE2B856922004FF5EB /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
 		2291F1002B8571B3004FF5EB /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
+		22A8DE112BA0FA9700BE608E /* NumberFormatterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatterExtension.swift; sourceTree = "<group>"; };
 		22D82B8C2B8EF5A1003BA27A /* ResultsRepresentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsRepresentVC.swift; sourceTree = "<group>"; };
 		22D82B8D2B8EF5A1003BA27A /* ResultsRepresentVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResultsRepresentVC.xib; sourceTree = "<group>"; };
 		22E173EF2B85880B0021200B /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				226024DB2B8EAF02008DF799 /* UIViewControllerExtension.swift */,
 				226024E02B8EB204008DF799 /* UIViewExtensions.swift */,
 				226024E22B8EB225008DF799 /* UIImageExtensions.swift */,
+				22A8DE112BA0FA9700BE608E /* NumberFormatterExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 				22E2123F2B99144400E750BB /* RelatedRequstCollectionViewCellsCreator.swift in Sources */,
 				226024DC2B8EAF02008DF799 /* UIViewControllerExtension.swift in Sources */,
 				223E1E0E2B973E2900B70BBB /* ShowResultsCollectionViewCellsCreator.swift in Sources */,
+				22A8DE122BA0FA9700BE608E /* NumberFormatterExtension.swift in Sources */,
 				22F979F52B8412ED004CF466 /* MainViewController.swift in Sources */,
 				226024E32B8EB225008DF799 /* UIImageExtensions.swift in Sources */,
 				223E1E132B9768F800B70BBB /* FoundImagesViewModel.swift in Sources */,

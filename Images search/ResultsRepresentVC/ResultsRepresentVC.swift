@@ -40,8 +40,6 @@ class ResultsRepresentVC: UIViewController {
         setupShowResultsCollectionView()
         setupRelatedLabel()
         setupActivityIndicator()
-        
-        setupKeyboardDismissGesture()
     }
     
     private func setupLogoButton() {
@@ -155,13 +153,7 @@ class ResultsRepresentVC: UIViewController {
             self?.updateUI(with: pixabayData)
         }
     }
-    
-    private func formatNumberWithSpaces(_ number: Int) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        return formatter.string(from: NSNumber(value: number)) ?? ""
-    }
-    
+
     // MARK: - Public methods
     
     func updateUI(with pixabayData: PixabayData) {
@@ -169,7 +161,7 @@ class ResultsRepresentVC: UIViewController {
             guard let self = self else { return }
             
             let availableAmountPictures = pixabayData.total
-            let formattedNumber = formatNumberWithSpaces(availableAmountPictures)
+            let formattedNumber = NumberFormatter.formatNumberWithSpaces(availableAmountPictures)
             self.availableImagesInfoLabel.text = "\(formattedNumber) Free Images"
             
             self.relatedResultsLabels = PixabayDataMeneger.shared.creatingRelatedStrings()
@@ -241,10 +233,10 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == showResultsCollectionView {
-
+            
             let showImageVC = ShowImageVC()
             showImageVC.modalPresentationStyle = .fullScreen
-            present(showImageVC, animated: true, completion: nil)
+            present(showImageVC, animated: false)
             print("выбрана ячейка: \(indexPath.row)")
         }
     }

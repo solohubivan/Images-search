@@ -36,10 +36,6 @@ class PixabayDataMeneger {
         return resultArray
     }
 
-    func getFoundImagesCount() -> Int {
-        return pixabayData.hits.count
-    }
-
     func getPixabayData(request: String, completion: @escaping (PixabayData) -> Void) {
         let session = URLSession.shared
         let url = URL(string: "https://pixabay.com/api/?key=42641694-e1b511cb1c14ec9fc839ed366&q=\(request)")!

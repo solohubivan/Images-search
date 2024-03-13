@@ -124,6 +124,7 @@
                 <constraint firstItem="U4W-EL-Y0l" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="6" id="snQ-pp-RDN"/>
                 <constraint firstItem="rfA-jG-AJO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="tHA-9Z-obs"/>
                 <constraint firstItem="jNN-ka-zTW" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="6" id="tfW-rh-Ou7"/>
+                <constraint firstItem="jNN-ka-zTW" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="6" id="wAO-HC-442"/>
             </constraints>
             <point key="canvasLocation" x="136.64122137404578" y="19.718309859154932"/>
         </view>

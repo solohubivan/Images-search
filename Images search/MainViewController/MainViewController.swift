@@ -145,8 +145,8 @@ class MainViewController: UIViewController {
     
         let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchTextField.text ?? "", selectedImageCategory)
 
-        PixabayDataMeneger.shared.getPixabayData(request: request) { [resultsRepresentVC] pixabayData in
-            resultsRepresentVC.updateUI(with: pixabayData)
+        PixabayDataMeneger.shared.getPixabayData(request: request) { [weak resultsRepresentVC] pixabayData in
+            resultsRepresentVC?.updateUI(with: pixabayData)
         }
         
         present(resultsRepresentVC, animated: false)
