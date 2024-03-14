@@ -19,10 +19,13 @@ class PixabayDataMeneger {
         return resultRequest
     }
     
-    func getLinksToPreviewImages() -> [String] {
-        var array: [String] = []
-        array = pixabayData.hits.map { $0.webformatURL }
-        return array
+    func getImageViewModelData() -> [ImageUrls] {
+        var imageUrls: [ImageUrls] = []
+        for hit in pixabayData.hits {
+            let imageUrlsData = ImageUrls(previewImageUrl: hit.webformatURL, fullsizeImageUrl: hit.largeImageURL)
+            imageUrls.append(imageUrlsData)
+        }
+        return imageUrls
     }
     
     func creatingRelatedStrings() -> [String] {

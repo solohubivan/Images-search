@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ShowImageVC: UIViewController {
 
@@ -19,11 +20,30 @@ class ShowImageVC: UIViewController {
     @IBOutlet weak private var pictureFormatLabel: UILabel!
     @IBOutlet weak private var shareButton: UIButton!
     @IBOutlet weak private var downloadButton: UIButton!
+    @IBOutlet weak private var zoomButton: UIButton!
+    @IBOutlet weak private var relatedImagesCollectionView: UICollectionView!
+    
+    
+    var showImageVcImageUrl: String = ""
+    var showRelatedImagesUrls: [ImageUrls] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         
+        if let url = URL(string: showImageVcImageUrl) {
+            setMainImage(with: url)
+        }
+    }
+    
+    private func setupRelatedImagesCollectView() {
+        relatedImagesCollectionView.dataSource = self
+        relatedImagesCollectionView.delegate = self
+        relatedImagesCollectionView.register(RelatedImagesCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "RelatedImagesCellId")
+        relatedImagesCollectionView.accessibilityIdentifier = "RelatedImagesCollectionViewCellsCreator"
+        relatedImagesCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader")
+        relatedImagesCollectionView.backgroundColor = UIColor.hexF6F6F6
     }
     
     // MARK: - setup UI
@@ -39,6 +59,8 @@ class ShowImageVC: UIViewController {
         setupPictureFormatLabel()
         setupShareButton()
         setupDownloadButton()
+        setupZoomImageButton()
+        setupRelatedImagesCollectView()
     }
     
     private func setupLogoButton() {
@@ -90,7 +112,11 @@ class ShowImageVC: UIViewController {
     }
     
     private func setupMainImageView() {
-        mainImageView.image = UIImage(named: "backgroundPicture")
+        mainImageView.contentMode = .scaleAspectFill
+    }
+    
+    private func setupZoomImageButton() {
+        zoomButton.setTitle("", for: .normal)
     }
     
     private func setupAppLicenseLabel() {
@@ -122,11 +148,32 @@ class ShowImageVC: UIViewController {
     }
     
     // MARK: - Actions
+
+    @IBAction private func shareFullSizeImage(_ sender: Any) {
+        guard let image = mainImageView.image else { return }
+        let shareViewController = ShareUtility.createShareViewController(imageToShare: image, sourceView: shareButton)
+        present(shareViewController, animated: true, completion: nil)
+    }
+    
+    @IBAction private func zoomImage(_ sender: Any) {
+        print("ZoomTapped")
+    }
     
     @IBAction private func backToMainVC(_ sender: Any) {
         let mainVC = MainViewController()
         mainVC.modalPresentationStyle = .fullScreen
         present(mainVC, animated: true)
+    }
+    
+    // MARK: - Private methods
+    
+    private func setMainImage(with url: URL) {
+        mainImageView.sd_setImage(with: url, placeholderImage: nil, options: [.continueInBackground,.progressiveLoad]) { [weak self] (image, error, cacheType, imageUrl) in
+            guard let self = self else { return }
+            if error == nil {
+                zoomButton.isHidden = false
+            }
+        }
     }
 }
 
@@ -142,12 +189,61 @@ extension ShowImageVC: UITextFieldDelegate {
         
         guard let text = textField.text else { return true }
         let newLength = text.count + string.count - range.length
-        return newLength <= 99
+        return newLength <= 90
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
 //        performSearch()
         return true
+    }
+}
+
+extension ShowImageVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return showRelatedImagesUrls.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = relatedImagesCollectionView.dequeueReusableCell(withReuseIdentifier: "RelatedImagesCellId", for: indexPath) as! RelatedImagesCollectionViewCellsCreator
+        cell.layer.masksToBounds = true
+        
+        let currentImageUrlString = showRelatedImagesUrls[indexPath.row].previewImageUrl
+        if let url = URL(string: currentImageUrlString) {
+            cell.setImage(with: url)
+        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = (collectionView.frame.width - 48) / 2
+        let height = width * 0.6
+        return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 16
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionHeader {
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeader", for: indexPath)
+
+            let titleLabel = UILabel(frame: CGRect(x: 16, y: 6, width: collectionView.bounds.width - 32, height: 40))
+            titleLabel.text = "Related"
+            titleLabel.font = UIFont(name: "OpenSans-SemiBold", size: 20)
+            headerView.addSubview(titleLabel)
+            return headerView
+        }
+        return UICollectionReusableView()
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 40)
     }
 }

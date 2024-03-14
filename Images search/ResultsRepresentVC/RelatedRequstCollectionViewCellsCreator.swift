@@ -42,7 +42,7 @@ class RelatedRequstCollectionViewCellsCreator: UICollectionViewCell {
         relatedTags.addConstraints(to_view: labelContainer, [
             .leading(anchor: labelContainer.leadingAnchor, constant: 10),
             .trailing(anchor: labelContainer.trailingAnchor, constant: 10)
-            ])
+        ])
         
         relatedTags.text = ""
         relatedTags.textColor = .black

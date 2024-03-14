@@ -20,7 +20,8 @@ class ResultsRepresentVC: UIViewController {
     private var activityIndicator: UIActivityIndicatorView!
     
     private var relatedResultsLabels: [String] = []
-    private var previewImageUrls: [String] = []
+    private var imageUrls: [ImageUrls] = []
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -165,7 +166,7 @@ class ResultsRepresentVC: UIViewController {
             self.availableImagesInfoLabel.text = "\(formattedNumber) Free Images"
             
             self.relatedResultsLabels = PixabayDataMeneger.shared.creatingRelatedStrings()
-            self.previewImageUrls = PixabayDataMeneger.shared.getLinksToPreviewImages()
+            self.imageUrls = PixabayDataMeneger.shared.getImageViewModelData()
 
             self.relatedRequstCollectionView.reloadData()
             self.showResultsCollectionView.reloadData()
@@ -180,8 +181,9 @@ class ResultsRepresentVC: UIViewController {
 extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+ 
         if collectionView == showResultsCollectionView {
-            return previewImageUrls.count
+            return imageUrls.count
         } else if collectionView == relatedRequstCollectionView {
             return relatedResultsLabels.count
         }
@@ -197,7 +199,7 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
             cell.layer.cornerRadius = 8
             cell.layer.masksToBounds = true
 
-            let currentImageUrlString = previewImageUrls[indexPath.row]
+            let currentImageUrlString = imageUrls[indexPath.row].previewImageUrl
             if let url = URL(string: currentImageUrlString) {
                 cell.setImage(with: url)
             }
@@ -225,6 +227,7 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
                 return CGSize.zero
             }
             cell.relatedTags.text = relatedResultsLabels[indexPath.item]
+
             let size = cell.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height))
             return CGSize(width: size.width, height: size.height + 7)
         }
@@ -233,11 +236,12 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == showResultsCollectionView {
-            
+            let selectedImageUrl = imageUrls[indexPath.row].fullsizeImageUrl
             let showImageVC = ShowImageVC()
+            showImageVC.showImageVcImageUrl = selectedImageUrl
+            showImageVC.showRelatedImagesUrls = self.imageUrls
             showImageVC.modalPresentationStyle = .fullScreen
             present(showImageVC, animated: false)
-            print("выбрана ячейка: \(indexPath.row)")
         }
     }
 }
