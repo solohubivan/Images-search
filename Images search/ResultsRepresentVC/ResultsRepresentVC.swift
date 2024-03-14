@@ -238,8 +238,8 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
         if collectionView == showResultsCollectionView {
             let selectedImageUrl = imageUrls[indexPath.row].fullsizeImageUrl
             let showImageVC = ShowImageVC()
-            showImageVC.showImageVcImageUrl = selectedImageUrl
-            showImageVC.showRelatedImagesUrls = self.imageUrls
+            showImageVC.showMainImageUrl = selectedImageUrl
+            showImageVC.showImageVCimagesUrls = self.imageUrls
             showImageVC.modalPresentationStyle = .fullScreen
             present(showImageVC, animated: false)
         }

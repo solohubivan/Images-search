@@ -23,16 +23,16 @@ class ShowImageVC: UIViewController {
     @IBOutlet weak private var zoomButton: UIButton!
     @IBOutlet weak private var relatedImagesCollectionView: UICollectionView!
     
-    
-    var showImageVcImageUrl: String = ""
-    var showRelatedImagesUrls: [ImageUrls] = []
+    var showMainImageUrl: String = ""
+    var showImageVCimagesUrls: [ImageUrls] = []
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         
-        if let url = URL(string: showImageVcImageUrl) {
+        if let url = URL(string: showMainImageUrl) {
+            updatePictureFormatLabel(with: showMainImageUrl)
             setMainImage(with: url)
         }
     }
@@ -132,7 +132,7 @@ class ShowImageVC: UIViewController {
     }
     
     private func setupPictureFormatLabel() {
-        pictureFormatLabel.text = "Photo in .JPG format"
+        pictureFormatLabel.text = "Photo in UNREAL format"
         pictureFormatLabel.font = UIFont(name: "OpenSans-Regular", size: 15)
         pictureFormatLabel.textColor = UIColor.hex2D2D2D
     }
@@ -157,12 +157,21 @@ class ShowImageVC: UIViewController {
     
     @IBAction private func zoomImage(_ sender: Any) {
         print("ZoomTapped")
+        if let image = mainImageView.image {
+            let zoomedViewController = ZoomedImageViewController(image: image)
+            zoomedViewController.modalPresentationStyle = .fullScreen
+            present(zoomedViewController, animated: false)
+        }
     }
     
-    @IBAction private func backToMainVC(_ sender: Any) {
-        let mainVC = MainViewController()
-        mainVC.modalPresentationStyle = .fullScreen
-        present(mainVC, animated: true)
+    @IBAction private func backToResultRepresentVC(_ sender: Any) {
+        let transition = CATransition()
+        transition.duration = 0.2
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromLeft
+        self.view.window!.layer.add(transition, forKey: kCATransition)
+            
+        self.dismiss(animated: false, completion: nil)
     }
     
     // MARK: - Private methods
@@ -174,6 +183,12 @@ class ShowImageVC: UIViewController {
                 zoomButton.isHidden = false
             }
         }
+    }
+    
+    private func updatePictureFormatLabel(with urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        let fileExtension = url.pathExtension.uppercased()
+        pictureFormatLabel.text = "Photo in ." + fileExtension + " format"
     }
 }
 
@@ -201,14 +216,14 @@ extension ShowImageVC: UITextFieldDelegate {
 
 extension ShowImageVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return showRelatedImagesUrls.count
+        return showImageVCimagesUrls.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = relatedImagesCollectionView.dequeueReusableCell(withReuseIdentifier: "RelatedImagesCellId", for: indexPath) as! RelatedImagesCollectionViewCellsCreator
         cell.layer.masksToBounds = true
         
-        let currentImageUrlString = showRelatedImagesUrls[indexPath.row].previewImageUrl
+        let currentImageUrlString = showImageVCimagesUrls[indexPath.row].previewImageUrl
         if let url = URL(string: currentImageUrlString) {
             cell.setImage(with: url)
         }
@@ -245,5 +260,13 @@ extension ShowImageVC: UICollectionViewDataSource, UICollectionViewDelegateFlowL
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 40)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedImageUrl = showImageVCimagesUrls[indexPath.row].fullsizeImageUrl
+        updatePictureFormatLabel(with: selectedImageUrl)
+        if let url = URL(string: selectedImageUrl) {
+            setMainImage(with: url)
+        }
     }
 }
