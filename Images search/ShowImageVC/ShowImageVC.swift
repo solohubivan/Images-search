@@ -8,6 +8,10 @@
 import UIKit
 import SDWebImage
 
+protocol ShowImageDelegate: AnyObject {
+    func didPerformSearch(searchRequest: String?)
+}
+
 class ShowImageVC: UIViewController {
 
     @IBOutlet weak private var logoButton: UIButton!
@@ -26,6 +30,7 @@ class ShowImageVC: UIViewController {
     var showMainImageUrl: String = ""
     var showImageVCimagesUrls: [ImageUrls] = []
     
+    weak var delegate: ShowImageDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,15 +40,6 @@ class ShowImageVC: UIViewController {
             updatePictureFormatLabel(with: showMainImageUrl)
             setMainImage(with: url)
         }
-    }
-    
-    private func setupRelatedImagesCollectView() {
-        relatedImagesCollectionView.dataSource = self
-        relatedImagesCollectionView.delegate = self
-        relatedImagesCollectionView.register(RelatedImagesCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "RelatedImagesCellId")
-        relatedImagesCollectionView.accessibilityIdentifier = "RelatedImagesCollectionViewCellsCreator"
-        relatedImagesCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader")
-        relatedImagesCollectionView.backgroundColor = UIColor.hexF6F6F6
     }
     
     // MARK: - setup UI
@@ -147,8 +143,17 @@ class ShowImageVC: UIViewController {
         downloadButton.layer.cornerRadius = 5
     }
     
+    private func setupRelatedImagesCollectView() {
+        relatedImagesCollectionView.dataSource = self
+        relatedImagesCollectionView.delegate = self
+        relatedImagesCollectionView.register(RelatedImagesCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "RelatedImagesCellId")
+        relatedImagesCollectionView.accessibilityIdentifier = "RelatedImagesCollectionViewCellsCreator"
+        relatedImagesCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader")
+        relatedImagesCollectionView.backgroundColor = UIColor.hexF6F6F6
+    }
+    
     // MARK: - Actions
-
+    
     @IBAction private func shareFullSizeImage(_ sender: Any) {
         guard let image = mainImageView.image else { return }
         let shareViewController = ShareUtility.createShareViewController(imageToShare: image, sourceView: shareButton)
@@ -156,7 +161,6 @@ class ShowImageVC: UIViewController {
     }
     
     @IBAction private func zoomImage(_ sender: Any) {
-        print("ZoomTapped")
         if let image = mainImageView.image {
             let zoomedViewController = ZoomedImageViewController(image: image)
             zoomedViewController.modalPresentationStyle = .fullScreen
@@ -172,6 +176,23 @@ class ShowImageVC: UIViewController {
         self.view.window!.layer.add(transition, forKey: kCATransition)
             
         self.dismiss(animated: false, completion: nil)
+    }
+    
+    @IBAction private func downloadTheImage(_ sender: Any) {
+        guard let image = mainImageView.image else { return }
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+    
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Saved!", message: "Your image has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
     }
     
     // MARK: - Private methods
@@ -209,7 +230,8 @@ extension ShowImageVC: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-//        performSearch()
+        delegate?.didPerformSearch(searchRequest: textField.text)
+        self.dismiss(animated: true)
         return true
     }
 }

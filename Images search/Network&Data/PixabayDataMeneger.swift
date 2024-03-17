@@ -15,7 +15,8 @@ class PixabayDataMeneger {
     
     
     func createSearchRequest(userRequest: String, _ imageTypeCategory: String) -> String {
-        let resultRequest = "\(userRequest)&image_type=\(imageTypeCategory)"
+        let inputTypeCategory = imageTypeCategory.lowercased()
+        let resultRequest = "\(userRequest)&image_type=\(inputTypeCategory)"
         return resultRequest
     }
     

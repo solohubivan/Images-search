@@ -127,10 +127,14 @@ class ResultsRepresentVC: UIViewController {
     
     // MARK: - Actions
     
-    @IBAction func backToMainVC(_ sender: Any) {
-        let mainVC = MainViewController()
-        mainVC.modalPresentationStyle = .fullScreen
-        present(mainVC, animated: true)
+    @IBAction private func backToMainVC(_ sender: Any) {
+        let transition = CATransition()
+        transition.duration = 0.2
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromLeft
+        self.view.window!.layer.add(transition, forKey: kCATransition)
+            
+        self.dismiss(animated: false, completion: nil)
     }
     
     // MARK: - Private methods
@@ -145,11 +149,11 @@ class ResultsRepresentVC: UIViewController {
         }
     }
     
-    private func performSearch() {
-        guard let searchText = searchTextField.text, !searchText.isEmpty else { return }
+    private func performSearch(searchRequest: String?) {
+        guard let searchText = searchRequest, !searchText.isEmpty else { return }
         setActivityIndicatorHidden(false)
  
-        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchText, "All" )
+        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchText, "all" )
         PixabayDataMeneger.shared.getPixabayData(request: request) { [weak self] pixabayData in
             self?.updateUI(with: pixabayData)
         }
@@ -238,6 +242,7 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
         if collectionView == showResultsCollectionView {
             let selectedImageUrl = imageUrls[indexPath.row].fullsizeImageUrl
             let showImageVC = ShowImageVC()
+            showImageVC.delegate = self
             showImageVC.showMainImageUrl = selectedImageUrl
             showImageVC.showImageVCimagesUrls = self.imageUrls
             showImageVC.modalPresentationStyle = .fullScreen
@@ -264,7 +269,15 @@ extension ResultsRepresentVC: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        performSearch()
+        performSearch(searchRequest: textField.text)
         return true
+    }
+}
+
+// MARK: - delegate
+
+extension ResultsRepresentVC: ShowImageDelegate {
+    func didPerformSearch(searchRequest: String?) {
+        performSearch(searchRequest: searchRequest)
     }
 }

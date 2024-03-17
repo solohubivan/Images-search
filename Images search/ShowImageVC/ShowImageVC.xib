@@ -141,7 +141,7 @@
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain" image="Download"/>
                     <connections>
-                        <action selector="downloadFullsizeImage:" destination="-1" eventType="touchUpInside" id="EMC-5I-yuv"/>
+                        <action selector="downloadTheImage:" destination="-1" eventType="touchUpInside" id="D0a-hX-ZCr"/>
                     </connections>
                 </button>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="PAC-48-SGc" userLabel="Related CollectionView">
