@@ -143,10 +143,11 @@ class MainViewController: UIViewController {
         let resultsRepresentVC = ResultsRepresentVC()
         resultsRepresentVC.modalPresentationStyle = .fullScreen
     
-        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchTextField.text ?? "", selectedImageCategory)
+        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchTextField.text ?? "", selectedImageCategory, page: nil)
 
         PixabayDataMeneger.shared.getPixabayData(request: request) { [weak resultsRepresentVC] pixabayData in
             resultsRepresentVC?.updateUI(with: pixabayData)
+            resultsRepresentVC?.currentSearchRequest = request
         }
         
         present(resultsRepresentVC, animated: false)

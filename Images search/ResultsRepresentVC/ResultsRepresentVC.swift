@@ -21,7 +21,9 @@ class ResultsRepresentVC: UIViewController {
     
     private var relatedResultsLabels: [String] = []
     private var imageUrls: [ImageUrls] = []
-
+    private var currentPage = 1
+    
+    var currentSearchRequest: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,6 +87,7 @@ class ResultsRepresentVC: UIViewController {
     
     private func setupFilterButton () {
         filterButton.setTitle("", for: .normal)
+        filterButton.addTarget(self, action: #selector(showMenu(_:)), for: .touchUpInside)
     }
     
     private func setupSeparateLineView() {
@@ -137,6 +140,29 @@ class ResultsRepresentVC: UIViewController {
         self.dismiss(animated: false, completion: nil)
     }
     
+    @objc private func showMenu(_ sender: UIButton) {
+        let sortActionMenu = UIMenu(title: "Sort by person action", options: .displayInline, children: [
+            UIAction(title: "Downloads", image: UIImage(systemName: "arrow.down.circle"), handler: { _ in
+                print("tapped downloads")
+            }),
+            UIAction(title: "Likes", image: UIImage(systemName: "hand.thumbsup"), handler: { _ in
+                print("choosed Likes")
+            }),
+            UIAction(title: "Views", image: UIImage(systemName: "eye"), handler: { _ in
+                print("choosed views")
+            }),
+            UIAction(title: "Comments", image: UIImage(systemName: "ellipsis.message"), handler: { _ in
+                print("choosed comments")
+            })
+        ])
+        
+        let cancelAction = UIAction(title: "Cancel", image: UIImage(systemName: "xmark.app"), attributes: .destructive, handler: { _ in })
+
+        let menu = UIMenu(children: [sortActionMenu, cancelAction])
+        sender.menu = menu
+        sender.showsMenuAsPrimaryAction = true
+    }
+    
     // MARK: - Private methods
 
     private func setActivityIndicatorHidden(_ isHidden: Bool) {
@@ -151,11 +177,26 @@ class ResultsRepresentVC: UIViewController {
     
     private func performSearch(searchRequest: String?) {
         guard let searchText = searchRequest, !searchText.isEmpty else { return }
+        currentSearchRequest = searchText
+        currentPage = 1
         setActivityIndicatorHidden(false)
- 
-        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchText, "all" )
+
+        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchText, "all", page: currentPage)
         PixabayDataMeneger.shared.getPixabayData(request: request) { [weak self] pixabayData in
             self?.updateUI(with: pixabayData)
+        }
+    }
+
+    private func loadMoreImages() {
+        currentPage += 1
+        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: currentSearchRequest ?? "", "all", page: currentPage)
+        PixabayDataMeneger.shared.getPixabayData(request: request) { [weak self] pixabayData in
+            guard let self = self else { return }
+            let newImageUrls = PixabayDataMeneger.shared.getImageViewModelData()
+            DispatchQueue.main.async {
+                self.imageUrls.append(contentsOf: newImageUrls)
+                self.showResultsCollectionView.reloadData()
+            }
         }
     }
 
@@ -174,6 +215,11 @@ class ResultsRepresentVC: UIViewController {
 
             self.relatedRequstCollectionView.reloadData()
             self.showResultsCollectionView.reloadData()
+            
+            if self.showResultsCollectionView.numberOfSections > 0 && self.showResultsCollectionView.numberOfItems(inSection: 0) > 0 {
+                let indexPath = IndexPath(item: 0, section: 0)
+                self.showResultsCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+            }
             
             self.setActivityIndicatorHidden(true)
         }
@@ -195,7 +241,6 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         if collectionView == showResultsCollectionView {
             let cell = showResultsCollectionView.dequeueReusableCell(withReuseIdentifier: "CellId", for: indexPath) as! ShowResultsCollectionViewCellsCreator
             cell.layer.borderWidth = 1
@@ -209,10 +254,9 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
             }
             cell.parentViewController = self
             return cell
-        }
-        else if collectionView == relatedRequstCollectionView {
-            let cell = relatedRequstCollectionView.dequeueReusableCell(withReuseIdentifier: "RelatedTagsCellId", for: indexPath) as! RelatedRequstCollectionViewCellsCreator
             
+        } else if collectionView == relatedRequstCollectionView {
+            let cell = relatedRequstCollectionView.dequeueReusableCell(withReuseIdentifier: "RelatedTagsCellId", for: indexPath) as! RelatedRequstCollectionViewCellsCreator
             cell.relatedTags.text = relatedResultsLabels[indexPath.item]
             return cell
         }
@@ -220,16 +264,13 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         if collectionView == showResultsCollectionView {
             let width = collectionView.frame.width - 32
             let height = width * 0.6
             return CGSize(width: width, height: height)
-        }
-        else if collectionView == relatedRequstCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RelatedTagsCellId", for: indexPath) as? RelatedRequstCollectionViewCellsCreator else {
-                return CGSize.zero
-            }
+            
+        } else if collectionView == relatedRequstCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RelatedTagsCellId", for: indexPath) as? RelatedRequstCollectionViewCellsCreator else { return CGSize.zero }
             cell.relatedTags.text = relatedResultsLabels[indexPath.item]
 
             let size = cell.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height))
@@ -247,6 +288,20 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
             showImageVC.showImageVCimagesUrls = self.imageUrls
             showImageVC.modalPresentationStyle = .fullScreen
             present(showImageVC, animated: false)
+            
+        } else if collectionView == relatedRequstCollectionView {
+            let selectedItem = relatedResultsLabels[indexPath.row]
+            performSearch(searchRequest: selectedItem)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if collectionView == showResultsCollectionView {
+            let lastSectionIndex = collectionView.numberOfSections - 1
+            let lastItemIndex = collectionView.numberOfItems(inSection: lastSectionIndex) - 1
+            if indexPath.section == lastSectionIndex && indexPath.item == lastItemIndex {
+                loadMoreImages()
+            }
         }
     }
 }
