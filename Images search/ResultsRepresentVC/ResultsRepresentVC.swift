@@ -24,6 +24,7 @@ class ResultsRepresentVC: UIViewController {
     private var currentPage = 1
     
     var currentSearchRequest: String?
+    var currentSearchImageCategorie: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,8 @@ class ResultsRepresentVC: UIViewController {
         setupShowResultsCollectionView()
         setupRelatedLabel()
         setupActivityIndicator()
+        
+        view.backgroundColor = UIColor.hexF6F6F6
     }
     
     private func setupLogoButton() {
@@ -97,6 +100,7 @@ class ResultsRepresentVC: UIViewController {
     private func setupAvailableImagesInfoLabel() {
         availableImagesInfoLabel.text = ""
         availableImagesInfoLabel.font = UIFont(name: "OpenSans-Semibold", size: 20)
+        availableImagesInfoLabel.textColor = .black
     }
     
     private func setupRelatedLabel() {
@@ -181,7 +185,7 @@ class ResultsRepresentVC: UIViewController {
         currentPage = 1
         setActivityIndicatorHidden(false)
 
-        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchText, "all", page: currentPage)
+        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchText, currentSearchImageCategorie ?? "all", page: currentPage)
         PixabayDataMeneger.shared.getPixabayData(request: request) { [weak self] pixabayData in
             self?.updateUI(with: pixabayData)
         }
@@ -189,7 +193,7 @@ class ResultsRepresentVC: UIViewController {
 
     private func loadMoreImages() {
         currentPage += 1
-        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: currentSearchRequest ?? "", "all", page: currentPage)
+        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: currentSearchRequest ?? "", currentSearchImageCategorie ?? "all", page: currentPage)
         PixabayDataMeneger.shared.getPixabayData(request: request) { [weak self] pixabayData in
             guard let self = self else { return }
             let newImageUrls = PixabayDataMeneger.shared.getImageViewModelData()
@@ -325,6 +329,7 @@ extension ResultsRepresentVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         performSearch(searchRequest: textField.text)
+        textField.text = ""
         return true
     }
 }

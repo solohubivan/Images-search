@@ -18,6 +18,7 @@ class ShowImageVC: UIViewController {
     @IBOutlet weak private var searchTextField: UITextField!
     @IBOutlet weak private var filterButton: UIButton!
     @IBOutlet weak private var separateLineView: UIView!
+    @IBOutlet weak private var mainImageBackgroundView: UIView!
     @IBOutlet weak private var mainImageView: UIImageView!
     @IBOutlet weak private var appLicenseLabel: UILabel!
     @IBOutlet weak private var appLicenseInfoLabel: UILabel!
@@ -42,6 +43,23 @@ class ShowImageVC: UIViewController {
         }
     }
     
+    // MARK: - Orientation settings
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { _ in
+            let orientation = UIDevice.current.orientation
+            if orientation.isLandscape {
+                if let image = self.mainImageView.image {
+                    let zoomedViewController = ZoomedImageViewController(image: image)
+                    zoomedViewController.modalPresentationStyle = .fullScreen
+                    self.present(zoomedViewController, animated: true)
+                }
+            }
+        })
+    }
+    
     // MARK: - setup UI
 
     private func setupUI() {
@@ -57,6 +75,9 @@ class ShowImageVC: UIViewController {
         setupDownloadButton()
         setupZoomImageButton()
         setupRelatedImagesCollectView()
+        
+        view.backgroundColor = .white
+        mainImageBackgroundView.backgroundColor = UIColor.hexF6F6F6
     }
     
     private func setupLogoButton() {
@@ -150,6 +171,7 @@ class ShowImageVC: UIViewController {
         relatedImagesCollectionView.accessibilityIdentifier = "RelatedImagesCollectionViewCellsCreator"
         relatedImagesCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader")
         relatedImagesCollectionView.backgroundColor = UIColor.hexF6F6F6
+        relatedImagesCollectionView.overrideUserInterfaceStyle = .light
     }
     
     // MARK: - Actions

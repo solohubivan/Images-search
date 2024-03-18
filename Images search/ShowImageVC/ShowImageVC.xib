@@ -16,6 +16,7 @@
                 <outlet property="downloadButton" destination="tmI-xb-np2" id="ZeA-Uz-GAZ"/>
                 <outlet property="filterButton" destination="fSb-tZ-B6D" id="ryx-QH-4UY"/>
                 <outlet property="logoButton" destination="6wJ-Te-UEr" id="Dv9-My-B42"/>
+                <outlet property="mainImageBackgroundView" destination="n27-AQ-Q9j" id="45s-mA-aAW"/>
                 <outlet property="mainImageView" destination="UDG-QF-hm8" id="Pfz-zv-ptN"/>
                 <outlet property="pictureFormatLabel" destination="s9g-jJ-3Zp" id="TYJ-Gm-6MI"/>
                 <outlet property="relatedImagesCollectionView" destination="PAC-48-SGc" id="tPg-3Z-eQ6"/>
@@ -68,10 +69,11 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n27-AQ-Q9j" userLabel="mainImage View">
-                    <rect key="frame" x="0.0" y="147" width="393" height="221"/>
+                    <rect key="frame" x="0.0" y="134" width="393" height="221"/>
                     <subviews>
                         <imageView autoresizesSubviews="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UDG-QF-hm8" userLabel="Main Image View">
-                            <rect key="frame" x="0.0" y="0.0" width="393" height="221"/>
+                            <rect key="frame" x="0.0" y="8" width="393" height="213"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </imageView>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K93-u1-Wtb" userLabel="zoom button">
                             <rect key="frame" x="345" y="173" width="32" height="32"/>
@@ -86,31 +88,31 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="K93-u1-Wtb" secondAttribute="trailing" constant="16" id="1PI-cb-o9l"/>
                         <constraint firstAttribute="trailing" secondItem="UDG-QF-hm8" secondAttribute="trailing" id="6Ap-ES-reG"/>
                         <constraint firstAttribute="bottom" secondItem="UDG-QF-hm8" secondAttribute="bottom" id="6Xp-aO-Hip"/>
-                        <constraint firstItem="UDG-QF-hm8" firstAttribute="top" secondItem="n27-AQ-Q9j" secondAttribute="top" id="JON-5F-PrV"/>
+                        <constraint firstItem="UDG-QF-hm8" firstAttribute="top" secondItem="n27-AQ-Q9j" secondAttribute="top" constant="8" id="JON-5F-PrV"/>
                         <constraint firstItem="UDG-QF-hm8" firstAttribute="leading" secondItem="n27-AQ-Q9j" secondAttribute="leading" id="gsh-2Z-af4"/>
                         <constraint firstAttribute="bottom" secondItem="K93-u1-Wtb" secondAttribute="bottom" constant="16" id="nQg-pY-LYf"/>
                         <constraint firstAttribute="width" secondItem="n27-AQ-Q9j" secondAttribute="height" multiplier="16:9" id="xiH-Ad-LmG"/>
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App License" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNe-eF-bHr" userLabel="App License">
-                    <rect key="frame" x="16" y="386" width="94" height="21"/>
+                    <rect key="frame" x="16" y="373" width="94" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="format info" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s9g-jJ-3Zp" userLabel="Photo format info">
-                    <rect key="frame" x="294" y="386" width="83" height="21"/>
+                    <rect key="frame" x="294" y="373" width="83" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hWH-Bv-0f2" userLabel="App Licence Info">
-                    <rect key="frame" x="16.000000000000004" y="415" width="41.333333333333343" height="20.333333333333314"/>
+                    <rect key="frame" x="16.000000000000004" y="402" width="41.333333333333343" height="20.333333333333314"/>
                     <attributedString key="attributedText">
                         <fragment content="Label">
                             <attributes>
@@ -122,7 +124,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pMb-Ox-EfP" userLabel="Share Button">
-                    <rect key="frame" x="253" y="427" width="124" height="32"/>
+                    <rect key="frame" x="253" y="414" width="124" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="124" id="7He-50-Piw"/>
                         <constraint firstAttribute="height" constant="32" id="egt-UF-eCh"/>
@@ -134,7 +136,7 @@
                     </connections>
                 </button>
                 <button clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tmI-xb-np2" userLabel="Download Button">
-                    <rect key="frame" x="16" y="483" width="361" height="52"/>
+                    <rect key="frame" x="16" y="470" width="361" height="52"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="52" id="6dV-fh-OUs"/>
                     </constraints>
@@ -145,7 +147,7 @@
                     </connections>
                 </button>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="PAC-48-SGc" userLabel="Related CollectionView">
-                    <rect key="frame" x="0.0" y="555" width="393" height="297"/>
+                    <rect key="frame" x="0.0" y="542" width="393" height="310"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dg1-iD-SIC">
                         <size key="itemSize" width="128" height="128"/>
@@ -156,11 +158,11 @@
                 </collectionView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="n27-AQ-Q9j" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2iS-9d-oRb"/>
                 <constraint firstAttribute="bottom" secondItem="PAC-48-SGc" secondAttribute="bottom" id="2kd-xO-ejK"/>
-                <constraint firstItem="n27-AQ-Q9j" firstAttribute="top" secondItem="Wzh-I8-ShB" secondAttribute="bottom" constant="13" id="AB0-PK-GFS"/>
+                <constraint firstItem="n27-AQ-Q9j" firstAttribute="top" secondItem="Wzh-I8-ShB" secondAttribute="bottom" id="AB0-PK-GFS"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pMb-Ox-EfP" secondAttribute="trailing" constant="16" id="C8L-q4-sdU"/>
                 <constraint firstItem="lNe-eF-bHr" firstAttribute="top" secondItem="n27-AQ-Q9j" secondAttribute="bottom" constant="18" id="CIS-Hu-aTN"/>
                 <constraint firstItem="Wzh-I8-ShB" firstAttribute="top" secondItem="eac-bg-2zJ" secondAttribute="bottom" constant="16" id="CRp-Sw-WkO"/>

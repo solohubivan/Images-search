@@ -18,8 +18,18 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        checkInternetConnection()
         setupUI()
+    }
+    
+    // MARK: - Orientation Lock
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
+    override var shouldAutorotate: Bool {
+        return false
     }
 
     // MARK: - Setup UI
@@ -148,6 +158,7 @@ class MainViewController: UIViewController {
         PixabayDataMeneger.shared.getPixabayData(request: request) { [weak resultsRepresentVC] pixabayData in
             resultsRepresentVC?.updateUI(with: pixabayData)
             resultsRepresentVC?.currentSearchRequest = request
+            resultsRepresentVC?.currentSearchImageCategorie = self.selectedImageCategory
         }
         
         present(resultsRepresentVC, animated: false)
@@ -190,6 +201,39 @@ class MainViewController: UIViewController {
         if let menuButton = searchTextField.rightView as? UIButton {
             menuButton.setAttributedTitle(attributedString, for: .normal)
         }
+    }
+    
+    private func checkInternetConnection() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            guard let self = self else { return }
+            
+            if !NetworkMonitor.shared.isConnected {
+                self.showNoInternetAlert()
+            }
+        }
+    }
+    
+    private func showNoInternetAlert() {
+        let cancelAction = AlertFactory.createAlertAction(
+            title: "Cancel",
+            style: .cancel
+        )
+        let settingsAction = AlertFactory.createAlertAction(
+            title: "Settings",
+            style: .default
+        ) { _ in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsURL)
+            }
+        }
+
+        let alertController = AlertFactory.createAlert(
+            title: "Internet connection is unavailable",
+            message: "please allow this app to internet access",
+            actions: [cancelAction, settingsAction]
+        )
+
+        present(alertController, animated: true)
     }
 }
 

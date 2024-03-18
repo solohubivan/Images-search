@@ -39,10 +39,19 @@ class PixabayDataMeneger {
         resultArray = uniqueWords
         return resultArray
     }
+    
+    private var apiKey: String {
+        guard let filePath = Bundle.main.path(forResource: "Config", ofType: "plist"),
+              let plist = NSDictionary(contentsOfFile: filePath),
+              let value = plist["APIKey"] as? String else {
+            fatalError("Couldn't find key 'APIKey' in 'Config.plist'")
+        }
+        return value
+    }
 
     func getPixabayData(request: String, completion: @escaping (PixabayData) -> Void) {
         let session = URLSession.shared
-        let url = URL(string: "https://pixabay.com/api/?key=42641694-e1b511cb1c14ec9fc839ed366&q=\(request)")!
+        let url = URL(string: "https://pixabay.com/api/?key=\(apiKey)&q=\(request)")!
         let task = session.dataTask(with: url) { (data, response, error) in
             guard error == nil, let data = data else {
                 print(error!.localizedDescription)
