@@ -13,7 +13,6 @@ class PixabayDataMeneger {
     
     private var pixabayData = PixabayData()
     
-    
     func createSearchRequest(userRequest: String, _ imageTypeCategory: String, page: Int?) -> String {
         let inputTypeCategory = imageTypeCategory.lowercased()
         let resultRequest = "\(userRequest)&image_type=\(inputTypeCategory)&page=\(page ?? 1)"

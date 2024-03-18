@@ -8,14 +8,14 @@
 import UIKit
 
 enum ConstraintType {
-    case top(anchor: NSLayoutYAxisAnchor, constant: CGFloat = 0)
-    case leading(anchor: NSLayoutXAxisAnchor, constant: CGFloat = 0)
-    case bottom(anchor: NSLayoutYAxisAnchor, constant: CGFloat = 0)
-    case trailing(anchor: NSLayoutXAxisAnchor, constant: CGFloat = 0)
+    case top(anchor: NSLayoutYAxisAnchor, constant: CGFloat = .zero)
+    case leading(anchor: NSLayoutXAxisAnchor, constant: CGFloat = .zero)
+    case bottom(anchor: NSLayoutYAxisAnchor, constant: CGFloat = .zero)
+    case trailing(anchor: NSLayoutXAxisAnchor, constant: CGFloat = .zero)
     case width(constant: CGFloat)
     case height(constant: CGFloat)
-    case centerY(anchor: NSLayoutYAxisAnchor, constant: CGFloat = 0)
-    case centerX(anchor: NSLayoutXAxisAnchor, constant: CGFloat = 0)
+    case centerY(anchor: NSLayoutYAxisAnchor, constant: CGFloat = .zero)
+    case centerX(anchor: NSLayoutXAxisAnchor, constant: CGFloat = .zero)
 }
 
 extension UIView {

@@ -18,20 +18,3 @@ struct Hit: Codable {
     var webformatURL: String
     var largeImageURL: String
 }
-//    var previewURL: String
-//    var previewWidth: Int
-//    var previewHeight: Int?
-//    var webformatURL: String?
-//    var webformatWidth: Int?
-//    var webformatHeight: Int?
-//    var largeImageURL: String?
-//    var imageURL: String?
-//    var imageWidth: Int?
-//    var imageHeight: Int?
-//    var imageSize: Int?
-//    var views: Int?
-//    var downloads: Int?
-//    var collections: Int?
-//    var likes: Int?
-//    var userImageURL: String?
-

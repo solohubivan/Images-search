@@ -21,7 +21,7 @@ class ResultsRepresentVC: UIViewController {
     
     private var relatedResultsLabels: [String] = []
     private var imageUrls: [ImageUrls] = []
-    private var currentPage = 1
+    private var currentPage = Constants.currentPage
     
     var currentSearchRequest: String?
     var currentSearchImageCategorie: String?
@@ -31,7 +31,14 @@ class ResultsRepresentVC: UIViewController {
         setupUI()
         setActivityIndicatorHidden(false)
     }
-    
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { _ in
+            self.showResultsCollectionView.collectionViewLayout.invalidateLayout()
+        })
+    }
+
     // MARK: - setup UI
     
     private func setupUI() {
@@ -58,11 +65,11 @@ class ResultsRepresentVC: UIViewController {
         searchTextField.clearButtonMode = .whileEditing
         searchTextField.borderStyle = .none
         searchTextField.backgroundColor = UIColor.hexF6F6F6
-        searchTextField.layer.borderWidth = 1
+        searchTextField.layer.borderWidth = AppConstants.SearchTFParameters.borderWidth
         searchTextField.layer.borderColor = UIColor.hexE2E2E2.cgColor
-        searchTextField.layer.cornerRadius = 5
+        searchTextField.layer.cornerRadius = AppConstants.SearchTFParameters.cornerRadius
         
-        searchTextField.font = UIFont(name: "OpenSans-Regular", size: 18)
+        searchTextField.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 18)
         
         setupIconViews()
         setupPlaceHolder()
@@ -71,14 +78,14 @@ class ResultsRepresentVC: UIViewController {
     private func setupPlaceHolder() {
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.hex747474,
-            .font: UIFont(name: "OpenSans-Regular", size: 14)!
+            .font: UIFont(name: AppConstants.Fonts.openSansRegular, size: 14)!
         ]
-        searchTextField.attributedPlaceholder = NSAttributedString(string: "Search images, vectors and more", attributes: attributes)
+        searchTextField.attributedPlaceholder = NSAttributedString(string: AppConstants.SearchTFParameters.placeHolder, attributes: attributes)
     }
     
     private func setupIconViews() {
         let searchIconView = UIView(frame: CGRect(x: .zero, y: .zero, width: 36, height: 20))
-        let searchImageView = UIImageView(image: UIImage(systemName: "magnifyingglass"))
+        let searchImageView = UIImageView(image: UIImage(systemName: AppConstants.ImageNames.magnifyingglass))
         searchImageView.frame = CGRect(x: 12, y: .zero, width: 20, height: 20)
         searchImageView.contentMode = .scaleAspectFit
         searchIconView.tintColor = .darkGray
@@ -99,29 +106,29 @@ class ResultsRepresentVC: UIViewController {
     
     private func setupAvailableImagesInfoLabel() {
         availableImagesInfoLabel.text = ""
-        availableImagesInfoLabel.font = UIFont(name: "OpenSans-Semibold", size: 20)
+        availableImagesInfoLabel.font = UIFont(name: AppConstants.Fonts.openSansSemibold, size: 20)
         availableImagesInfoLabel.textColor = .black
     }
     
     private func setupRelatedLabel() {
-        relatedLabel.text = "Related"
-        relatedLabel.font = UIFont(name: "OpenSans-Regular", size: 16)
+        relatedLabel.text = AppConstants.ResultRepresentVC.relatedLabelText
+        relatedLabel.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 16)
         relatedLabel.textColor = UIColor.hex747474
     }
     
     private func setupRelatedRequstCollectionView() {
         relatedRequstCollectionView.dataSource = self
         relatedRequstCollectionView.delegate = self
-        relatedRequstCollectionView.register(RelatedRequstCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "RelatedTagsCellId")
-        relatedRequstCollectionView.accessibilityIdentifier = "RelatedRequstCollectionViewCellsCreator"
+        relatedRequstCollectionView.register(RelatedRequstCollectionViewCellsCreator.self, forCellWithReuseIdentifier: AppConstants.CollectionViewCellsId.relatedCellsID)
+        relatedRequstCollectionView.accessibilityIdentifier = AppConstants.CollectionViewCellsId.relatedCellsCreator
         relatedRequstCollectionView.backgroundColor = .clear
     }
     
     private func setupShowResultsCollectionView() {
         showResultsCollectionView.dataSource = self
         showResultsCollectionView.delegate = self
-        showResultsCollectionView.register(ShowResultsCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "CellId")
-        showResultsCollectionView.accessibilityIdentifier = "ShowResultsCollectionViewCellsCreator"
+        showResultsCollectionView.register(ShowResultsCollectionViewCellsCreator.self, forCellWithReuseIdentifier: AppConstants.CollectionViewCellsId.showResultImageCellsID)
+        showResultsCollectionView.accessibilityIdentifier = AppConstants.CollectionViewCellsId.showResultImageCellsCreator
         showResultsCollectionView.backgroundColor = .clear
     }
     
@@ -145,22 +152,22 @@ class ResultsRepresentVC: UIViewController {
     }
     
     @objc private func showMenu(_ sender: UIButton) {
-        let sortActionMenu = UIMenu(title: "Sort by person action", options: .displayInline, children: [
-            UIAction(title: "Downloads", image: UIImage(systemName: "arrow.down.circle"), handler: { _ in
-                print("tapped downloads")
+        let sortActionMenu = UIMenu(title: AppConstants.ResultRepresentVC.menuTitle, options: .displayInline, children: [
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemDownloads, image: UIImage(systemName: AppConstants.ImageNames.arrowDownCircle), handler: { _ in
+                
             }),
-            UIAction(title: "Likes", image: UIImage(systemName: "hand.thumbsup"), handler: { _ in
-                print("choosed Likes")
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemLikes, image: UIImage(systemName: AppConstants.ImageNames.handThumbsup), handler: { _ in
+                
             }),
-            UIAction(title: "Views", image: UIImage(systemName: "eye"), handler: { _ in
-                print("choosed views")
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemViews, image: UIImage(systemName: AppConstants.ImageNames.eye), handler: { _ in
+                
             }),
-            UIAction(title: "Comments", image: UIImage(systemName: "ellipsis.message"), handler: { _ in
-                print("choosed comments")
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemComments, image: UIImage(systemName: AppConstants.ImageNames.ellipsisMessage), handler: { _ in
+                
             })
         ])
         
-        let cancelAction = UIAction(title: "Cancel", image: UIImage(systemName: "xmark.app"), attributes: .destructive, handler: { _ in })
+        let cancelAction = UIAction(title: AppConstants.ResultRepresentVC.menuItemCancel, image: UIImage(systemName: AppConstants.ImageNames.xmarkApp), attributes: .destructive, handler: { _ in })
 
         let menu = UIMenu(children: [sortActionMenu, cancelAction])
         sender.menu = menu
@@ -185,7 +192,7 @@ class ResultsRepresentVC: UIViewController {
         currentPage = 1
         setActivityIndicatorHidden(false)
 
-        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchText, currentSearchImageCategorie ?? "all", page: currentPage)
+        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchText, currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie, page: currentPage)
         PixabayDataMeneger.shared.getPixabayData(request: request) { [weak self] pixabayData in
             self?.updateUI(with: pixabayData)
         }
@@ -193,7 +200,7 @@ class ResultsRepresentVC: UIViewController {
 
     private func loadMoreImages() {
         currentPage += 1
-        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: currentSearchRequest ?? "", currentSearchImageCategorie ?? "all", page: currentPage)
+        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: currentSearchRequest ?? "", currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie, page: currentPage)
         PixabayDataMeneger.shared.getPixabayData(request: request) { [weak self] pixabayData in
             guard let self = self else { return }
             let newImageUrls = PixabayDataMeneger.shared.getImageViewModelData()
@@ -212,7 +219,7 @@ class ResultsRepresentVC: UIViewController {
             
             let availableAmountPictures = pixabayData.total
             let formattedNumber = NumberFormatter.formatNumberWithSpaces(availableAmountPictures)
-            self.availableImagesInfoLabel.text = "\(formattedNumber) Free Images"
+            self.availableImagesInfoLabel.text = "\(formattedNumber) \(AppConstants.ResultRepresentVC.availableImagesInfo)"
             
             self.relatedResultsLabels = PixabayDataMeneger.shared.creatingRelatedStrings()
             self.imageUrls = PixabayDataMeneger.shared.getImageViewModelData()
@@ -220,8 +227,8 @@ class ResultsRepresentVC: UIViewController {
             self.relatedRequstCollectionView.reloadData()
             self.showResultsCollectionView.reloadData()
             
-            if self.showResultsCollectionView.numberOfSections > 0 && self.showResultsCollectionView.numberOfItems(inSection: 0) > 0 {
-                let indexPath = IndexPath(item: 0, section: 0)
+            if self.showResultsCollectionView.numberOfSections > .zero && self.showResultsCollectionView.numberOfItems(inSection: .zero) > .zero {
+                let indexPath = IndexPath(item: .zero, section: .zero)
                 self.showResultsCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
             }
             
@@ -246,7 +253,7 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == showResultsCollectionView {
-            let cell = showResultsCollectionView.dequeueReusableCell(withReuseIdentifier: "CellId", for: indexPath) as! ShowResultsCollectionViewCellsCreator
+            let cell = showResultsCollectionView.dequeueReusableCell(withReuseIdentifier: AppConstants.CollectionViewCellsId.showResultImageCellsID, for: indexPath) as! ShowResultsCollectionViewCellsCreator
             cell.layer.borderWidth = 1
             cell.layer.borderColor = UIColor.clear.cgColor
             cell.layer.cornerRadius = 8
@@ -260,21 +267,33 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
             return cell
             
         } else if collectionView == relatedRequstCollectionView {
-            let cell = relatedRequstCollectionView.dequeueReusableCell(withReuseIdentifier: "RelatedTagsCellId", for: indexPath) as! RelatedRequstCollectionViewCellsCreator
+            let cell = relatedRequstCollectionView.dequeueReusableCell(withReuseIdentifier: AppConstants.CollectionViewCellsId.relatedCellsID, for: indexPath) as! RelatedRequstCollectionViewCellsCreator
             cell.relatedTags.text = relatedResultsLabels[indexPath.item]
             return cell
         }
         fatalError("unsupported collection view")
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == showResultsCollectionView {
-            let width = collectionView.frame.width - 32
-            let height = width * 0.6
-            return CGSize(width: width, height: height)
+            let padding: CGFloat = 32
+            let minimumItemSpacing: CGFloat = 16
+            
+            var itemsPerRow: CGFloat
+            if UIDevice.current.orientation.isLandscape {
+                itemsPerRow = 3
+            } else {
+                itemsPerRow = 1
+            }
+            
+            let availableWidth = collectionView.frame.width - padding - (minimumItemSpacing * (itemsPerRow - 1))
+            let widthPerItem = availableWidth / itemsPerRow
+            let heightPerItem = widthPerItem * 0.6
+            
+            return CGSize(width: widthPerItem, height: heightPerItem)
             
         } else if collectionView == relatedRequstCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RelatedTagsCellId", for: indexPath) as? RelatedRequstCollectionViewCellsCreator else { return CGSize.zero }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AppConstants.CollectionViewCellsId.relatedCellsID, for: indexPath) as? RelatedRequstCollectionViewCellsCreator else { return CGSize.zero }
             cell.relatedTags.text = relatedResultsLabels[indexPath.item]
 
             let size = cell.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width, height: UIView.layoutFittingCompressedSize.height))
@@ -282,7 +301,7 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
         }
         fatalError("unsupported collection view")
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == showResultsCollectionView {
             let selectedImageUrl = imageUrls[indexPath.row].fullsizeImageUrl
@@ -323,7 +342,7 @@ extension ResultsRepresentVC: UITextFieldDelegate {
         
         guard let text = textField.text else { return true }
         let newLength = text.count + string.count - range.length
-        return newLength <= 99
+        return newLength <= Constants.availableSymbolsToInputTF
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -339,5 +358,12 @@ extension ResultsRepresentVC: UITextFieldDelegate {
 extension ResultsRepresentVC: ShowImageDelegate {
     func didPerformSearch(searchRequest: String?) {
         performSearch(searchRequest: searchRequest)
+    }
+}
+
+extension ResultsRepresentVC {
+    private enum Constants {
+        static let currentPage: Int = 1
+        static let availableSymbolsToInputTF: Int = 90
     }
 }

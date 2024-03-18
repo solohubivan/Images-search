@@ -46,7 +46,7 @@ class RelatedRequstCollectionViewCellsCreator: UICollectionViewCell {
         
         relatedTags.text = ""
         relatedTags.textColor = .black
-        relatedTags.font = UIFont(name: "OpenSans-Regular", size: 14)
+        relatedTags.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 14)
 
         addSubview(labelContainer)
         labelContainer.addConstraints(to_view: self)

@@ -13,6 +13,7 @@
 		223A47E92BA7BC14005AC582 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 223A47E82BA7BC14005AC582 /* Config.plist */; };
 		223A47EB2BA7CDC7005AC582 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223A47EA2BA7CDC7005AC582 /* NetworkMonitor.swift */; };
 		223A47ED2BA7CE09005AC582 /* AlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223A47EC2BA7CE09005AC582 /* AlertFactory.swift */; };
+		223C811A2BA86AC200FC45DD /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223C81192BA86AC200FC45DD /* AppConstants.swift */; };
 		223E1E0C2B94FB3800B70BBB /* PixabayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E1E0B2B94FB3800B70BBB /* PixabayData.swift */; };
 		223E1E0E2B973E2900B70BBB /* ShowResultsCollectionViewCellsCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E1E0D2B973E2900B70BBB /* ShowResultsCollectionViewCellsCreator.swift */; };
 		223E1E152B976BCF00B70BBB /* PixabayDataMeneger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223E1E142B976BCF00B70BBB /* PixabayDataMeneger.swift */; };
@@ -48,6 +49,7 @@
 		223A47E82BA7BC14005AC582 /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		223A47EA2BA7CDC7005AC582 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		223A47EC2BA7CE09005AC582 /* AlertFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertFactory.swift; sourceTree = "<group>"; };
+		223C81192BA86AC200FC45DD /* AppConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
 		223E1E0B2B94FB3800B70BBB /* PixabayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixabayData.swift; sourceTree = "<group>"; };
 		223E1E0D2B973E2900B70BBB /* ShowResultsCollectionViewCellsCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowResultsCollectionViewCellsCreator.swift; sourceTree = "<group>"; };
 		223E1E142B976BCF00B70BBB /* PixabayDataMeneger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixabayDataMeneger.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				224242442B9CF5290018E69B /* SharaUtility.swift */,
 				227A06172BA2F953001AB9ED /* ZoomedImageVC.swift */,
 				223A47EC2BA7CE09005AC582 /* AlertFactory.swift */,
+				223C81192BA86AC200FC45DD /* AppConstants.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 				223A47ED2BA7CE09005AC582 /* AlertFactory.swift in Sources */,
 				226024DC2B8EAF02008DF799 /* UIViewControllerExtension.swift in Sources */,
 				22F518AA2BA2085E00293387 /* RelatedImagesCollectionViewCellsCreator.swift in Sources */,
+				223C811A2BA86AC200FC45DD /* AppConstants.swift in Sources */,
 				223E1E0E2B973E2900B70BBB /* ShowResultsCollectionViewCellsCreator.swift in Sources */,
 				22A8DE122BA0FA9700BE608E /* NumberFormatterExtension.swift in Sources */,
 				22F979F52B8412ED004CF466 /* MainViewController.swift in Sources */,

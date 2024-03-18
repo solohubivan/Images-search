@@ -1,0 +1,89 @@
+//
+//  AppConstants.swift
+//  Images search
+//
+//  Created by Ivan Solohub on 18.03.2024.
+//
+
+import Foundation
+
+enum AppConstants {
+    
+    enum Alerts {
+        static let noInternetAlertTitle: String = "Internet connection is unavailable"
+        static let noInternetAlertMessage: String = "please allow this app to internet access"
+        static let alertCancelAction: String = "Cancel"
+        static let alertSettingsAction: String = "Settings"
+        static let requestFilteredAlertTitle: String = "All your request is filtered"
+        static let requestFilteredAlertMessage: String = "Please customize filters or change request"
+    }
+    
+    enum Fonts {
+        static let openSansBold = "OpenSans-Bold"
+        static let openSansRegular = "OpenSans-Regular"
+        static let openSansLight = "OpenSans-Light"
+        static let openSansSemibold = "OpenSans-Semibold"
+    }
+    
+    enum ImageNames {
+        static let chevronDown: String = "chevron.down"
+        static let magnifyingglass: String = "magnifyingglass"
+        static let lineDiagonalArrow: String = "line.diagonal.arrow"
+        static let photo: String = "photo"
+        static let camera: String = "camera"
+        static let photoOnRectangleAngled: String = "photo.on.rectangle.angled"
+        static let arrowDownCircle: String = "arrow.down.circle"
+        static let handThumbsup: String = "hand.thumbsup"
+        static let eye: String = "eye"
+        static let ellipsisMessage: String = "ellipsis.message"
+        static let xmarkApp: String = "xmark.app"
+        static let share: String = "share"
+    }
+    
+    enum ButtonTitleLabels {
+        static let searchButton: String = "Search"
+    }
+    
+    enum SearchTFParameters {
+        static let borderWidth: CGFloat = 1
+        static let cornerRadius: CGFloat = 5
+        static let placeHolder: String = "Search images, vectors and more"
+    }
+    
+    enum MainViewController {
+        static let mainTitleLabel: String = "Take your audience on a visual adventure"
+        static let bottomInfoLabel: String = "Photo by Free-Photos"
+        static let defaultCategory: String = "All"
+        static let menuCategoryVector: String = "Vector"
+        static let menuCategoryIllustration: String = "Illustration"
+        static let menuCategoryPhoto: String = "Photo"
+    }
+    
+    enum ResultRepresentVC {
+        static let relatedLabelText: String = "Related"
+        static let searchImageDefaultCategorie: String = "all"
+        static let availableImagesInfo: String = "Free Images"
+        static let menuTitle: String = "Sort by person action"
+        static let menuItemDownloads: String = "Downloads"
+        static let menuItemLikes: String = "Likes"
+        static let menuItemViews: String = "Views"
+        static let menuItemComments: String = "Comments"
+        static let menuItemCancel: String = "Cancel"
+    }
+    
+    enum ShowImageVC {
+        static let appLicenseLabelText: String = "APP License"
+        static let appLicenseInfoLabelText: String = "Free for commercial use\nNo attribution required"
+        static let relatedLabelText: String = "Related"
+        static let relatedImagesCellsID: String = "RelatedImagesCellId"
+        static let relatedImagesCellsCreator: String = "RelatedImagesCollectionViewCellsCreator"
+        static let relatedImagesCellsHeader: String = "SectionHeader"
+    }
+    
+    enum CollectionViewCellsId {
+        static let relatedCellsID: String = "RelatedTagsCellId"
+        static let relatedCellsCreator: String = "RelatedRequstCollectionViewCellsCreator"
+        static let showResultImageCellsID: String = "CellId"
+        static let showResultImageCellsCreator: String = "ShowResultsCollectionViewCellsCreator"
+    }
+}

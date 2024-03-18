@@ -94,7 +94,7 @@ class ShowImageVC: UIViewController {
         searchTextField.layer.borderColor = UIColor.hexE2E2E2.cgColor
         searchTextField.layer.cornerRadius = 5
         
-        searchTextField.font = UIFont(name: "OpenSans-Regular", size: 18)
+        searchTextField.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 18)
         
         setupIconViews()
         setupPlaceHolder()
@@ -103,14 +103,14 @@ class ShowImageVC: UIViewController {
     private func setupPlaceHolder() {
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.hex747474,
-            .font: UIFont(name: "OpenSans-Regular", size: 14)!
+            .font: UIFont(name: AppConstants.Fonts.openSansRegular, size: 14)!
         ]
-        searchTextField.attributedPlaceholder = NSAttributedString(string: "Search images, vectors and more", attributes: attributes)
+        searchTextField.attributedPlaceholder = NSAttributedString(string: AppConstants.SearchTFParameters.placeHolder, attributes: attributes)
     }
     
     private func setupIconViews() {
         let searchIconView = UIView(frame: CGRect(x: .zero, y: .zero, width: 36, height: 20))
-        let searchImageView = UIImageView(image: UIImage(systemName: "magnifyingglass"))
+        let searchImageView = UIImageView(image: UIImage(systemName: AppConstants.ImageNames.magnifyingglass))
         searchImageView.frame = CGRect(x: 12, y: .zero, width: 20, height: 20)
         searchImageView.contentMode = .scaleAspectFit
         searchIconView.tintColor = .darkGray
@@ -137,20 +137,20 @@ class ShowImageVC: UIViewController {
     }
     
     private func setupAppLicenseLabel() {
-        appLicenseLabel.text = "APP License"
+        appLicenseLabel.text = AppConstants.ShowImageVC.appLicenseLabelText
         appLicenseLabel.textColor = UIColor.hex430BE0
-        appLicenseLabel.font = UIFont(name: "OpenSans-Regular", size: 16)
+        appLicenseLabel.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 16)
     }
     
     private func setupAppLicenseInfoLabel() {
-        appLicenseInfoLabel.text = "Free for commercial use\nNo attribution required"
+        appLicenseInfoLabel.text = AppConstants.ShowImageVC.appLicenseInfoLabelText
         appLicenseInfoLabel.textColor = UIColor.hex747474
-        appLicenseInfoLabel.font = UIFont(name: "OpenSans-Regular", size: 15)
+        appLicenseInfoLabel.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 15)
     }
     
     private func setupPictureFormatLabel() {
-        pictureFormatLabel.text = "Photo in UNREAL format"
-        pictureFormatLabel.font = UIFont(name: "OpenSans-Regular", size: 15)
+        pictureFormatLabel.text = ""
+        pictureFormatLabel.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 15)
         pictureFormatLabel.textColor = UIColor.hex2D2D2D
     }
     
@@ -167,9 +167,9 @@ class ShowImageVC: UIViewController {
     private func setupRelatedImagesCollectView() {
         relatedImagesCollectionView.dataSource = self
         relatedImagesCollectionView.delegate = self
-        relatedImagesCollectionView.register(RelatedImagesCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "RelatedImagesCellId")
-        relatedImagesCollectionView.accessibilityIdentifier = "RelatedImagesCollectionViewCellsCreator"
-        relatedImagesCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "SectionHeader")
+        relatedImagesCollectionView.register(RelatedImagesCollectionViewCellsCreator.self, forCellWithReuseIdentifier: AppConstants.ShowImageVC.relatedImagesCellsID)
+        relatedImagesCollectionView.accessibilityIdentifier = AppConstants.ShowImageVC.relatedImagesCellsCreator
+        relatedImagesCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: AppConstants.ShowImageVC.relatedImagesCellsHeader)
         relatedImagesCollectionView.backgroundColor = UIColor.hexF6F6F6
         relatedImagesCollectionView.overrideUserInterfaceStyle = .light
     }
@@ -264,7 +264,7 @@ extension ShowImageVC: UICollectionViewDataSource, UICollectionViewDelegateFlowL
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = relatedImagesCollectionView.dequeueReusableCell(withReuseIdentifier: "RelatedImagesCellId", for: indexPath) as! RelatedImagesCollectionViewCellsCreator
+        let cell = relatedImagesCollectionView.dequeueReusableCell(withReuseIdentifier: AppConstants.ShowImageVC.relatedImagesCellsID, for: indexPath) as! RelatedImagesCollectionViewCellsCreator
         cell.layer.masksToBounds = true
         
         let currentImageUrlString = showImageVCimagesUrls[indexPath.row].previewImageUrl
@@ -291,11 +291,11 @@ extension ShowImageVC: UICollectionViewDataSource, UICollectionViewDelegateFlowL
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
-            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "SectionHeader", for: indexPath)
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: AppConstants.ShowImageVC.relatedImagesCellsHeader, for: indexPath)
 
             let titleLabel = UILabel(frame: CGRect(x: 16, y: 6, width: collectionView.bounds.width - 32, height: 40))
-            titleLabel.text = "Related"
-            titleLabel.font = UIFont(name: "OpenSans-SemiBold", size: 20)
+            titleLabel.text = AppConstants.ShowImageVC.relatedLabelText
+            titleLabel.font = UIFont(name: AppConstants.Fonts.openSansSemibold, size: 20)
             headerView.addSubview(titleLabel)
             return headerView
         }

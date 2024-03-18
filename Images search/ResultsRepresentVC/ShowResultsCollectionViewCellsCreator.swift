@@ -39,7 +39,7 @@ class ShowResultsCollectionViewCellsCreator: UICollectionViewCell {
     
     private func setupShareButton() {
         shareButton.titleLabel?.text = ""
-        shareButton.setImage(UIImage(named: "share"), for: .normal)
+        shareButton.setImage(UIImage(named: AppConstants.ImageNames.share), for: .normal)
         shareButton.layer.borderWidth = 1
         shareButton.layer.borderColor = UIColor.clear.cgColor
         shareButton.layer.cornerRadius = 3

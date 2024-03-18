@@ -73,11 +73,11 @@ class ZoomedImageViewController: UIViewController, UIScrollViewDelegate {
 
         switch recognizer.state {
         case .changed:
-            if scrollView.contentOffset.y <= 0 && translation.y > 0 {
+            if scrollView.contentOffset.y <= .zero && translation.y > .zero {
                 view.alpha = 1 - translation.y / 100
             }
         case .ended:
-            if scrollView.contentOffset.y <= 0 && translation.y > 100 {
+            if scrollView.contentOffset.y <= .zero && translation.y > 100 {
                 dismiss(animated: true, completion: nil)
             } else {
                 UIView.animate(withDuration: 0.3) {

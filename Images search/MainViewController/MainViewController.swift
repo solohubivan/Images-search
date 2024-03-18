@@ -14,7 +14,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var searchButton: UIButton!
     @IBOutlet weak private var bottomInfoLabel: UILabel!
     
-    private var selectedImageCategory: String = "All"
+    private var selectedImageCategory: String = AppConstants.MainViewController.defaultCategory
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,9 +45,9 @@ class MainViewController: UIViewController {
     }
     
     private func setupMainTitleLabel() {
-        mainTitleLabel.text = "Take your audience on a visual adventure"
+        mainTitleLabel.text = AppConstants.MainViewController.mainTitleLabel
         mainTitleLabel.textColor = .white
-        mainTitleLabel.font = UIFont(name: "OpenSans-Bold", size: 26)
+        mainTitleLabel.font = UIFont(name: AppConstants.Fonts.openSansBold, size: 26)
     }
     
     private func setupSearchTextField() {
@@ -55,11 +55,11 @@ class MainViewController: UIViewController {
         searchTextField.overrideUserInterfaceStyle = .light
         searchTextField.backgroundColor = .white
         searchTextField.borderStyle = .none
-        searchTextField.layer.borderWidth = 1
+        searchTextField.layer.borderWidth = AppConstants.SearchTFParameters.borderWidth
         searchTextField.layer.borderColor = UIColor.hexE2E2E2.cgColor
-        searchTextField.layer.cornerRadius = 5
+        searchTextField.layer.cornerRadius = AppConstants.SearchTFParameters.cornerRadius
         
-        searchTextField.font = UIFont(name: "OpenSans-Regular", size: 18)
+        searchTextField.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 18)
         
         setupPlaceHolder()
         setupIconViews()
@@ -69,14 +69,14 @@ class MainViewController: UIViewController {
     private func setupPlaceHolder() {
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.hex747474,
-            .font: UIFont(name: "OpenSans-Regular", size: 14)!
+            .font: UIFont(name: AppConstants.Fonts.openSansRegular, size: 14)!
         ]
-        searchTextField.attributedPlaceholder = NSAttributedString(string: "Search images, vectors and more", attributes: attributes)
+        searchTextField.attributedPlaceholder = NSAttributedString(string: AppConstants.SearchTFParameters.placeHolder, attributes: attributes)
     }
     
     private func setupIconViews() {
         let searchIconView = UIView(frame: CGRect(x: .zero, y: .zero, width: 36, height: 20))
-        let searchImageView = UIImageView(image: UIImage(systemName: "magnifyingglass"))
+        let searchImageView = UIImageView(image: UIImage(systemName: AppConstants.ImageNames.magnifyingglass))
         searchImageView.frame = CGRect(x: 12, y: .zero, width: 20, height: 20)
         searchImageView.contentMode = .scaleAspectFit
         searchIconView.tintColor = .darkGray
@@ -94,13 +94,13 @@ class MainViewController: UIViewController {
         let menuButton = UIButton()
         menuButton.setImage(separatorImage, for: .normal)
         
-        menuButton.setAttributedTitle(createTFRightButtonName(name: "All"), for: .normal)
+        menuButton.setAttributedTitle(createTFRightButtonName(name: AppConstants.MainViewController.defaultCategory), for: .normal)
         menuButton.setTitleColor(UIColor.hex2D2D2D, for: .normal)
-        menuButton.titleLabel?.font = UIFont(name: "OpenSans-Regular", size: 14)
-        menuButton.frame = CGRect(x: 0, y: 0, width: 0, height: searchTextField.frame.height)
+        menuButton.titleLabel?.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 14)
+        menuButton.frame = CGRect(x: .zero, y: .zero, width: .zero, height: searchTextField.frame.height)
         
-        menuButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -14, bottom: 0, right: 14)
-        menuButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -22, bottom: 0, right: 22)
+        menuButton.titleEdgeInsets = UIEdgeInsets(top: .zero, left: -14, bottom: .zero, right: 14)
+        menuButton.imageEdgeInsets = UIEdgeInsets(top: .zero, left: -22, bottom: .zero, right: 22)
         
         menuButton.addTarget(self, action: #selector(showMenu(_:)), for: .touchUpInside)
         
@@ -112,7 +112,7 @@ class MainViewController: UIViewController {
         let attributedString = NSMutableAttributedString()
 
         let attachmentImage = NSTextAttachment()
-        let chevronImage = UIImage(systemName: "chevron.down")?.withRenderingMode(.alwaysTemplate)
+        let chevronImage = UIImage(systemName: AppConstants.ImageNames.chevronDown)?.withRenderingMode(.alwaysTemplate)
         let resizedChevronImage = chevronImage?.aspectFitToSize(CGSize(width: 14, height: 14))
         attachmentImage.image = resizedChevronImage
         let attachmentString = NSAttributedString(attachment: attachmentImage)
@@ -128,23 +128,23 @@ class MainViewController: UIViewController {
         searchButton.backgroundColor = UIColor.hex430BE0
         searchButton.layer.cornerRadius = 5
 
-        searchButton.setTitle("Search", for: .normal)
+        searchButton.setTitle(AppConstants.ButtonTitleLabels.searchButton, for: .normal)
         searchButton.setTitleColor(.white, for: .normal)
         
-        let searchImage = UIImage(systemName: "magnifyingglass")
+        let searchImage = UIImage(systemName: AppConstants.ImageNames.magnifyingglass)
         let resizedSearchImage = searchImage?.withTintColor(.white).aspectFitToSize(CGSize(width: 17, height: 17))
         searchButton.setImage(resizedSearchImage, for: .normal)
 
-        searchButton.titleLabel?.font = UIFont(name: "OpenSans-Regular", size: 18)
+        searchButton.titleLabel?.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 18)
 
-        searchButton.imageEdgeInsets = UIEdgeInsets(top: 1, left: 0, bottom: 0, right: 13)
-        searchButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 13, bottom: 0, right: 0)
+        searchButton.imageEdgeInsets = UIEdgeInsets(top: 1, left: .zero, bottom: .zero, right: 13)
+        searchButton.titleEdgeInsets = UIEdgeInsets(top: .zero, left: 13, bottom: .zero, right: .zero)
     }
     
     private func setupBottomInfoLabel() {
-        bottomInfoLabel.text = "Photo by Free-Photos"
+        bottomInfoLabel.text = AppConstants.MainViewController.bottomInfoLabel
         bottomInfoLabel.textColor = UIColor.hexE5E5E5
-        bottomInfoLabel.font = UIFont(name: "OpenSans-Light", size: 12)
+        bottomInfoLabel.font = UIFont(name: AppConstants.Fonts.openSansLight, size: 12)
     }
     
     // MARK: - Button actions
@@ -166,24 +166,24 @@ class MainViewController: UIViewController {
     
     @objc private func showMenu(_ sender: UIButton) {
         let menuItems: [UIAction] = [
-            UIAction(title: "Vector", image: UIImage(systemName: "line.diagonal.arrow"), handler: { [weak self] _ in
+            UIAction(title: AppConstants.MainViewController.menuCategoryVector, image: UIImage(systemName: AppConstants.ImageNames.lineDiagonalArrow), handler: { [weak self] _ in
                 self?.dismissKeyboard()
-                self?.selectedImageCategory = "Vector"
+                self?.selectedImageCategory = AppConstants.MainViewController.menuCategoryVector
                 self?.updateTFCategoryButton()
             }),
-            UIAction(title: "Illustration", image: UIImage(systemName: "photo"), handler: { [weak self] _ in
+            UIAction(title: AppConstants.MainViewController.menuCategoryIllustration, image: UIImage(systemName: AppConstants.ImageNames.photo), handler: { [weak self] _ in
                 self?.dismissKeyboard()
-                self?.selectedImageCategory = "Illustration"
+                self?.selectedImageCategory = AppConstants.MainViewController.menuCategoryIllustration
                 self?.updateTFCategoryButton()
             }),
-            UIAction(title: "Photo", image: UIImage(systemName: "camera"), handler: { [weak self] _ in
+            UIAction(title: AppConstants.MainViewController.menuCategoryPhoto, image: UIImage(systemName: AppConstants.ImageNames.camera), handler: { [weak self] _ in
                 self?.dismissKeyboard()
-                self?.selectedImageCategory = "Photo"
+                self?.selectedImageCategory = AppConstants.MainViewController.menuCategoryPhoto
                 self?.updateTFCategoryButton()
             }),
-            UIAction(title: "All", image: UIImage(systemName: "photo.on.rectangle.angled"), handler: { [weak self] _ in
+            UIAction(title: AppConstants.MainViewController.defaultCategory, image: UIImage(systemName: AppConstants.ImageNames.photoOnRectangleAngled), handler: { [weak self] _ in
                 self?.dismissKeyboard()
-                self?.selectedImageCategory = "All"
+                self?.selectedImageCategory = AppConstants.MainViewController.defaultCategory
                 self?.updateTFCategoryButton()
             })
         ]
@@ -204,10 +204,8 @@ class MainViewController: UIViewController {
     }
     
     private func checkInternetConnection() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-            guard let self = self else { return }
-            
-            if !NetworkMonitor.shared.isConnected {
+        if !NetworkMonitor.shared.isConnected {
+            DispatchQueue.main.async {
                 self.showNoInternetAlert()
             }
         }
@@ -215,11 +213,11 @@ class MainViewController: UIViewController {
     
     private func showNoInternetAlert() {
         let cancelAction = AlertFactory.createAlertAction(
-            title: "Cancel",
+            title: AppConstants.Alerts.alertCancelAction,
             style: .cancel
         )
         let settingsAction = AlertFactory.createAlertAction(
-            title: "Settings",
+            title: AppConstants.Alerts.alertSettingsAction,
             style: .default
         ) { _ in
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
@@ -228,8 +226,8 @@ class MainViewController: UIViewController {
         }
 
         let alertController = AlertFactory.createAlert(
-            title: "Internet connection is unavailable",
-            message: "please allow this app to internet access",
+            title: AppConstants.Alerts.noInternetAlertTitle,
+            message: AppConstants.Alerts.noInternetAlertMessage,
             actions: [cancelAction, settingsAction]
         )
 
