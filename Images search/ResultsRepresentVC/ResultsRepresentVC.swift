@@ -31,6 +31,8 @@ class ResultsRepresentVC: UIViewController {
         setupUI()
         setActivityIndicatorHidden(false)
     }
+    
+    // MARK: - Orientation settings
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
@@ -360,6 +362,8 @@ extension ResultsRepresentVC: ShowImageDelegate {
         performSearch(searchRequest: searchRequest)
     }
 }
+
+// MARK: - Constants
 
 extension ResultsRepresentVC {
     private enum Constants {
