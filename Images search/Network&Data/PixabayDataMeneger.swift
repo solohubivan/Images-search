@@ -19,10 +19,17 @@ class PixabayDataMeneger {
         return resultRequest
     }
     
-    func getImageViewModelData() -> [ImageUrls] {
-        var imageUrls: [ImageUrls] = []
+    func getImageViewModelData() -> [ImageViewModelData] {
+        var imageUrls: [ImageViewModelData] = []
         for hit in pixabayData.hits {
-            let imageUrlsData = ImageUrls(previewImageUrl: hit.webformatURL, fullsizeImageUrl: hit.largeImageURL)
+            let imageUrlsData = ImageViewModelData(
+                previewImageUrl: hit.webformatURL,
+                fullsizeImageUrl: hit.largeImageURL,
+                likes: hit.likes ?? 0,
+                comments: hit.comments ?? 0,
+                downloads: hit.downloads ?? 0,
+                views: hit.views ?? 0
+            )
             imageUrls.append(imageUrlsData)
         }
         return imageUrls

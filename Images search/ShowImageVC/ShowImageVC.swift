@@ -29,7 +29,7 @@ class ShowImageVC: UIViewController {
     @IBOutlet weak private var relatedImagesCollectionView: UICollectionView!
     
     var showMainImageUrl: String = ""
-    var showImageVCimagesUrls: [ImageUrls] = []
+    var showImageVCimagesUrls: [ImageViewModelData] = []
     
     weak var delegate: ShowImageDelegate?
     

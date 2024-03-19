@@ -17,4 +17,8 @@ struct Hit: Codable {
     var tags: String
     var webformatURL: String
     var largeImageURL: String
+    var likes: Int?
+    var downloads: Int?
+    var views: Int?
+    var comments: Int?
 }

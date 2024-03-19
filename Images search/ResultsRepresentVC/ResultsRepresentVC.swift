@@ -20,7 +20,7 @@ class ResultsRepresentVC: UIViewController {
     private var activityIndicator: UIActivityIndicatorView!
     
     private var relatedResultsLabels: [String] = []
-    private var imageUrls: [ImageUrls] = []
+    private var imageUrls: [ImageViewModelData] = []
     private var currentPage = Constants.currentPage
     
     var currentSearchRequest: String?
@@ -155,17 +155,25 @@ class ResultsRepresentVC: UIViewController {
     
     @objc private func showMenu(_ sender: UIButton) {
         let sortActionMenu = UIMenu(title: AppConstants.ResultRepresentVC.menuTitle, options: .displayInline, children: [
-            UIAction(title: AppConstants.ResultRepresentVC.menuItemDownloads, image: UIImage(systemName: AppConstants.ImageNames.arrowDownCircle), handler: { _ in
-                
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemDownloads, image: UIImage(systemName: AppConstants.ImageNames.arrowDownCircle), handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.imageUrls.sort { $0.downloads > $1.downloads }
+                self.showResultsCollectionView.reloadData()
             }),
-            UIAction(title: AppConstants.ResultRepresentVC.menuItemLikes, image: UIImage(systemName: AppConstants.ImageNames.handThumbsup), handler: { _ in
-                
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemLikes, image: UIImage(systemName: AppConstants.ImageNames.handThumbsup), handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.imageUrls.sort { $0.likes > $1.likes }
+                self.showResultsCollectionView.reloadData()
             }),
-            UIAction(title: AppConstants.ResultRepresentVC.menuItemViews, image: UIImage(systemName: AppConstants.ImageNames.eye), handler: { _ in
-                
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemViews, image: UIImage(systemName: AppConstants.ImageNames.eye), handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.imageUrls.sort { $0.views > $1.views }
+                self.showResultsCollectionView.reloadData()
             }),
-            UIAction(title: AppConstants.ResultRepresentVC.menuItemComments, image: UIImage(systemName: AppConstants.ImageNames.ellipsisMessage), handler: { _ in
-                
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemComments, image: UIImage(systemName: AppConstants.ImageNames.ellipsisMessage), handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.imageUrls.sort { $0.comments > $1.comments }
+                self.showResultsCollectionView.reloadData()
             })
         ])
         
@@ -233,7 +241,6 @@ class ResultsRepresentVC: UIViewController {
                 let indexPath = IndexPath(item: .zero, section: .zero)
                 self.showResultsCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
             }
-            
             self.setActivityIndicatorHidden(true)
         }
     }

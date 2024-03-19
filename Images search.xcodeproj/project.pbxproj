@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		220A83372BA1D14400ACDE1E /* ImageUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220A83362BA1D14400ACDE1E /* ImageUrls.swift */; };
+		220A83372BA1D14400ACDE1E /* ImageViewModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220A83362BA1D14400ACDE1E /* ImageViewModelData.swift */; };
 		2211DADA2BA09635009F8A57 /* ShowImageVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2211DAD92BA09635009F8A57 /* ShowImageVC.xib */; };
 		2211DADB2BA09635009F8A57 /* ShowImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2211DAD82BA09635009F8A57 /* ShowImageVC.swift */; };
 		223A47E92BA7BC14005AC582 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 223A47E82BA7BC14005AC582 /* Config.plist */; };
@@ -43,7 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		220A83362BA1D14400ACDE1E /* ImageUrls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUrls.swift; sourceTree = "<group>"; };
+		220A83362BA1D14400ACDE1E /* ImageViewModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewModelData.swift; sourceTree = "<group>"; };
 		2211DAD82BA09635009F8A57 /* ShowImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowImageVC.swift; sourceTree = "<group>"; };
 		2211DAD92BA09635009F8A57 /* ShowImageVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowImageVC.xib; sourceTree = "<group>"; };
 		223A47E82BA7BC14005AC582 /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
@@ -107,7 +107,7 @@
 		223E1E112B97686600B70BBB /* Network&Data */ = {
 			isa = PBXGroup;
 			children = (
-				220A83362BA1D14400ACDE1E /* ImageUrls.swift */,
+				220A83362BA1D14400ACDE1E /* ImageViewModelData.swift */,
 				223E1E0B2B94FB3800B70BBB /* PixabayData.swift */,
 				223E1E142B976BCF00B70BBB /* PixabayDataMeneger.swift */,
 				223A47EA2BA7CDC7005AC582 /* NetworkMonitor.swift */,
@@ -210,8 +210,8 @@
 		22F979F72B8413B5004CF466 /* MainViewController */ = {
 			isa = PBXGroup;
 			children = (
-				22F979F32B8412ED004CF466 /* MainViewController.swift */,
 				22F979F42B8412ED004CF466 /* MainViewController.xib */,
+				22F979F32B8412ED004CF466 /* MainViewController.swift */,
 			);
 			path = MainViewController;
 			sourceTree = "<group>";
@@ -371,7 +371,7 @@
 				223E1E152B976BCF00B70BBB /* PixabayDataMeneger.swift in Sources */,
 				2256B4642B83F5680055C284 /* AppDelegate.swift in Sources */,
 				2211DADB2BA09635009F8A57 /* ShowImageVC.swift in Sources */,
-				220A83372BA1D14400ACDE1E /* ImageUrls.swift in Sources */,
+				220A83372BA1D14400ACDE1E /* ImageViewModelData.swift in Sources */,
 				226024E12B8EB204008DF799 /* UIViewExtensions.swift in Sources */,
 				223E1E0C2B94FB3800B70BBB /* PixabayData.swift in Sources */,
 				223A47EB2BA7CDC7005AC582 /* NetworkMonitor.swift in Sources */,
