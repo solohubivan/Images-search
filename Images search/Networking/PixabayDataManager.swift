@@ -1,5 +1,5 @@
 //
-//  PixabayDataMeneger.swift
+//  PixabayDataManager.swift
 //  Images search
 //
 //  Created by Ivan Solohub on 05.03.2024.
@@ -7,11 +7,12 @@
 
 import Foundation
 
-class PixabayDataMeneger {
+class PixabayDataManager {
     
-    static let shared = PixabayDataMeneger()
+    static let shared = PixabayDataManager()
     
     private var pixabayData = PixabayData()
+    private let apiService = ApiService()
     
     func createSearchRequest(userRequest: String, _ imageTypeCategory: String, page: Int?) -> String {
         let inputTypeCategory = imageTypeCategory.lowercased()
@@ -45,24 +46,12 @@ class PixabayDataMeneger {
         resultArray = uniqueWords
         return resultArray
     }
-    
-    private var apiKey: String {
-        guard let filePath = Bundle.main.path(forResource: "Config", ofType: "plist"),
-              let plist = NSDictionary(contentsOfFile: filePath),
-              let value = plist["APIKey"] as? String else {
-            fatalError("Couldn't find key 'APIKey' in 'Config.plist'")
-        }
-        return value
-    }
 
     func getPixabayData(request: String, completion: @escaping (PixabayData) -> Void) {
         let session = URLSession.shared
-        let url = URL(string: "https://pixabay.com/api/?key=\(apiKey)&q=\(request)")!
+        let url = apiService.createPixabayURL(with: request)
         let task = session.dataTask(with: url) { (data, response, error) in
-            guard error == nil, let data = data else {
-                print(error!.localizedDescription)
-                return
-            }
+            guard error == nil, let data = data else { return }
             
             do {
                 self.pixabayData = try JSONDecoder().decode(PixabayData.self, from: data)
@@ -74,4 +63,29 @@ class PixabayDataMeneger {
         }
         task.resume()
     }
+    /*
+    func getPixabayData(request: String, completion: @escaping (Result<PixabayData, Error>) -> Void) {
+        let session = URLSession.shared
+        let url = apiService.createPixabayURL(with: request)
+        let task = session.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Data is nil"])))
+                return
+            }
+            
+            do {
+                let pixabayData = try JSONDecoder().decode(PixabayData.self, from: data)
+                completion(.success(pixabayData))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        task.resume()
+    }
+ */
 }

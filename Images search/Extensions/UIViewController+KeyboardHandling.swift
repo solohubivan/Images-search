@@ -1,5 +1,5 @@
 //
-//  UIViewControllerExtension.swift
+//  UIViewController+KeyboardHandling.swift
 //  Images search
 //
 //  Created by Ivan Solohub on 28.02.2024.

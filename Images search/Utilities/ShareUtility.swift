@@ -1,5 +1,5 @@
 //
-//  SharaUtility.swift
+//  ShareUtility.swift
 //  Images search
 //
 //  Created by Ivan Solohub on 09.03.2024.

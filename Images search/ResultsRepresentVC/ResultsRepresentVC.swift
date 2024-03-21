@@ -80,7 +80,7 @@ class ResultsRepresentVC: UIViewController {
     private func setupPlaceHolder() {
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.hex747474,
-            .font: UIFont(name: AppConstants.Fonts.openSansRegular, size: 14)!
+            .font: UIFont(name: AppConstants.Fonts.openSansRegular, size: 14) ?? UIFont.systemFont(ofSize: 14)
         ]
         searchTextField.attributedPlaceholder = NSAttributedString(string: AppConstants.SearchTFParameters.placeHolder, attributes: attributes)
     }
@@ -184,6 +184,30 @@ class ResultsRepresentVC: UIViewController {
         sender.showsMenuAsPrimaryAction = true
     }
     
+    // MARK: - Public methods
+    
+    func updateUI(with pixabayData: PixabayData) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            let availableAmountPictures = pixabayData.total
+            let formattedNumber = NumberFormatter.formatNumberWithSpaces(availableAmountPictures)
+            self.availableImagesInfoLabel.text = "\(formattedNumber) \(AppConstants.ResultRepresentVC.availableImagesInfo)"
+            
+            self.relatedResultsLabels = PixabayDataManager.shared.creatingRelatedStrings()
+            self.imageUrls = PixabayDataManager.shared.getImageViewModelData()
+
+            self.relatedRequstCollectionView.reloadData()
+            self.showResultsCollectionView.reloadData()
+            
+            if self.showResultsCollectionView.numberOfSections > .zero && self.showResultsCollectionView.numberOfItems(inSection: .zero) > .zero {
+                let indexPath = IndexPath(item: .zero, section: .zero)
+                self.showResultsCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+            }
+            self.setActivityIndicatorHidden(true)
+        }
+    }
+    
     // MARK: - Private methods
 
     private func setActivityIndicatorHidden(_ isHidden: Bool) {
@@ -202,46 +226,22 @@ class ResultsRepresentVC: UIViewController {
         currentPage = 1
         setActivityIndicatorHidden(false)
 
-        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchText, currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie, page: currentPage)
-        PixabayDataMeneger.shared.getPixabayData(request: request) { [weak self] pixabayData in
+        let request = PixabayDataManager.shared.createSearchRequest(userRequest: searchText, currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie, page: currentPage)
+        PixabayDataManager.shared.getPixabayData(request: request) { [weak self] pixabayData in
             self?.updateUI(with: pixabayData)
         }
     }
 
     private func loadMoreImages() {
         currentPage += 1
-        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: currentSearchRequest ?? "", currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie, page: currentPage)
-        PixabayDataMeneger.shared.getPixabayData(request: request) { [weak self] pixabayData in
+        let request = PixabayDataManager.shared.createSearchRequest(userRequest: currentSearchRequest ?? "", currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie, page: currentPage)
+        PixabayDataManager.shared.getPixabayData(request: request) { [weak self] pixabayData in
             guard let self = self else { return }
-            let newImageUrls = PixabayDataMeneger.shared.getImageViewModelData()
+            let newImageUrls = PixabayDataManager.shared.getImageViewModelData()
             DispatchQueue.main.async {
                 self.imageUrls.append(contentsOf: newImageUrls)
                 self.showResultsCollectionView.reloadData()
             }
-        }
-    }
-
-    // MARK: - Public methods
-    
-    func updateUI(with pixabayData: PixabayData) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            
-            let availableAmountPictures = pixabayData.total
-            let formattedNumber = NumberFormatter.formatNumberWithSpaces(availableAmountPictures)
-            self.availableImagesInfoLabel.text = "\(formattedNumber) \(AppConstants.ResultRepresentVC.availableImagesInfo)"
-            
-            self.relatedResultsLabels = PixabayDataMeneger.shared.creatingRelatedStrings()
-            self.imageUrls = PixabayDataMeneger.shared.getImageViewModelData()
-
-            self.relatedRequstCollectionView.reloadData()
-            self.showResultsCollectionView.reloadData()
-            
-            if self.showResultsCollectionView.numberOfSections > .zero && self.showResultsCollectionView.numberOfItems(inSection: .zero) > .zero {
-                let indexPath = IndexPath(item: .zero, section: .zero)
-                self.showResultsCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
-            }
-            self.setActivityIndicatorHidden(true)
         }
     }
 }

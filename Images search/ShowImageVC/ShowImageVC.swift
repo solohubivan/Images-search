@@ -52,7 +52,7 @@ class ShowImageVC: UIViewController {
             let orientation = UIDevice.current.orientation
             if orientation.isLandscape {
                 if let image = self.mainImageView.image {
-                    let zoomedViewController = ZoomedImageViewController(image: image)
+                    let zoomedViewController = ZoomedImageViewController(zoomableImage: image)
                     zoomedViewController.modalPresentationStyle = .fullScreen
                     self.present(zoomedViewController, animated: true)
                 }
@@ -103,7 +103,7 @@ class ShowImageVC: UIViewController {
     private func setupPlaceHolder() {
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.hex747474,
-            .font: UIFont(name: AppConstants.Fonts.openSansRegular, size: 14)!
+            .font: UIFont(name: AppConstants.Fonts.openSansRegular, size: 14) ?? UIFont.systemFont(ofSize: 14)
         ]
         searchTextField.attributedPlaceholder = NSAttributedString(string: AppConstants.SearchTFParameters.placeHolder, attributes: attributes)
     }
@@ -184,7 +184,7 @@ class ShowImageVC: UIViewController {
     
     @IBAction private func zoomImage(_ sender: Any) {
         if let image = mainImageView.image {
-            let zoomedViewController = ZoomedImageViewController(image: image)
+            let zoomedViewController = ZoomedImageViewController(zoomableImage: image)
             zoomedViewController.modalPresentationStyle = .fullScreen
             present(zoomedViewController, animated: false)
         }
@@ -257,6 +257,8 @@ extension ShowImageVC: UITextFieldDelegate {
         return true
     }
 }
+
+// MARK: - UICollectionView Properties
 
 extension ShowImageVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

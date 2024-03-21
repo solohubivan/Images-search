@@ -69,7 +69,7 @@ class MainViewController: UIViewController {
     private func setupPlaceHolder() {
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.hex747474,
-            .font: UIFont(name: AppConstants.Fonts.openSansRegular, size: 14)!
+            .font: UIFont(name: AppConstants.Fonts.openSansRegular, size: 14) ?? UIFont.systemFont(ofSize: 14)
         ]
         searchTextField.attributedPlaceholder = NSAttributedString(string: AppConstants.SearchTFParameters.placeHolder, attributes: attributes)
     }
@@ -153,9 +153,9 @@ class MainViewController: UIViewController {
         let resultsRepresentVC = ResultsRepresentVC()
         resultsRepresentVC.modalPresentationStyle = .fullScreen
     
-        let request = PixabayDataMeneger.shared.createSearchRequest(userRequest: searchTextField.text ?? "", selectedImageCategory, page: nil)
+        let request = PixabayDataManager.shared.createSearchRequest(userRequest: searchTextField.text ?? "", selectedImageCategory, page: nil)
 
-        PixabayDataMeneger.shared.getPixabayData(request: request) { [weak resultsRepresentVC] pixabayData in
+        PixabayDataManager.shared.getPixabayData(request: request) { [weak resultsRepresentVC] pixabayData in
             resultsRepresentVC?.updateUI(with: pixabayData)
             resultsRepresentVC?.currentSearchRequest = request
             resultsRepresentVC?.currentSearchImageCategorie = self.selectedImageCategory
@@ -234,6 +234,8 @@ class MainViewController: UIViewController {
         present(alertController, animated: true)
     }
 }
+
+// MARK: - Textfield properties
 
 extension MainViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
