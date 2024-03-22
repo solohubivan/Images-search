@@ -219,10 +219,7 @@ extension MainViewController {
     
     @IBAction private func showResults(_ sender: Any) {
         guard let pixabayDataManager = pixabayDataManager,
-              let searchText = searchTextField.text else {
-            return
-        }
-
+              let searchText = searchTextField.text else { return }
         let resultsRepresentVC = ResultsRepresentVC()
         resultsRepresentVC.pixabayDataManager = pixabayDataManager
         resultsRepresentVC.modalPresentationStyle = .fullScreen
