@@ -9,8 +9,6 @@ import Foundation
 
 class PixabayDataManager {
     
-//    static let shared = PixabayDataManager()
-    
     private var pixabayData = PixabayData()
     private let apiService = ApiService()
     
@@ -47,45 +45,29 @@ class PixabayDataManager {
         return resultArray
     }
 
-    func getPixabayData(request: String, completion: @escaping (PixabayData) -> Void) {
-        let session = URLSession.shared
-        let url = apiService.createPixabayURL(with: request)
-        let task = session.dataTask(with: url) { (data, response, error) in
-            guard error == nil, let data = data else { return }
-            
-            do {
-                self.pixabayData = try JSONDecoder().decode(PixabayData.self, from: data)
-                completion(self.pixabayData)
-
-            } catch {
-                
-            }
-        }
-        task.resume()
-    }
-    /*
     func getPixabayData(request: String, completion: @escaping (Result<PixabayData, Error>) -> Void) {
         let session = URLSession.shared
         let url = apiService.createPixabayURL(with: request)
+
         let task = session.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-            
+
             guard let data = data else {
-                completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Data is nil"])))
+                completion(.failure(NSError(domain: "", code: -2, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
                 return
             }
-            
+
             do {
-                let pixabayData = try JSONDecoder().decode(PixabayData.self, from: data)
-                completion(.success(pixabayData))
+                let pixabayDecodedData = try JSONDecoder().decode(PixabayData.self, from: data)
+                self.pixabayData = pixabayDecodedData
+                completion(.success(pixabayDecodedData))
             } catch {
                 completion(.failure(error))
             }
         }
         task.resume()
     }
- */
 }

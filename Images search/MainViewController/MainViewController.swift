@@ -79,6 +79,12 @@ class MainViewController: UIViewController {
         )
         present(alertController, animated: true)
     }
+    
+    private func showErrorAlert(error: Error) {
+        let okAction = AlertFactory.createAlertAction(title: AppConstants.Alerts.allertActOk, style: .default)
+        let alert = AlertFactory.createAlert(title: AppConstants.Alerts.allertTitleError, message: error.localizedDescription, actions: [okAction])
+        self.present(alert, animated: true)
+    }
 }
 
 // MARK: - Textfield properties
@@ -212,19 +218,29 @@ extension MainViewController {
 extension MainViewController {
     
     @IBAction private func showResults(_ sender: Any) {
-        guard let pixabayDataManager = pixabayDataManager else { return }
+        guard let pixabayDataManager = pixabayDataManager,
+              let searchText = searchTextField.text else {
+            return
+        }
+
         let resultsRepresentVC = ResultsRepresentVC()
         resultsRepresentVC.pixabayDataManager = pixabayDataManager
         resultsRepresentVC.modalPresentationStyle = .fullScreen
-        
-        let request = pixabayDataManager.createSearchRequest(userRequest: searchTextField.text ?? "", selectedImageCategory, page: nil)
 
-        pixabayDataManager.getPixabayData(request: request) { [weak resultsRepresentVC] pixabayData in
-            resultsRepresentVC?.updateUI(with: pixabayData)
-            resultsRepresentVC?.currentSearchRequest = request
-            resultsRepresentVC?.currentSearchImageCategorie = self.selectedImageCategory
+        let request = pixabayDataManager.createSearchRequest(userRequest: searchText, selectedImageCategory, page: nil)
+
+        pixabayDataManager.getPixabayData(request: request) { [weak resultsRepresentVC] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let pixabayData):
+                    resultsRepresentVC?.updateUI(with: pixabayData)
+                    resultsRepresentVC?.currentSearchRequest = request
+                    resultsRepresentVC?.currentSearchImageCategorie = self.selectedImageCategory
+                case .failure(let error):
+                    self.showErrorAlert(error: error)
+                }
+            }
         }
-            
         present(resultsRepresentVC, animated: false)
     }
 

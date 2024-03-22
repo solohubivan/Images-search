@@ -60,11 +60,7 @@ class ResultsRepresentVC: UIViewController {
             self.relatedRequstCollectionView.reloadData()
             self.showResultsCollectionView.reloadData()
             
-            if self.showResultsCollectionView.numberOfSections > .zero && self.showResultsCollectionView.numberOfItems(inSection: .zero) > .zero {
-                let indexPath = IndexPath(item: .zero, section: .zero)
-                self.showResultsCollectionView.scrollToItem(at: indexPath, at: .top, animated: true)
-            }
-            self.setActivityIndicatorHidden(true)
+            setActivityIndicatorHidden(true)
         }
     }
 
@@ -85,15 +81,19 @@ class ResultsRepresentVC: UIViewController {
         currentSearchRequest = searchText
         currentPage = 1
         setActivityIndicatorHidden(false)
-        
-        guard let request = pixabayDataManager?.createSearchRequest(
-            userRequest: searchText,
-            currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie,
-            page: currentPage
-        ) else { return }
 
-        pixabayDataManager?.getPixabayData(request: request) { [weak self] pixabayData in
-            self?.updateUI(with: pixabayData)
+        guard let request = pixabayDataManager?.createSearchRequest(userRequest: searchText, currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie, page: currentPage) else { return }
+
+        pixabayDataManager?.getPixabayData(request: request) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                switch result {
+                case .success(let pixabayData):
+                    self.updateUI(with: pixabayData)
+                case .failure(let error):
+                    self.showErrorAlert(error: error)
+                }
+            }
         }
     }
     
@@ -104,14 +104,27 @@ class ResultsRepresentVC: UIViewController {
             currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie,
             page: currentPage
         ) else { return }
-        
-        pixabayDataManager?.getPixabayData(request: request) { [weak self] pixabayData in
-            guard let self = self, let newImageUrls = self.pixabayDataManager?.getImageViewModelData() else { return }
+
+        pixabayDataManager?.getPixabayData(request: request) { [weak self] result in
             DispatchQueue.main.async {
-                self.imageUrls.append(contentsOf: newImageUrls)
-                self.showResultsCollectionView.reloadData()
+                guard let self = self else { return }
+                switch result {
+                case .success(_):
+                    let newImageUrls = self.pixabayDataManager?.getImageViewModelData() ?? []
+                    self.imageUrls.append(contentsOf: newImageUrls)
+                    self.showResultsCollectionView.reloadData()
+                    self.setActivityIndicatorHidden(true)
+                case .failure(let error):
+                    self.showErrorAlert(error: error)
+                }
             }
         }
+    }
+    
+    private func showErrorAlert(error: Error) {
+        let okAction = AlertFactory.createAlertAction(title: AppConstants.Alerts.allertActOk, style: .default)
+        let alert = AlertFactory.createAlert(title: AppConstants.Alerts.allertTitleError, message: error.localizedDescription, actions: [okAction])
+        present(alert, animated: true)
     }
 }
 
