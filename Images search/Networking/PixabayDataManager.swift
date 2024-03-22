@@ -9,7 +9,7 @@ import Foundation
 
 class PixabayDataManager {
     
-    static let shared = PixabayDataManager()
+//    static let shared = PixabayDataManager()
     
     private var pixabayData = PixabayData()
     private let apiService = ApiService()

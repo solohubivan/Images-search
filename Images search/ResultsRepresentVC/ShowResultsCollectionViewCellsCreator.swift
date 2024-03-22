@@ -37,6 +37,36 @@ class ShowResultsCollectionViewCellsCreator: UICollectionViewCell {
         setupImageView()
     }
     
+    // MARK: - Public method to set image
+
+    func setImage(with url: URL) {
+        previewImageView.sd_setImage(with: url, placeholderImage: nil, options: [.continueInBackground,.progressiveLoad]) { [weak self] (image, error, cacheType, imageUrl) in
+            guard let self = self else { return }
+            if error == nil {
+                self.setupShareButton()
+            }
+        }
+    }
+    
+    // MARK: - Share Button action
+    
+    @objc private func shareButtonTapped() {
+        guard let imageToShare = previewImageView.image else { return }
+        let shareUtility = ShareUtility()
+        let shareViewController = shareUtility.createShareViewController(imageToShare: imageToShare, sourceView: self)
+        shareViewController.popoverPresentationController?.sourceRect = shareButton.frame
+        shareViewController.popoverPresentationController?.sourceView = self
+        shareViewController.popoverPresentationController?.permittedArrowDirections = [.down, .up]
+            
+        if let parentViewController = parentViewController {
+            parentViewController.present(shareViewController, animated: true, completion: nil)
+        }
+    }
+}
+
+// MARK: - Set constraints
+
+extension ShowResultsCollectionViewCellsCreator {
     private func setupShareButton() {
         shareButton.titleLabel?.text = ""
         shareButton.setImage(UIImage(named: AppConstants.ImageNames.share), for: .normal)
@@ -58,31 +88,4 @@ class ShowResultsCollectionViewCellsCreator: UICollectionViewCell {
     private func setupImageView() {
         previewImageView.addConstraints(to_view: self)
     }
-    
-    // MARK: - Public method to set image
-
-    func setImage(with url: URL) {
-        previewImageView.sd_setImage(with: url, placeholderImage: nil, options: [.continueInBackground,.progressiveLoad]) { [weak self] (image, error, cacheType, imageUrl) in
-            guard let self = self else { return }
-            if error == nil {
-                self.setupShareButton()
-            }
-        }
-    }
-    
-    // MARK: - Share Button action
-    
-    @objc private func shareButtonTapped() {
-        guard let imageToShare = previewImageView.image else { return }
-            
-        let shareViewController = ShareUtility.createShareViewController(imageToShare: imageToShare, sourceView: self)
-        shareViewController.popoverPresentationController?.sourceRect = shareButton.frame
-        shareViewController.popoverPresentationController?.sourceView = self
-        shareViewController.popoverPresentationController?.permittedArrowDirections = [.down, .up]
-            
-        if let parentViewController = parentViewController {
-            parentViewController.present(shareViewController, animated: true, completion: nil)
-        }
-    }
 }
-

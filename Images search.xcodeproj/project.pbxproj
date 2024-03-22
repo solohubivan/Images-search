@@ -221,8 +221,8 @@
 		22F979F72B8413B5004CF466 /* MainViewController */ = {
 			isa = PBXGroup;
 			children = (
-				22F979F42B8412ED004CF466 /* MainViewController.xib */,
 				22F979F32B8412ED004CF466 /* MainViewController.swift */,
+				22F979F42B8412ED004CF466 /* MainViewController.xib */,
 			);
 			path = MainViewController;
 			sourceTree = "<group>";

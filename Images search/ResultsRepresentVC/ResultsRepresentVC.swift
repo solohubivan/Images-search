@@ -21,13 +21,16 @@ class ResultsRepresentVC: UIViewController {
     
     private var relatedResultsLabels: [String] = []
     private var imageUrls: [ImageViewModelData] = []
-    private var currentPage = Constants.currentPage
+    private var currentPage = 1
     
     var currentSearchRequest: String?
     var currentSearchImageCategorie: String?
+    
+    var pixabayDataManager: PixabayDataManager?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = UIColor.hexF6F6F6
         setupUI()
         setActivityIndicatorHidden(false)
     }
@@ -40,162 +43,19 @@ class ResultsRepresentVC: UIViewController {
             self.showResultsCollectionView.collectionViewLayout.invalidateLayout()
         })
     }
-
-    // MARK: - setup UI
-    
-    private func setupUI() {
-        setupLogoButton()
-        setupSearchTextField()
-        setupFilterButton()
-        setupSeparateLineView()
-        setupAvailableImagesInfoLabel()
-        setupRelatedRequstCollectionView()
-        setupShowResultsCollectionView()
-        setupRelatedLabel()
-        setupActivityIndicator()
-        
-        view.backgroundColor = UIColor.hexF6F6F6
-    }
-    
-    private func setupLogoButton() {
-        logoButton.setTitle("", for: .normal)
-    }
-    
-    private func setupSearchTextField() {
-        searchTextField.delegate = self
-        searchTextField.overrideUserInterfaceStyle = .light
-        searchTextField.clearButtonMode = .whileEditing
-        searchTextField.borderStyle = .none
-        searchTextField.backgroundColor = UIColor.hexF6F6F6
-        searchTextField.layer.borderWidth = AppConstants.SearchTFParameters.borderWidth
-        searchTextField.layer.borderColor = UIColor.hexE2E2E2.cgColor
-        searchTextField.layer.cornerRadius = AppConstants.SearchTFParameters.cornerRadius
-        
-        searchTextField.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 18)
-        
-        setupIconViews()
-        setupPlaceHolder()
-    }
-    
-    private func setupPlaceHolder() {
-        let attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: UIColor.hex747474,
-            .font: UIFont(name: AppConstants.Fonts.openSansRegular, size: 14) ?? UIFont.systemFont(ofSize: 14)
-        ]
-        searchTextField.attributedPlaceholder = NSAttributedString(string: AppConstants.SearchTFParameters.placeHolder, attributes: attributes)
-    }
-    
-    private func setupIconViews() {
-        let searchIconView = UIView(frame: CGRect(x: .zero, y: .zero, width: 36, height: 20))
-        let searchImageView = UIImageView(image: UIImage(systemName: AppConstants.ImageNames.magnifyingglass))
-        searchImageView.frame = CGRect(x: 12, y: .zero, width: 20, height: 20)
-        searchImageView.contentMode = .scaleAspectFit
-        searchIconView.tintColor = .darkGray
-        searchIconView.addSubview(searchImageView)
-        
-        searchTextField.leftView = searchIconView
-        searchTextField.leftViewMode = .always
-    }
-    
-    private func setupFilterButton () {
-        filterButton.setTitle("", for: .normal)
-        filterButton.addTarget(self, action: #selector(showMenu(_:)), for: .touchUpInside)
-    }
-    
-    private func setupSeparateLineView() {
-        separateLineView.backgroundColor = UIColor.hexD2D2D2
-    }
-    
-    private func setupAvailableImagesInfoLabel() {
-        availableImagesInfoLabel.text = ""
-        availableImagesInfoLabel.font = UIFont(name: AppConstants.Fonts.openSansSemibold, size: 20)
-        availableImagesInfoLabel.textColor = .black
-    }
-    
-    private func setupRelatedLabel() {
-        relatedLabel.text = AppConstants.ResultRepresentVC.relatedLabelText
-        relatedLabel.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 16)
-        relatedLabel.textColor = UIColor.hex747474
-    }
-    
-    private func setupRelatedRequstCollectionView() {
-        relatedRequstCollectionView.dataSource = self
-        relatedRequstCollectionView.delegate = self
-        relatedRequstCollectionView.register(RelatedRequstCollectionViewCellsCreator.self, forCellWithReuseIdentifier: AppConstants.CollectionViewCellsId.relatedCellsID)
-        relatedRequstCollectionView.accessibilityIdentifier = AppConstants.CollectionViewCellsId.relatedCellsCreator
-        relatedRequstCollectionView.backgroundColor = .clear
-    }
-    
-    private func setupShowResultsCollectionView() {
-        showResultsCollectionView.dataSource = self
-        showResultsCollectionView.delegate = self
-        showResultsCollectionView.register(ShowResultsCollectionViewCellsCreator.self, forCellWithReuseIdentifier: AppConstants.CollectionViewCellsId.showResultImageCellsID)
-        showResultsCollectionView.accessibilityIdentifier = AppConstants.CollectionViewCellsId.showResultImageCellsCreator
-        showResultsCollectionView.backgroundColor = .clear
-    }
-    
-    private func setupActivityIndicator() {
-        activityIndicator = UIActivityIndicatorView(style: .large)
-        activityIndicator.center = view.center
-        activityIndicator.hidesWhenStopped = true
-        view.addSubview(activityIndicator)
-    }
-    
-    // MARK: - Actions
-    
-    @IBAction private func backToMainVC(_ sender: Any) {
-        let transition = CATransition()
-        transition.duration = 0.2
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromLeft
-        self.view.window!.layer.add(transition, forKey: kCATransition)
-            
-        self.dismiss(animated: false, completion: nil)
-    }
-    
-    @objc private func showMenu(_ sender: UIButton) {
-        let sortActionMenu = UIMenu(title: AppConstants.ResultRepresentVC.menuTitle, options: .displayInline, children: [
-            UIAction(title: AppConstants.ResultRepresentVC.menuItemDownloads, image: UIImage(systemName: AppConstants.ImageNames.arrowDownCircle), handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.imageUrls.sort { $0.downloads > $1.downloads }
-                self.showResultsCollectionView.reloadData()
-            }),
-            UIAction(title: AppConstants.ResultRepresentVC.menuItemLikes, image: UIImage(systemName: AppConstants.ImageNames.handThumbsup), handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.imageUrls.sort { $0.likes > $1.likes }
-                self.showResultsCollectionView.reloadData()
-            }),
-            UIAction(title: AppConstants.ResultRepresentVC.menuItemViews, image: UIImage(systemName: AppConstants.ImageNames.eye), handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.imageUrls.sort { $0.views > $1.views }
-                self.showResultsCollectionView.reloadData()
-            }),
-            UIAction(title: AppConstants.ResultRepresentVC.menuItemComments, image: UIImage(systemName: AppConstants.ImageNames.ellipsisMessage), handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.imageUrls.sort { $0.comments > $1.comments }
-                self.showResultsCollectionView.reloadData()
-            })
-        ])
-        
-        let cancelAction = UIAction(title: AppConstants.ResultRepresentVC.menuItemCancel, image: UIImage(systemName: AppConstants.ImageNames.xmarkApp), attributes: .destructive, handler: { _ in })
-
-        let menu = UIMenu(children: [sortActionMenu, cancelAction])
-        sender.menu = menu
-        sender.showsMenuAsPrimaryAction = true
-    }
     
     // MARK: - Public methods
     
     func updateUI(with pixabayData: PixabayData) {
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            
+            guard let self = self, let pixabayDataManager = self.pixabayDataManager else { return }
+
+            self.relatedResultsLabels = pixabayDataManager.creatingRelatedStrings()
+            self.imageUrls = pixabayDataManager.getImageViewModelData()
+
             let availableAmountPictures = pixabayData.total
             let formattedNumber = NumberFormatter.formatNumberWithSpaces(availableAmountPictures)
             self.availableImagesInfoLabel.text = "\(formattedNumber) \(AppConstants.ResultRepresentVC.availableImagesInfo)"
-            
-            self.relatedResultsLabels = PixabayDataManager.shared.creatingRelatedStrings()
-            self.imageUrls = PixabayDataManager.shared.getImageViewModelData()
 
             self.relatedRequstCollectionView.reloadData()
             self.showResultsCollectionView.reloadData()
@@ -207,7 +67,7 @@ class ResultsRepresentVC: UIViewController {
             self.setActivityIndicatorHidden(true)
         }
     }
-    
+
     // MARK: - Private methods
 
     private func setActivityIndicatorHidden(_ isHidden: Bool) {
@@ -225,19 +85,28 @@ class ResultsRepresentVC: UIViewController {
         currentSearchRequest = searchText
         currentPage = 1
         setActivityIndicatorHidden(false)
+        
+        guard let request = pixabayDataManager?.createSearchRequest(
+            userRequest: searchText,
+            currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie,
+            page: currentPage
+        ) else { return }
 
-        let request = PixabayDataManager.shared.createSearchRequest(userRequest: searchText, currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie, page: currentPage)
-        PixabayDataManager.shared.getPixabayData(request: request) { [weak self] pixabayData in
+        pixabayDataManager?.getPixabayData(request: request) { [weak self] pixabayData in
             self?.updateUI(with: pixabayData)
         }
     }
-
+    
     private func loadMoreImages() {
         currentPage += 1
-        let request = PixabayDataManager.shared.createSearchRequest(userRequest: currentSearchRequest ?? "", currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie, page: currentPage)
-        PixabayDataManager.shared.getPixabayData(request: request) { [weak self] pixabayData in
-            guard let self = self else { return }
-            let newImageUrls = PixabayDataManager.shared.getImageViewModelData()
+        guard let request = pixabayDataManager?.createSearchRequest(
+            userRequest: currentSearchRequest ?? "",
+            currentSearchImageCategorie ?? AppConstants.ResultRepresentVC.searchImageDefaultCategorie,
+            page: currentPage
+        ) else { return }
+        
+        pixabayDataManager?.getPixabayData(request: request) { [weak self] pixabayData in
+            guard let self = self, let newImageUrls = self.pixabayDataManager?.getImageViewModelData() else { return }
             DispatchQueue.main.async {
                 self.imageUrls.append(contentsOf: newImageUrls)
                 self.showResultsCollectionView.reloadData()
@@ -336,6 +205,7 @@ extension ResultsRepresentVC: UICollectionViewDataSource, UICollectionViewDelega
             }
         }
     }
+ 
 }
 
 // MARK: - TextField Properties
@@ -351,7 +221,7 @@ extension ResultsRepresentVC: UITextFieldDelegate {
         
         guard let text = textField.text else { return true }
         let newLength = text.count + string.count - range.length
-        return newLength <= Constants.availableSymbolsToInputTF
+        return newLength <= 90
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -362,7 +232,7 @@ extension ResultsRepresentVC: UITextFieldDelegate {
     }
 }
 
-// MARK: - delegate
+// MARK: - Delegate
 
 extension ResultsRepresentVC: ShowImageDelegate {
     func didPerformSearch(searchRequest: String?) {
@@ -370,11 +240,149 @@ extension ResultsRepresentVC: ShowImageDelegate {
     }
 }
 
-// MARK: - Constants
+// MARK: - Setup UI
 
 extension ResultsRepresentVC {
-    private enum Constants {
-        static let currentPage: Int = 1
-        static let availableSymbolsToInputTF: Int = 90
+    
+    private func setupUI() {
+        setupLogoButton()
+        setupSearchTextField()
+        setupFilterButton()
+        setupSeparateLineView()
+        setupAvailableImagesInfoLabel()
+        setupRelatedRequstCollectionView()
+        setupShowResultsCollectionView()
+        setupRelatedLabel()
+        setupActivityIndicator()
+    }
+    
+    private func setupLogoButton() {
+        logoButton.setTitle("", for: .normal)
+    }
+    
+    private func setupSearchTextField() {
+        searchTextField.delegate = self
+        searchTextField.overrideUserInterfaceStyle = .light
+        searchTextField.clearButtonMode = .whileEditing
+        searchTextField.borderStyle = .none
+        searchTextField.backgroundColor = UIColor.hexF6F6F6
+        searchTextField.layer.borderWidth = AppConstants.SearchTFParameters.borderWidth
+        searchTextField.layer.borderColor = UIColor.hexE2E2E2.cgColor
+        searchTextField.layer.cornerRadius = AppConstants.SearchTFParameters.cornerRadius
+        
+        searchTextField.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 18)
+        
+        setupIconViews()
+        setupPlaceHolder()
+    }
+    
+    private func setupPlaceHolder() {
+        let attributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: UIColor.hex747474,
+            .font: UIFont(name: AppConstants.Fonts.openSansRegular, size: 14) ?? UIFont.systemFont(ofSize: 14)
+        ]
+        searchTextField.attributedPlaceholder = NSAttributedString(string: AppConstants.SearchTFParameters.placeHolder, attributes: attributes)
+    }
+    
+    private func setupIconViews() {
+        let searchIconView = UIView(frame: CGRect(x: .zero, y: .zero, width: 36, height: 20))
+        let searchImageView = UIImageView(image: UIImage(systemName: AppConstants.ImageNames.magnifyingglass))
+        searchImageView.frame = CGRect(x: 12, y: .zero, width: 20, height: 20)
+        searchImageView.contentMode = .scaleAspectFit
+        searchIconView.tintColor = .darkGray
+        searchIconView.addSubview(searchImageView)
+        
+        searchTextField.leftView = searchIconView
+        searchTextField.leftViewMode = .always
+    }
+    
+    private func setupFilterButton () {
+        filterButton.setTitle("", for: .normal)
+        filterButton.addTarget(self, action: #selector(showMenu(_:)), for: .touchUpInside)
+    }
+    
+    private func setupSeparateLineView() {
+        separateLineView.backgroundColor = UIColor.hexD2D2D2
+    }
+    
+    private func setupAvailableImagesInfoLabel() {
+        availableImagesInfoLabel.text = ""
+        availableImagesInfoLabel.font = UIFont(name: AppConstants.Fonts.openSansSemibold, size: 20)
+        availableImagesInfoLabel.textColor = .black
+    }
+    
+    private func setupRelatedLabel() {
+        relatedLabel.text = AppConstants.ResultRepresentVC.relatedLabelText
+        relatedLabel.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 16)
+        relatedLabel.textColor = UIColor.hex747474
+    }
+    
+    private func setupRelatedRequstCollectionView() {
+        relatedRequstCollectionView.dataSource = self
+        relatedRequstCollectionView.delegate = self
+        relatedRequstCollectionView.register(RelatedRequstCollectionViewCellsCreator.self, forCellWithReuseIdentifier: AppConstants.CollectionViewCellsId.relatedCellsID)
+        relatedRequstCollectionView.accessibilityIdentifier = AppConstants.CollectionViewCellsId.relatedCellsCreator
+        relatedRequstCollectionView.backgroundColor = .clear
+    }
+    
+    private func setupShowResultsCollectionView() {
+        showResultsCollectionView.dataSource = self
+        showResultsCollectionView.delegate = self
+        showResultsCollectionView.register(ShowResultsCollectionViewCellsCreator.self, forCellWithReuseIdentifier: AppConstants.CollectionViewCellsId.showResultImageCellsID)
+        showResultsCollectionView.accessibilityIdentifier = AppConstants.CollectionViewCellsId.showResultImageCellsCreator
+        showResultsCollectionView.backgroundColor = .clear
+    }
+    
+    private func setupActivityIndicator() {
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+    }
+}
+
+// MARK: - Set Buttons Actions
+
+extension ResultsRepresentVC {
+    
+    @IBAction private func backToMainVC(_ sender: Any) {
+        let transition = CATransition()
+        transition.duration = 0.2
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromLeft
+        self.view.window!.layer.add(transition, forKey: kCATransition)
+            
+        self.dismiss(animated: false, completion: nil)
+    }
+    
+    @objc private func showMenu(_ sender: UIButton) {
+        let sortActionMenu = UIMenu(title: AppConstants.ResultRepresentVC.menuTitle, options: .displayInline, children: [
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemDownloads, image: UIImage(systemName: AppConstants.ImageNames.arrowDownCircle), handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.imageUrls.sort { $0.downloads > $1.downloads }
+                self.showResultsCollectionView.reloadData()
+            }),
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemLikes, image: UIImage(systemName: AppConstants.ImageNames.handThumbsup), handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.imageUrls.sort { $0.likes > $1.likes }
+                self.showResultsCollectionView.reloadData()
+            }),
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemViews, image: UIImage(systemName: AppConstants.ImageNames.eye), handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.imageUrls.sort { $0.views > $1.views }
+                self.showResultsCollectionView.reloadData()
+            }),
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemComments, image: UIImage(systemName: AppConstants.ImageNames.ellipsisMessage), handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.imageUrls.sort { $0.comments > $1.comments }
+                self.showResultsCollectionView.reloadData()
+            })
+        ])
+        
+        let cancelAction = UIAction(title: AppConstants.ResultRepresentVC.menuItemCancel, image: UIImage(systemName: AppConstants.ImageNames.xmarkApp), attributes: .destructive, handler: { _ in })
+
+        let menu = UIMenu(children: [sortActionMenu, cancelAction])
+        sender.menu = menu
+        sender.showsMenuAsPrimaryAction = true
     }
 }

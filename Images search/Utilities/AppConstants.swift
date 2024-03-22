@@ -16,6 +16,10 @@ enum AppConstants {
         static let alertSettingsAction: String = "Settings"
         static let requestFilteredAlertTitle: String = "All your request is filtered"
         static let requestFilteredAlertMessage: String = "Please customize filters or change request"
+        static let allertActOk: String = "Ok"
+        static let allertTitleSaveError: String = "Save error"
+        static let allertTitleSaved: String = "Saved"
+        static let allertMessageSaved: String = "Your image has been saved to your photos"
     }
     
     enum Fonts {

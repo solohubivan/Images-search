@@ -14,10 +14,14 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var searchButton: UIButton!
     @IBOutlet weak private var bottomInfoLabel: UILabel!
     
+    var networkMonitor: NetworkMonitor?
+    var pixabayDataManager: PixabayDataManager?
+    
     private var selectedImageCategory: String = AppConstants.MainViewController.defaultCategory
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        pixabayDataManager = PixabayDataManager()
         checkInternetConnection()
         setupUI()
     }
@@ -31,8 +35,63 @@ class MainViewController: UIViewController {
     override var shouldAutorotate: Bool {
         return false
     }
+    
+    // MARK: - Private methods
 
-    // MARK: - Setup UI
+    private func updateTFCategoryButton() {
+        let buttonTitle = selectedImageCategory
+        let attributedString = createTFRightButtonName(name: buttonTitle)
+        if let menuButton = searchTextField.rightView as? UIButton {
+            menuButton.setAttributedTitle(attributedString, for: .normal)
+        }
+    }
+    
+    private func checkInternetConnection() {
+        networkMonitor?.networkStatusChanged = { [weak self] isConnected in
+            if !isConnected {
+                DispatchQueue.main.async {
+                    self?.showNoInternetAlert()
+                }
+            }
+        }
+        if let isConnected = networkMonitor?.isConnected, !isConnected {
+            showNoInternetAlert()
+        }
+    }
+
+    private func showNoInternetAlert() {
+        let cancelAction = AlertFactory.createAlertAction(
+            title: AppConstants.Alerts.alertCancelAction,
+            style: .cancel
+        )
+        let settingsAction = AlertFactory.createAlertAction(
+            title: AppConstants.Alerts.alertSettingsAction,
+            style: .default
+        ) { _ in
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsURL)
+            }
+        }
+        let alertController = AlertFactory.createAlert(
+            title: AppConstants.Alerts.noInternetAlertTitle,
+            message: AppConstants.Alerts.noInternetAlertMessage,
+            actions: [cancelAction, settingsAction]
+        )
+        present(alertController, animated: true)
+    }
+}
+
+// MARK: - Textfield properties
+
+extension MainViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
+}
+
+// MARK: - Setup UI
+
+extension MainViewController {
     
     private func setupUI() {
         setupMainTitleLabel()
@@ -146,24 +205,29 @@ class MainViewController: UIViewController {
         bottomInfoLabel.textColor = UIColor.hexE5E5E5
         bottomInfoLabel.font = UIFont(name: AppConstants.Fonts.openSansLight, size: 12)
     }
-    
-    // MARK: - Button actions
+}
 
+// MARK: - Set Buttons Actions
+
+extension MainViewController {
+    
     @IBAction private func showResults(_ sender: Any) {
+        guard let pixabayDataManager = pixabayDataManager else { return }
         let resultsRepresentVC = ResultsRepresentVC()
+        resultsRepresentVC.pixabayDataManager = pixabayDataManager
         resultsRepresentVC.modalPresentationStyle = .fullScreen
-    
-        let request = PixabayDataManager.shared.createSearchRequest(userRequest: searchTextField.text ?? "", selectedImageCategory, page: nil)
+        
+        let request = pixabayDataManager.createSearchRequest(userRequest: searchTextField.text ?? "", selectedImageCategory, page: nil)
 
-        PixabayDataManager.shared.getPixabayData(request: request) { [weak resultsRepresentVC] pixabayData in
+        pixabayDataManager.getPixabayData(request: request) { [weak resultsRepresentVC] pixabayData in
             resultsRepresentVC?.updateUI(with: pixabayData)
             resultsRepresentVC?.currentSearchRequest = request
             resultsRepresentVC?.currentSearchImageCategorie = self.selectedImageCategory
         }
-        
+            
         present(resultsRepresentVC, animated: false)
     }
-    
+
     @objc private func showMenu(_ sender: UIButton) {
         let menuItems: [UIAction] = [
             UIAction(title: AppConstants.MainViewController.menuCategoryVector, image: UIImage(systemName: AppConstants.ImageNames.lineDiagonalArrow), handler: { [weak self] _ in
@@ -191,54 +255,5 @@ class MainViewController: UIViewController {
         let menu = UIMenu(children: menuItems)
         sender.menu = menu
         sender.showsMenuAsPrimaryAction = true
-    }
-    
-    // MARK: - Private methods
-
-    private func updateTFCategoryButton() {
-        let buttonTitle = selectedImageCategory
-        let attributedString = createTFRightButtonName(name: buttonTitle)
-        if let menuButton = searchTextField.rightView as? UIButton {
-            menuButton.setAttributedTitle(attributedString, for: .normal)
-        }
-    }
-    
-    private func checkInternetConnection() {
-        if !NetworkMonitor.shared.isConnected {
-            DispatchQueue.main.async {
-                self.showNoInternetAlert()
-            }
-        }
-    }
-    
-    private func showNoInternetAlert() {
-        let cancelAction = AlertFactory.createAlertAction(
-            title: AppConstants.Alerts.alertCancelAction,
-            style: .cancel
-        )
-        let settingsAction = AlertFactory.createAlertAction(
-            title: AppConstants.Alerts.alertSettingsAction,
-            style: .default
-        ) { _ in
-            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-                UIApplication.shared.open(settingsURL)
-            }
-        }
-
-        let alertController = AlertFactory.createAlert(
-            title: AppConstants.Alerts.noInternetAlertTitle,
-            message: AppConstants.Alerts.noInternetAlertMessage,
-            actions: [cancelAction, settingsAction]
-        )
-
-        present(alertController, animated: true)
-    }
-}
-
-// MARK: - Textfield properties
-
-extension MainViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
     }
 }

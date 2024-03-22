@@ -9,27 +9,29 @@ import Foundation
 import Network
 
 final class NetworkMonitor {
-    static let shared = NetworkMonitor()
-
-    var networkStatusChanged: ((Bool) -> Void)?
-
+    
     private let networkMonitoringQueue = DispatchQueue.global()
     private let monitor: NWPathMonitor
-
     public private(set) var isConnected: Bool = false
 
-    private init() {
+    init() {
         monitor = NWPathMonitor()
     }
 
     public func startMonitoring() {
         monitor.start(queue: networkMonitoringQueue)
         monitor.pathUpdateHandler = { [weak self] path in
-            self?.isConnected = path.status != .unsatisfied
+            let isConnected = path.status != .unsatisfied
+            DispatchQueue.main.async {
+                self?.isConnected = isConnected
+                self?.networkStatusChanged?(isConnected)
+            }
         }
     }
 
     public func stopMonitoring() {
         monitor.cancel()
     }
+
+    var networkStatusChanged: ((Bool) -> Void)?
 }

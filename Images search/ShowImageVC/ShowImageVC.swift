@@ -60,7 +60,109 @@ class ShowImageVC: UIViewController {
         })
     }
     
-    // MARK: - setup UI
+    // MARK: - Private methods
+    
+    private func setMainImage(with url: URL) {
+        mainImageView.sd_setImage(with: url, placeholderImage: nil, options: [.continueInBackground,.progressiveLoad]) { [weak self] (image, error, cacheType, imageUrl) in
+            guard let self = self else { return }
+            if error == nil {
+                zoomButton.isHidden = false
+            }
+        }
+    }
+    
+    private func updatePictureFormatLabel(with urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        let fileExtension = url.pathExtension.uppercased()
+        pictureFormatLabel.text = "Photo in ." + fileExtension + " format"
+    }
+}
+
+// MARK: - TextField Properties
+
+extension ShowImageVC: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 абвгдеєїіёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЄЇІЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ")
+        let characterSet = CharacterSet(charactersIn: string)
+        if !allowedCharacters.isSuperset(of: characterSet) {
+            return false
+        }
+        
+        guard let text = textField.text else { return true }
+        let newLength = text.count + string.count - range.length
+        return newLength <= 90
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        delegate?.didPerformSearch(searchRequest: textField.text)
+        self.dismiss(animated: true)
+        return true
+    }
+}
+
+// MARK: - UICollectionView Properties
+
+extension ShowImageVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return showImageVCimagesUrls.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = relatedImagesCollectionView.dequeueReusableCell(withReuseIdentifier: AppConstants.ShowImageVC.relatedImagesCellsID, for: indexPath) as! RelatedImagesCollectionViewCellsCreator
+        cell.layer.masksToBounds = true
+        
+        let currentImageUrlString = showImageVCimagesUrls[indexPath.row].previewImageUrl
+        if let url = URL(string: currentImageUrlString) {
+            cell.setImage(with: url)
+        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let width = (collectionView.frame.width - 48) / 2
+        let height = width * 0.6
+        return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 16
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if kind == UICollectionView.elementKindSectionHeader {
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: AppConstants.ShowImageVC.relatedImagesCellsHeader, for: indexPath)
+
+            let titleLabel = UILabel(frame: CGRect(x: 16, y: 6, width: collectionView.bounds.width - 32, height: 40))
+            titleLabel.text = AppConstants.ShowImageVC.relatedLabelText
+            titleLabel.font = UIFont(name: AppConstants.Fonts.openSansSemibold, size: 20)
+            headerView.addSubview(titleLabel)
+            return headerView
+        }
+        return UICollectionReusableView()
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 40)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedImageUrl = showImageVCimagesUrls[indexPath.row].fullsizeImageUrl
+        updatePictureFormatLabel(with: selectedImageUrl)
+        if let url = URL(string: selectedImageUrl) {
+            setMainImage(with: url)
+        }
+    }
+}
+
+// MARK: - Setup UI
+
+extension ShowImageVC {
 
     private func setupUI() {
         setupLogoButton()
@@ -173,12 +275,16 @@ class ShowImageVC: UIViewController {
         relatedImagesCollectionView.backgroundColor = UIColor.hexF6F6F6
         relatedImagesCollectionView.overrideUserInterfaceStyle = .light
     }
-    
-    // MARK: - Actions
+}
+
+// MARK: - Set Buttons Actions
+
+extension ShowImageVC {
     
     @IBAction private func shareFullSizeImage(_ sender: Any) {
         guard let image = mainImageView.image else { return }
-        let shareViewController = ShareUtility.createShareViewController(imageToShare: image, sourceView: shareButton)
+        let shareUtility = ShareUtility()
+        let shareViewController = shareUtility.createShareViewController(imageToShare: image, sourceView: shareButton)
         present(shareViewController, animated: true, completion: nil)
     }
     
@@ -202,117 +308,18 @@ class ShowImageVC: UIViewController {
     
     @IBAction private func downloadTheImage(_ sender: Any) {
         guard let image = mainImageView.image else { return }
-        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(savedImage(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     
-    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+    @objc private func savedImage(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        let alertController: UIAlertController
         if let error = error {
-            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
+            let action = AlertFactory.createAlertAction(title: AppConstants.Alerts.allertActOk, style: .default)
+            alertController = AlertFactory.createAlert(title: AppConstants.Alerts.allertTitleSaveError, message: error.localizedDescription, actions: [action])
         } else {
-            let ac = UIAlertController(title: "Saved!", message: "Your image has been saved to your photos.", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
+            let action = AlertFactory.createAlertAction(title: AppConstants.Alerts.allertActOk, style: .default)
+            alertController = AlertFactory.createAlert(title: "\(AppConstants.Alerts.allertTitleSaved)!", message: AppConstants.Alerts.allertMessageSaved, actions: [action])
         }
-    }
-    
-    // MARK: - Private methods
-    
-    private func setMainImage(with url: URL) {
-        mainImageView.sd_setImage(with: url, placeholderImage: nil, options: [.continueInBackground,.progressiveLoad]) { [weak self] (image, error, cacheType, imageUrl) in
-            guard let self = self else { return }
-            if error == nil {
-                zoomButton.isHidden = false
-            }
-        }
-    }
-    
-    private func updatePictureFormatLabel(with urlString: String) {
-        guard let url = URL(string: urlString) else { return }
-        let fileExtension = url.pathExtension.uppercased()
-        pictureFormatLabel.text = "Photo in ." + fileExtension + " format"
-    }
-}
-
-// MARK: - TextField Properties
-
-extension ShowImageVC: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        let allowedCharacters = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 абвгдеєїіёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЄЇІЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ")
-        let characterSet = CharacterSet(charactersIn: string)
-        if !allowedCharacters.isSuperset(of: characterSet) {
-            return false
-        }
-        
-        guard let text = textField.text else { return true }
-        let newLength = text.count + string.count - range.length
-        return newLength <= 90
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        delegate?.didPerformSearch(searchRequest: textField.text)
-        self.dismiss(animated: true)
-        return true
-    }
-}
-
-// MARK: - UICollectionView Properties
-
-extension ShowImageVC: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return showImageVCimagesUrls.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = relatedImagesCollectionView.dequeueReusableCell(withReuseIdentifier: AppConstants.ShowImageVC.relatedImagesCellsID, for: indexPath) as! RelatedImagesCollectionViewCellsCreator
-        cell.layer.masksToBounds = true
-        
-        let currentImageUrlString = showImageVCimagesUrls[indexPath.row].previewImageUrl
-        if let url = URL(string: currentImageUrlString) {
-            cell.setImage(with: url)
-        }
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (collectionView.frame.width - 48) / 2
-        let height = width * 0.6
-        return CGSize(width: width, height: height)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 16
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader {
-            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: AppConstants.ShowImageVC.relatedImagesCellsHeader, for: indexPath)
-
-            let titleLabel = UILabel(frame: CGRect(x: 16, y: 6, width: collectionView.bounds.width - 32, height: 40))
-            titleLabel.text = AppConstants.ShowImageVC.relatedLabelText
-            titleLabel.font = UIFont(name: AppConstants.Fonts.openSansSemibold, size: 20)
-            headerView.addSubview(titleLabel)
-            return headerView
-        }
-        return UICollectionReusableView()
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 40)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedImageUrl = showImageVCimagesUrls[indexPath.row].fullsizeImageUrl
-        updatePictureFormatLabel(with: selectedImageUrl)
-        if let url = URL(string: selectedImageUrl) {
-            setMainImage(with: url)
-        }
+        present(alertController, animated: true)
     }
 }
