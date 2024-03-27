@@ -146,7 +146,7 @@
                         <action selector="downloadTheImage:" destination="-1" eventType="touchUpInside" id="D0a-hX-ZCr"/>
                     </connections>
                 </button>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="PAC-48-SGc" userLabel="Related CollectionView">
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="PAC-48-SGc" userLabel="Related CollectionView">
                     <rect key="frame" x="0.0" y="542" width="393" height="310"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dg1-iD-SIC">

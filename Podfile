@@ -7,5 +7,6 @@ target 'Images search' do
 
   # Pods for Images search
   pod 'SDWebImage'
+  pod 'netfox'
 
 end
