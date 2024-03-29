@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="bottomInfoLabel" destination="vnc-uY-6uY" id="hjg-89-UVx"/>
                 <outlet property="mainTitleLabel" destination="CUA-KQ-doa" id="vy8-4z-BdQ"/>
+                <outlet property="openLocalImagesButton" destination="mOp-tZ-OSu" id="FbW-iY-4AV"/>
                 <outlet property="searchButton" destination="CfW-yw-XHQ" id="PT9-HJ-68C"/>
                 <outlet property="searchTextField" destination="jfo-cz-IFx" id="kbs-Ju-BD6"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -56,6 +57,18 @@
                         <action selector="showResults:" destination="-1" eventType="touchUpInside" id="dbG-UX-jNM"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mOp-tZ-OSu" userLabel="openGaleryButton">
+                    <rect key="frame" x="16" y="438.33333333333331" width="361" height="52"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="52" id="CvZ-jb-psb"/>
+                    </constraints>
+                    <color key="tintColor" red="0.94698660710000004" green="0.66293249379999997" blue="0.29969697579999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="open local images" titleAlignment="center"/>
+                    <connections>
+                        <action selector="openLocalImages:" destination="-1" eventType="touchUpInside" id="PYb-DW-EGh"/>
+                    </connections>
+                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bottom Info Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vnc-uY-6uY">
                     <rect key="frame" x="16" y="797.66666666666663" width="361" height="20.333333333333371"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -69,13 +82,14 @@
                 <constraint firstItem="e6L-rT-HoE" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="06i-to-Ql1"/>
                 <constraint firstItem="CUA-KQ-doa" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="193" id="5Fa-CR-Cgt"/>
                 <constraint firstItem="vnc-uY-6uY" firstAttribute="leading" relation="lessThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="6pc-Vp-uE1"/>
+                <constraint firstItem="mOp-tZ-OSu" firstAttribute="top" secondItem="CfW-yw-XHQ" secondAttribute="bottom" constant="29" id="8aF-oG-osu"/>
                 <constraint firstItem="CfW-yw-XHQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="BFP-WD-lgp"/>
-                <constraint firstItem="vnc-uY-6uY" firstAttribute="top" relation="greaterThanOrEqual" secondItem="CfW-yw-XHQ" secondAttribute="bottom" constant="16" id="BpL-Sl-S72"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="CfW-yw-XHQ" secondAttribute="trailing" constant="16" id="GFy-WN-Bq9"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="CUA-KQ-doa" secondAttribute="trailing" constant="20" id="Gbv-6H-62L"/>
                 <constraint firstItem="CUA-KQ-doa" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="IuK-U9-1UV"/>
                 <constraint firstAttribute="bottom" secondItem="e6L-rT-HoE" secondAttribute="bottom" id="JNI-Tf-uQS"/>
                 <constraint firstItem="CfW-yw-XHQ" firstAttribute="top" secondItem="jfo-cz-IFx" secondAttribute="bottom" constant="29" id="NJN-nO-PlU"/>
+                <constraint firstItem="mOp-tZ-OSu" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="OJe-5C-Ecf"/>
                 <constraint firstAttribute="trailing" secondItem="PJL-HU-eQT" secondAttribute="trailing" id="USf-37-51m"/>
                 <constraint firstAttribute="bottom" secondItem="vnc-uY-6uY" secondAttribute="bottom" constant="34" id="aHF-yW-Q2C"/>
                 <constraint firstItem="PJL-HU-eQT" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="azv-hm-b1h"/>
@@ -85,7 +99,10 @@
                 <constraint firstItem="jfo-cz-IFx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="cTi-mw-1ci"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="jfo-cz-IFx" secondAttribute="trailing" constant="16" id="dUu-HP-DsK"/>
                 <constraint firstItem="PJL-HU-eQT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="j2K-uN-5Bk"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="mOp-tZ-OSu" secondAttribute="trailing" constant="16" id="ljC-FX-tvY"/>
+                <constraint firstItem="vnc-uY-6uY" firstAttribute="top" relation="greaterThanOrEqual" secondItem="mOp-tZ-OSu" secondAttribute="bottom" constant="20" id="mfj-CP-5en"/>
                 <constraint firstItem="e6L-rT-HoE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vrj-Ji-a3T"/>
+                <constraint firstItem="mOp-tZ-OSu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="wvT-aW-t45"/>
                 <constraint firstItem="jfo-cz-IFx" firstAttribute="top" secondItem="CUA-KQ-doa" secondAttribute="bottom" constant="63" id="xuD-ZQ-h4L"/>
             </constraints>
             <point key="canvasLocation" x="66" y="31"/>

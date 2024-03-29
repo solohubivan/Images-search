@@ -3,20 +3,24 @@ PODS:
   - SDWebImage (5.19.0):
     - SDWebImage/Core (= 5.19.0)
   - SDWebImage/Core (5.19.0)
+  - TOCropViewController (2.6.1)
 
 DEPENDENCIES:
   - netfox
   - SDWebImage
+  - TOCropViewController
 
 SPEC REPOS:
   trunk:
     - netfox
     - SDWebImage
+    - TOCropViewController
 
 SPEC CHECKSUMS:
   netfox: 9d5cc727fe7576c4c7688a2504618a156b7d44b7
   SDWebImage: 981fd7e860af070920f249fd092420006014c3eb
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
 
-PODFILE CHECKSUM: 8d81e9d7d7042bff7c6a4b38390f5aead6ff4ff1
+PODFILE CHECKSUM: 6f0becfc820424fa6cc2c81f0eb38dce6e69347c
 
 COCOAPODS: 1.12.1

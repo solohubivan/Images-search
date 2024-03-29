@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShowLocalImagesVC" customModule="Images_search" customModuleProvider="target">
+            <connections>
+                <outlet property="editImageButton" destination="5BV-ir-Hmu" id="N7a-9S-zWO"/>
+                <outlet property="goBackButton" destination="9rt-CY-kyo" id="Ido-Nu-xip"/>
+                <outlet property="imageView" destination="WNv-8b-O8m" id="jC8-rm-SrV"/>
+                <outlet property="mainImageView" destination="3KD-WJ-VcF" id="afk-Qa-vlk"/>
+                <outlet property="otherLocalImagesCollectionView" destination="sws-Lq-Nl7" id="KvK-gc-p5J"/>
+                <outlet property="shareButton" destination="fDG-hr-voa" id="a8p-Eg-eHg"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9rt-CY-kyo" userLabel="Logo Button">
+                    <rect key="frame" x="16" y="59" width="52" height="52"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="52" id="Awy-3r-hlE"/>
+                        <constraint firstAttribute="height" constant="52" id="uOi-4Q-WzS"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" image="logo"/>
+                    <connections>
+                        <action selector="goBack:" destination="-1" eventType="touchUpInside" id="eHZ-Mh-5Rx"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WNv-8b-O8m" userLabel="mainImage View">
+                    <rect key="frame" x="0.0" y="121" width="393" height="221"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3KD-WJ-VcF">
+                            <rect key="frame" x="0.0" y="0.0" width="393" height="221"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="3KD-WJ-VcF" firstAttribute="leading" secondItem="WNv-8b-O8m" secondAttribute="leading" id="Kv2-4D-VyZ"/>
+                        <constraint firstAttribute="trailing" secondItem="3KD-WJ-VcF" secondAttribute="trailing" id="Osh-cR-VhZ"/>
+                        <constraint firstItem="3KD-WJ-VcF" firstAttribute="top" secondItem="WNv-8b-O8m" secondAttribute="top" id="fEs-Lq-rhw"/>
+                        <constraint firstAttribute="width" secondItem="WNv-8b-O8m" secondAttribute="height" multiplier="16:9" id="hDK-sf-qVN"/>
+                        <constraint firstAttribute="bottom" secondItem="3KD-WJ-VcF" secondAttribute="bottom" id="rn6-zb-4XY"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5BV-ir-Hmu" userLabel="edit images Button">
+                    <rect key="frame" x="16" y="356.66666666666669" width="104" height="35"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Edit image"/>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDG-hr-voa" userLabel="share Button">
+                    <rect key="frame" x="253" y="358" width="124" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="124" id="2gz-s1-2vR"/>
+                        <constraint firstAttribute="height" constant="32" id="CJ2-sz-Z3G"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" image="ShareBigButton"/>
+                </button>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="sws-Lq-Nl7" userLabel="rest pictures Collection View">
+                    <rect key="frame" x="0.0" y="406" width="393" height="446"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ssj-Fu-wBs">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9rt-CY-kyo" secondAttribute="trailing" constant="16" id="87z-xU-JO5"/>
+                <constraint firstItem="fDG-hr-voa" firstAttribute="centerY" secondItem="5BV-ir-Hmu" secondAttribute="centerY" id="B49-9V-40b"/>
+                <constraint firstAttribute="trailing" secondItem="WNv-8b-O8m" secondAttribute="trailing" id="Bfg-uv-cW3"/>
+                <constraint firstAttribute="bottom" secondItem="sws-Lq-Nl7" secondAttribute="bottom" id="FqB-VM-2rG"/>
+                <constraint firstItem="WNv-8b-O8m" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="L9n-Ca-3h5"/>
+                <constraint firstItem="5BV-ir-Hmu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="RHN-4T-7xn"/>
+                <constraint firstItem="sws-Lq-Nl7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="T3y-6a-oFa"/>
+                <constraint firstItem="fDG-hr-voa" firstAttribute="top" secondItem="WNv-8b-O8m" secondAttribute="bottom" constant="16" id="XXo-0Z-9iR"/>
+                <constraint firstItem="sws-Lq-Nl7" firstAttribute="top" secondItem="fDG-hr-voa" secondAttribute="bottom" constant="16" id="dfH-LX-EQu"/>
+                <constraint firstAttribute="trailing" secondItem="sws-Lq-Nl7" secondAttribute="trailing" id="dsi-ri-bGE"/>
+                <constraint firstAttribute="trailing" secondItem="fDG-hr-voa" secondAttribute="trailing" constant="16" id="gMO-yF-KWq"/>
+                <constraint firstItem="9rt-CY-kyo" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="jmA-DL-FBw"/>
+                <constraint firstItem="9rt-CY-kyo" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="pTe-ZU-6lO"/>
+                <constraint firstItem="WNv-8b-O8m" firstAttribute="top" secondItem="9rt-CY-kyo" secondAttribute="bottom" constant="10" id="pbN-nV-5h1"/>
+            </constraints>
+            <point key="canvasLocation" x="-5.343511450381679" y="19.718309859154932"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ShareBigButton" width="124" height="32"/>
+        <image name="logo" width="52" height="53"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

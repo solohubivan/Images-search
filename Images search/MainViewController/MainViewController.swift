@@ -13,6 +13,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var searchTextField: UITextField!
     @IBOutlet weak private var searchButton: UIButton!
     @IBOutlet weak private var bottomInfoLabel: UILabel!
+    @IBOutlet weak private var openLocalImagesButton: UIButton!
     
     var networkMonitor: NetworkMonitor?
     var pixabayDataManager: PixabayDataManager?
@@ -26,6 +27,11 @@ class MainViewController: UIViewController {
         setupUI()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        customizeOpenLocalImgButton()
+    }
+
     // MARK: - Orientation Lock
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
@@ -95,6 +101,24 @@ extension MainViewController: UITextFieldDelegate {
     }
 }
 
+// MARK: - UIImagePickerController properties
+
+extension MainViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let image = info[.originalImage] as? UIImage else { return }
+        picker.dismiss(animated: true)
+        
+        let showLocalImagesVC = ShowLocalImagesVC()
+        showLocalImagesVC.selectedLocalImage = image
+        showLocalImagesVC.modalPresentationStyle = .fullScreen
+        present(showLocalImagesVC, animated: false)
+    }
+}
+
 // MARK: - Setup UI
 
 extension MainViewController {
@@ -107,6 +131,7 @@ extension MainViewController {
 
         updateTFCategoryButton()
         setupKeyboardDismissGesture()
+        setupOpenLocalImagesButton()
     }
     
     private func setupMainTitleLabel() {
@@ -206,6 +231,19 @@ extension MainViewController {
         searchButton.titleEdgeInsets = UIEdgeInsets(top: .zero, left: 13, bottom: .zero, right: .zero)
     }
     
+    private func setupOpenLocalImagesButton() {
+        openLocalImagesButton.setTitle(AppConstants.ButtonTitleLabels.openLocalImagesButton, for: .normal)
+        openLocalImagesButton.setTitleColor(.orange, for: .normal)
+        
+        openLocalImagesButton.layer.borderWidth = 2
+        openLocalImagesButton.layer.cornerRadius = 5
+        openLocalImagesButton.layer.borderColor = UIColor.orange.cgColor
+    }
+    
+    private func customizeOpenLocalImgButton() {
+        openLocalImagesButton.titleLabel?.font = UIFont(name: AppConstants.Fonts.openSansMedium, size: 18)
+    }
+    
     private func setupBottomInfoLabel() {
         bottomInfoLabel.text = AppConstants.MainViewController.bottomInfoLabel
         bottomInfoLabel.textColor = UIColor.hexE5E5E5
@@ -217,6 +255,14 @@ extension MainViewController {
 
 extension MainViewController {
     
+    @IBAction private func openLocalImages(_ sender: Any) {
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.delegate = self
+        picker.modalPresentationStyle = .fullScreen
+        present(picker, animated: false)
+    }
+
     @IBAction private func showResults(_ sender: Any) {
         guard let pixabayDataManager = pixabayDataManager,
               let searchText = searchTextField.text else { return }

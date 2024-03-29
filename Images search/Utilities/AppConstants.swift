@@ -28,6 +28,7 @@ enum AppConstants {
         static let openSansRegular = "OpenSans-Regular"
         static let openSansLight = "OpenSans-Light"
         static let openSansSemibold = "OpenSans-Semibold"
+        static let openSansMedium = "OpenSans-Medium"
     }
     
     enum ImageNames {
@@ -47,6 +48,7 @@ enum AppConstants {
     
     enum ButtonTitleLabels {
         static let searchButton: String = "Search"
+        static let openLocalImagesButton: String = "Open local images"
     }
     
     enum SearchTFParameters {

@@ -7,6 +7,8 @@
 
 import UIKit
 import SDWebImage
+import TOCropViewController
+import Photos
 
 protocol ShowImageDelegate: AnyObject {
     func didPerformSearch(searchRequest: String?)
@@ -20,6 +22,7 @@ class ShowImageVC: UIViewController {
     @IBOutlet weak private var separateLineView: UIView!
     @IBOutlet weak private var mainImageBackgroundView: UIView!
     @IBOutlet weak private var mainImageView: UIImageView!
+    @IBOutlet weak private var editImagesButton: UIButton!
     @IBOutlet weak private var appLicenseLabel: UILabel!
     @IBOutlet weak private var appLicenseInfoLabel: UILabel!
     @IBOutlet weak private var pictureFormatLabel: UILabel!
@@ -41,6 +44,11 @@ class ShowImageVC: UIViewController {
             updatePictureFormatLabel(with: showMainImageUrl)
             setMainImage(with: url)
         }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        customizeEditImagesButton()
     }
     
     // MARK: - Orientation settings
@@ -170,6 +178,7 @@ extension ShowImageVC {
         setupFilterButton()
         setupSeparateLineView()
         setupMainImageView()
+        setupEditImagesButton()
         setupAppLicenseLabel()
         setupAppLicenseInfoLabel()
         setupPictureFormatLabel()
@@ -244,6 +253,16 @@ extension ShowImageVC {
         appLicenseLabel.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 16)
     }
     
+    private func setupEditImagesButton() {
+        editImagesButton.setTitle("Edit Images", for: .normal)
+        editImagesButton.setTitleColor(UIColor.hex430BE0, for: .normal)
+    }
+    
+    private func customizeEditImagesButton() {
+        editImagesButton.titleLabel?.font = UIFont(name: AppConstants.Fonts.openSansMedium, size: 18)
+        editImagesButton.titleLabel?.numberOfLines = 1
+    }
+    
     private func setupAppLicenseInfoLabel() {
         appLicenseInfoLabel.text = AppConstants.ShowImageVC.appLicenseInfoLabelText
         appLicenseInfoLabel.textColor = UIColor.hex747474
@@ -280,6 +299,10 @@ extension ShowImageVC {
 // MARK: - Set Buttons Actions
 
 extension ShowImageVC {
+    
+    @IBAction private func editingImages(_ sender: Any) {
+        print("button Edit tapped")
+    }
     
     @IBAction private func shareFullSizeImage(_ sender: Any) {
         guard let image = mainImageView.image else { return }
