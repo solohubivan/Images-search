@@ -138,7 +138,7 @@ extension ShowLocalImagesVC {
     
     @IBAction private func showEditedImagesVC(_ sender: Any) {
         let vc = EditedImagesVC()
-        vc.modalPresentationStyle = .formSheet
+        vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
 

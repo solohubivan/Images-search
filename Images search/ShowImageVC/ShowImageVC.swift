@@ -22,7 +22,8 @@ class ShowImageVC: UIViewController {
     @IBOutlet weak private var separateLineView: UIView!
     @IBOutlet weak private var mainImageBackgroundView: UIView!
     @IBOutlet weak private var mainImageView: UIImageView!
-    @IBOutlet weak private var editImagesButton: UIButton!
+    @IBOutlet weak private var editImageButton: UIButton!
+    @IBOutlet weak private var openEditedImagesVCButton: UIButton!
     @IBOutlet weak private var appLicenseLabel: UILabel!
     @IBOutlet weak private var appLicenseInfoLabel: UILabel!
     @IBOutlet weak private var pictureFormatLabel: UILabel!
@@ -49,6 +50,7 @@ class ShowImageVC: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         customizeEditImagesButton()
+        customizeOpenEditedImagesImagesButton()
     }
     
     // MARK: - Orientation settings
@@ -168,6 +170,17 @@ extension ShowImageVC: UICollectionViewDataSource, UICollectionViewDelegateFlowL
     }
 }
 
+extension ShowImageVC: TOCropViewControllerDelegate {
+    func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
+        cropViewController.dismiss(animated: true)
+    }
+    
+    func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
+        cropViewController.dismiss(animated: true, completion: nil)
+        EditedImagesDataManager.shared.saveEditedImage(image)
+    }
+}
+
 // MARK: - Setup UI
 
 extension ShowImageVC {
@@ -178,6 +191,7 @@ extension ShowImageVC {
         setupFilterButton()
         setupSeparateLineView()
         setupMainImageView()
+        setupOpenEditedImagesVCButton()
         setupEditImagesButton()
         setupAppLicenseLabel()
         setupAppLicenseInfoLabel()
@@ -253,14 +267,35 @@ extension ShowImageVC {
         appLicenseLabel.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 16)
     }
     
+    private func setupOpenEditedImagesVCButton() {
+        openEditedImagesVCButton.setTitle("Edited images", for: .normal)
+        openEditedImagesVCButton.setTitleColor(UIColor.hex430BE0, for: .normal)
+        openEditedImagesVCButton.layer.borderWidth = 2
+        openEditedImagesVCButton.layer.borderColor = UIColor.hex430BE0.cgColor
+        openEditedImagesVCButton.layer.cornerRadius = 5
+        openEditedImagesVCButton.titleLabel?.numberOfLines = 1
+    }
+    
+    private func customizeOpenEditedImagesImagesButton() {
+        openEditedImagesVCButton.titleLabel?.font = UIFont(name: AppConstants.Fonts.openSansMedium, size: 16)
+        openEditedImagesVCButton.titleLabel?.textAlignment = .center
+        openEditedImagesVCButton.titleLabel?.numberOfLines = 1
+    }
+    
     private func setupEditImagesButton() {
-        editImagesButton.setTitle("Edit Images", for: .normal)
-        editImagesButton.setTitleColor(UIColor.hex430BE0, for: .normal)
+        editImageButton.setTitle("Edit", for: .normal)
+        editImageButton.backgroundColor = .white
+        editImageButton.setTitleColor(UIColor.hex2D2D2D, for: .normal)
+        editImageButton.setTitleColor(UIColor.hex2D2D2D, for: .highlighted)
+        editImageButton.layer.borderWidth = 1
+        editImageButton.layer.cornerRadius = 3
+        editImageButton.layer.borderColor = UIColor.hex430BE0.cgColor
+        editImageButton.titleLabel?.numberOfLines = 1
     }
     
     private func customizeEditImagesButton() {
-        editImagesButton.titleLabel?.font = UIFont(name: AppConstants.Fonts.openSansMedium, size: 18)
-        editImagesButton.titleLabel?.numberOfLines = 1
+        editImageButton.titleLabel?.font = UIFont(name: AppConstants.Fonts.openSansRegular, size: 14)
+        editImageButton.titleLabel?.numberOfLines = 1
     }
     
     private func setupAppLicenseInfoLabel() {
@@ -300,8 +335,18 @@ extension ShowImageVC {
 
 extension ShowImageVC {
     
-    @IBAction private func editingImages(_ sender: Any) {
-        print("button Edit tapped")
+    @IBAction private func editingImage(_ sender: Any) {
+        guard let image = mainImageView.image else { return }
+        let vc = TOCropViewController(croppingStyle: .default, image: image)
+        vc.toolbarPosition = .bottom
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+    
+    @IBAction private func showEditedImages(_ sender: Any) {
+        let vc = EditedImagesVC()
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
     }
     
     @IBAction private func shareFullSizeImage(_ sender: Any) {

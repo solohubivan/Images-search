@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="bottomInfoLabel" destination="vnc-uY-6uY" id="hjg-89-UVx"/>
                 <outlet property="mainTitleLabel" destination="CUA-KQ-doa" id="vy8-4z-BdQ"/>
+                <outlet property="openEditedImagesButton" destination="bdo-hu-0G4" id="37r-Ox-sMC"/>
                 <outlet property="openLocalImagesButton" destination="mOp-tZ-OSu" id="FbW-iY-4AV"/>
                 <outlet property="searchButton" destination="CfW-yw-XHQ" id="PT9-HJ-68C"/>
                 <outlet property="searchTextField" destination="jfo-cz-IFx" id="kbs-Ju-BD6"/>
@@ -69,6 +70,18 @@
                         <action selector="openLocalImages:" destination="-1" eventType="touchUpInside" id="PYb-DW-EGh"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdo-hu-0G4">
+                    <rect key="frame" x="16" y="519.33333333333337" width="361" height="52"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="52" id="RJQ-WY-nWt"/>
+                    </constraints>
+                    <color key="tintColor" red="0.71581466839999996" green="1" blue="0.77692616309999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="open edited images"/>
+                    <connections>
+                        <action selector="openEditedImagesVC:" destination="-1" eventType="touchUpInside" id="cNj-aA-Niy"/>
+                    </connections>
+                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bottom Info Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vnc-uY-6uY">
                     <rect key="frame" x="16" y="797.66666666666663" width="361" height="20.333333333333371"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -80,16 +93,19 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="e6L-rT-HoE" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="06i-to-Ql1"/>
+                <constraint firstItem="vnc-uY-6uY" firstAttribute="top" relation="greaterThanOrEqual" secondItem="bdo-hu-0G4" secondAttribute="bottom" constant="40" id="4Nj-jE-82h"/>
                 <constraint firstItem="CUA-KQ-doa" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="193" id="5Fa-CR-Cgt"/>
                 <constraint firstItem="vnc-uY-6uY" firstAttribute="leading" relation="lessThanOrEqual" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="6pc-Vp-uE1"/>
                 <constraint firstItem="mOp-tZ-OSu" firstAttribute="top" secondItem="CfW-yw-XHQ" secondAttribute="bottom" constant="29" id="8aF-oG-osu"/>
                 <constraint firstItem="CfW-yw-XHQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="BFP-WD-lgp"/>
+                <constraint firstItem="bdo-hu-0G4" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="FGH-3i-P3B"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="CfW-yw-XHQ" secondAttribute="trailing" constant="16" id="GFy-WN-Bq9"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="CUA-KQ-doa" secondAttribute="trailing" constant="20" id="Gbv-6H-62L"/>
                 <constraint firstItem="CUA-KQ-doa" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="IuK-U9-1UV"/>
                 <constraint firstAttribute="bottom" secondItem="e6L-rT-HoE" secondAttribute="bottom" id="JNI-Tf-uQS"/>
                 <constraint firstItem="CfW-yw-XHQ" firstAttribute="top" secondItem="jfo-cz-IFx" secondAttribute="bottom" constant="29" id="NJN-nO-PlU"/>
                 <constraint firstItem="mOp-tZ-OSu" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="OJe-5C-Ecf"/>
+                <constraint firstItem="bdo-hu-0G4" firstAttribute="top" secondItem="mOp-tZ-OSu" secondAttribute="bottom" constant="29" id="PgW-cm-5Gh"/>
                 <constraint firstAttribute="trailing" secondItem="PJL-HU-eQT" secondAttribute="trailing" id="USf-37-51m"/>
                 <constraint firstAttribute="bottom" secondItem="vnc-uY-6uY" secondAttribute="bottom" constant="34" id="aHF-yW-Q2C"/>
                 <constraint firstItem="PJL-HU-eQT" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="azv-hm-b1h"/>
@@ -98,9 +114,9 @@
                 <constraint firstItem="vnc-uY-6uY" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="cHQ-vN-uO3"/>
                 <constraint firstItem="jfo-cz-IFx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="cTi-mw-1ci"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="jfo-cz-IFx" secondAttribute="trailing" constant="16" id="dUu-HP-DsK"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="bdo-hu-0G4" secondAttribute="trailing" constant="16" id="dzD-Hm-gcK"/>
                 <constraint firstItem="PJL-HU-eQT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="j2K-uN-5Bk"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="mOp-tZ-OSu" secondAttribute="trailing" constant="16" id="ljC-FX-tvY"/>
-                <constraint firstItem="vnc-uY-6uY" firstAttribute="top" relation="greaterThanOrEqual" secondItem="mOp-tZ-OSu" secondAttribute="bottom" constant="20" id="mfj-CP-5en"/>
                 <constraint firstItem="e6L-rT-HoE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="vrj-Ji-a3T"/>
                 <constraint firstItem="mOp-tZ-OSu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="wvT-aW-t45"/>
                 <constraint firstItem="jfo-cz-IFx" firstAttribute="top" secondItem="CUA-KQ-doa" secondAttribute="bottom" constant="63" id="xuD-ZQ-h4L"/>

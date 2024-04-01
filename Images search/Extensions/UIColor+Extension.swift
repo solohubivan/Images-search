@@ -15,4 +15,5 @@ extension UIColor {
     static let hex2D2D2D = UIColor(red: 0.1765, green: 0.1765, blue: 0.1765, alpha: 1)
     static let hex747474 = UIColor(red: 0.4549, green: 0.4549, blue: 0.4549, alpha: 1)
     static let hexF6F6F6 = UIColor(red: 0.9647, green: 0.9647, blue: 0.9647, alpha: 1)
+    static let hex00C7BE = UIColor(red: 0, green: 0.7804, blue: 0.7451, alpha: 1)
 }

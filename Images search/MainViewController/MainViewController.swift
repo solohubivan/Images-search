@@ -14,6 +14,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak private var searchButton: UIButton!
     @IBOutlet weak private var bottomInfoLabel: UILabel!
     @IBOutlet weak private var openLocalImagesButton: UIButton!
+    @IBOutlet weak private var openEditedImagesButton: UIButton!
     
     var networkMonitor: NetworkMonitor?
     var pixabayDataManager: PixabayDataManager?
@@ -30,6 +31,7 @@ class MainViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         customizeOpenLocalImgButton()
+        customizeOpenEditedImgButton()
     }
 
     // MARK: - Orientation Lock
@@ -132,6 +134,7 @@ extension MainViewController {
         updateTFCategoryButton()
         setupKeyboardDismissGesture()
         setupOpenLocalImagesButton()
+        setupOpenEditedImagesButton()
     }
     
     private func setupMainTitleLabel() {
@@ -240,8 +243,21 @@ extension MainViewController {
         openLocalImagesButton.layer.borderColor = UIColor.orange.cgColor
     }
     
+    private func setupOpenEditedImagesButton() {
+        openEditedImagesButton.setTitle("Edited images", for: .normal)
+        openEditedImagesButton.setTitleColor(UIColor.hex00C7BE, for: .normal)
+        
+        openEditedImagesButton.layer.borderWidth = 2
+        openEditedImagesButton.layer.cornerRadius = 5
+        openEditedImagesButton.layer.borderColor = UIColor.hex00C7BE.cgColor
+    }
+    
     private func customizeOpenLocalImgButton() {
         openLocalImagesButton.titleLabel?.font = UIFont(name: AppConstants.Fonts.openSansMedium, size: 18)
+    }
+    
+    private func customizeOpenEditedImgButton() {
+        openEditedImagesButton.titleLabel?.font = UIFont(name: AppConstants.Fonts.openSansMedium, size: 18)
     }
     
     private func setupBottomInfoLabel() {
@@ -254,6 +270,12 @@ extension MainViewController {
 // MARK: - Set Buttons Actions
 
 extension MainViewController {
+    
+    @IBAction private func openEditedImagesVC(_ sender: Any) {
+        let editedImagesVC = EditedImagesVC()
+        editedImagesVC.modalPresentationStyle = .fullScreen
+        present(editedImagesVC, animated: false)
+    }
     
     @IBAction private func openLocalImages(_ sender: Any) {
         let picker = UIImagePickerController()

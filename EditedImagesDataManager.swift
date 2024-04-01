@@ -20,6 +20,20 @@ class EditedImagesDataManager {
     
     // MARK: - Public methods
     
+    func deleteEditedImage(at index: Int) {
+        guard index < editedImages.count else { return }
+        editedImages.remove(at: index)
+
+        let fileManager = FileManager.default
+        let documentsURL = getDocumentsDirectory()
+        guard let fileURLs = try? fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil) else { return }
+            
+        if index < fileURLs.count {
+            let fileURL = fileURLs[index]
+            try? fileManager.removeItem(at: fileURL)
+        }
+    }
+    
     func saveEditedImage(_ image: UIImage) {
         guard let data = image.jpegData(compressionQuality: 1.0) else { return }
         let uniqueID = UUID().uuidString
