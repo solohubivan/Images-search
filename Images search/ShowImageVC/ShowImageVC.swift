@@ -70,6 +70,22 @@ class ShowImageVC: UIViewController {
         })
     }
     
+    // MARK: - @objc methods
+    
+    @objc private func savedImage(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            let action = AlertFactory.createAlertAction(title: AppConstants.Alerts.allertActOk, style: .default)
+            let alertController = AlertFactory.createAlert(title: AppConstants.Alerts.allertTitleSaveError, message: error.localizedDescription, actions: [action])
+        } else {
+            let alertController = UIAlertController(title: "\(AppConstants.Alerts.allertTitleSaved)!", message: AppConstants.Alerts.allertMessageSaved, preferredStyle: .alert)
+            self.present(alertController, animated: true) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    alertController.dismiss(animated: true)
+                }
+            }
+        }
+    }
+    
     // MARK: - Private methods
     
     private func setMainImage(with url: URL) {
@@ -131,18 +147,6 @@ class ShowImageVC: UIViewController {
     @IBAction private func downloadTheImage(_ sender: Any) {
         guard let image = mainImageView.image else { return }
         UIImageWriteToSavedPhotosAlbum(image, self, #selector(savedImage(_:didFinishSavingWithError:contextInfo:)), nil)
-    }
-    
-    @objc private func savedImage(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        let alertController: UIAlertController
-        if let error = error {
-            let action = AlertFactory.createAlertAction(title: AppConstants.Alerts.allertActOk, style: .default)
-            alertController = AlertFactory.createAlert(title: AppConstants.Alerts.allertTitleSaveError, message: error.localizedDescription, actions: [action])
-        } else {
-            let action = AlertFactory.createAlertAction(title: AppConstants.Alerts.allertActOk, style: .default)
-            alertController = AlertFactory.createAlert(title: "\(AppConstants.Alerts.allertTitleSaved)!", message: AppConstants.Alerts.allertMessageSaved, actions: [action])
-        }
-        present(alertController, animated: true)
     }
 }
 
@@ -228,6 +232,8 @@ extension ShowImageVC: UICollectionViewDataSource, UICollectionViewDelegateFlowL
     }
 }
 
+// MARK: - TOCropViewController properties
+
 extension ShowImageVC: TOCropViewControllerDelegate {
     func cropViewController(_ cropViewController: TOCropViewController, didFinishCancelled cancelled: Bool) {
         cropViewController.dismiss(animated: true)
@@ -236,6 +242,13 @@ extension ShowImageVC: TOCropViewControllerDelegate {
     func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
         cropViewController.dismiss(animated: true, completion: nil)
         EditedImagesDataManager.shared.saveEditedImage(image)
+        
+        let alertController = UIAlertController(title: AppConstants.Alerts.allertTitleSaved, message: nil, preferredStyle: .alert)
+        self.present(alertController, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                alertController.dismiss(animated: true)
+            }
+        }
     }
 }
 

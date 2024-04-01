@@ -22,6 +22,16 @@ class EditedImagesVC: UIViewController {
         checkAvailableEditedImages()
     }
     
+    // MARK: - Orientation Lock
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
     // MARK: - Private methods
     
     private func checkAvailableEditedImages() {

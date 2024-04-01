@@ -39,6 +39,16 @@ class ShowLocalImagesVC: UIViewController {
         showEditedImagesButton.titleLabel?.numberOfLines = 1
     }
     
+    // MARK: - Orientation Lock
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
+
+    override var shouldAutorotate: Bool {
+        return false
+    }
+    
     // MARK: - Private methods
 
     private func checkPhotoLibraryPermission() {
@@ -114,6 +124,13 @@ extension ShowLocalImagesVC: TOCropViewControllerDelegate {
     func cropViewController(_ cropViewController: TOCropViewController, didCropTo image: UIImage, with cropRect: CGRect, angle: Int) {
         cropViewController.dismiss(animated: true, completion: nil)
         EditedImagesDataManager.shared.saveEditedImage(image)
+        
+        let alertController = UIAlertController(title: AppConstants.Alerts.allertTitleSaved, message: nil, preferredStyle: .alert)
+        self.present(alertController, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                alertController.dismiss(animated: true)
+            }
+        }
     }
 }
 
