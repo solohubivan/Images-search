@@ -63,6 +63,39 @@ class ResultsRepresentVC: UIViewController {
             setActivityIndicatorHidden(true)
         }
     }
+    
+    // MARK: - @objc methods
+    
+    @objc private func showMenu(_ sender: UIButton) {
+        let sortActionMenu = UIMenu(title: AppConstants.ResultRepresentVC.menuTitle, options: .displayInline, children: [
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemDownloads, image: UIImage(systemName: AppConstants.ImageNames.arrowDownCircle), handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.imageUrls.sort { $0.downloads > $1.downloads }
+                self.showResultsCollectionView.reloadData()
+            }),
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemLikes, image: UIImage(systemName: AppConstants.ImageNames.handThumbsup), handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.imageUrls.sort { $0.likes > $1.likes }
+                self.showResultsCollectionView.reloadData()
+            }),
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemViews, image: UIImage(systemName: AppConstants.ImageNames.eye), handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.imageUrls.sort { $0.views > $1.views }
+                self.showResultsCollectionView.reloadData()
+            }),
+            UIAction(title: AppConstants.ResultRepresentVC.menuItemComments, image: UIImage(systemName: AppConstants.ImageNames.ellipsisMessage), handler: { [weak self] _ in
+                guard let self = self else { return }
+                self.imageUrls.sort { $0.comments > $1.comments }
+                self.showResultsCollectionView.reloadData()
+            })
+        ])
+        
+        let cancelAction = UIAction(title: AppConstants.ResultRepresentVC.menuItemCancel, image: UIImage(systemName: AppConstants.ImageNames.xmarkApp), attributes: .destructive, handler: { _ in })
+
+        let menu = UIMenu(children: [sortActionMenu, cancelAction])
+        sender.menu = menu
+        sender.showsMenuAsPrimaryAction = true
+    }
 
     // MARK: - Private methods
 
@@ -243,6 +276,18 @@ extension ResultsRepresentVC: UITextFieldDelegate {
         textField.text = ""
         return true
     }
+    
+    // MARK: - Set Buttons Actions
+    
+    @IBAction private func backToMainVC(_ sender: Any) {
+        let transition = CATransition()
+        transition.duration = 0.2
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromLeft
+        self.view.window!.layer.add(transition, forKey: kCATransition)
+            
+        self.dismiss(animated: false, completion: nil)
+    }
 }
 
 // MARK: - Delegate
@@ -351,51 +396,5 @@ extension ResultsRepresentVC {
         activityIndicator.center = view.center
         activityIndicator.hidesWhenStopped = true
         view.addSubview(activityIndicator)
-    }
-}
-
-// MARK: - Set Buttons Actions
-
-extension ResultsRepresentVC {
-    
-    @IBAction private func backToMainVC(_ sender: Any) {
-        let transition = CATransition()
-        transition.duration = 0.2
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromLeft
-        self.view.window!.layer.add(transition, forKey: kCATransition)
-            
-        self.dismiss(animated: false, completion: nil)
-    }
-    
-    @objc private func showMenu(_ sender: UIButton) {
-        let sortActionMenu = UIMenu(title: AppConstants.ResultRepresentVC.menuTitle, options: .displayInline, children: [
-            UIAction(title: AppConstants.ResultRepresentVC.menuItemDownloads, image: UIImage(systemName: AppConstants.ImageNames.arrowDownCircle), handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.imageUrls.sort { $0.downloads > $1.downloads }
-                self.showResultsCollectionView.reloadData()
-            }),
-            UIAction(title: AppConstants.ResultRepresentVC.menuItemLikes, image: UIImage(systemName: AppConstants.ImageNames.handThumbsup), handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.imageUrls.sort { $0.likes > $1.likes }
-                self.showResultsCollectionView.reloadData()
-            }),
-            UIAction(title: AppConstants.ResultRepresentVC.menuItemViews, image: UIImage(systemName: AppConstants.ImageNames.eye), handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.imageUrls.sort { $0.views > $1.views }
-                self.showResultsCollectionView.reloadData()
-            }),
-            UIAction(title: AppConstants.ResultRepresentVC.menuItemComments, image: UIImage(systemName: AppConstants.ImageNames.ellipsisMessage), handler: { [weak self] _ in
-                guard let self = self else { return }
-                self.imageUrls.sort { $0.comments > $1.comments }
-                self.showResultsCollectionView.reloadData()
-            })
-        ])
-        
-        let cancelAction = UIAction(title: AppConstants.ResultRepresentVC.menuItemCancel, image: UIImage(systemName: AppConstants.ImageNames.xmarkApp), attributes: .destructive, handler: { _ in })
-
-        let menu = UIMenu(children: [sortActionMenu, cancelAction])
-        sender.menu = menu
-        sender.showsMenuAsPrimaryAction = true
     }
 }

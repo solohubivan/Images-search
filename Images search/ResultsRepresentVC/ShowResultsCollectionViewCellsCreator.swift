@@ -48,7 +48,7 @@ class ShowResultsCollectionViewCellsCreator: UICollectionViewCell {
         }
     }
     
-    // MARK: - Share Button action
+    // MARK: - @objc methods
     
     @objc private func shareButtonTapped() {
         guard let imageToShare = previewImageView.image else { return }

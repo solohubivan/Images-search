@@ -67,6 +67,41 @@ class ShowLocalImagesVC: UIViewController {
             self.otherLocalImagesCollectionView.reloadData()
         }
     }
+    
+    // MARK: - Button Actions
+    
+    @IBAction private func showEditedImagesVC(_ sender: Any) {
+        let vc = EditedImagesVC()
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+
+    @IBAction private func editingImage(_ sender: Any) {
+        guard let image = mainImageView.image else { return }
+        let vc = TOCropViewController(croppingStyle: .default, image: image)
+        vc.toolbarPosition = .bottom
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+    
+    @IBAction private func shareImage(_ sender: Any) {
+        guard let image = mainImageView.image else { return }
+        let shareUtility = ShareUtility()
+        let shareViewController = shareUtility.createShareViewController(imageToShare: image, sourceView: shareButton)
+        present(shareViewController, animated: true, completion: nil)
+    }
+    
+    @IBAction private func goBack(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
+    
+    @IBAction private func zoomImage(_ sender: Any) {
+        if let image = mainImageView.image {
+            let zoomedViewController = ZoomedImageViewController(zoomableImage: image)
+            zoomedViewController.modalPresentationStyle = .fullScreen
+            present(zoomedViewController, animated: false)
+        }
+    }
 }
 
 // MARK: - TOCropViewController properties
@@ -90,7 +125,7 @@ extension ShowLocalImagesVC: UICollectionViewDataSource, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = otherLocalImagesCollectionView.dequeueReusableCell(withReuseIdentifier: "LocalImagePreviewCellId", for: indexPath) as! LocalImagesCollectionViewCellsCreator
+        let cell = otherLocalImagesCollectionView.dequeueReusableCell(withReuseIdentifier: AppConstants.CollectionViewCellsId.localImagePreviewCellId, for: indexPath) as! LocalImagesCollectionViewCellsCreator
         
         let asset = imageAssets[indexPath.item]
         PHImageManager.default().requestImage(for: asset, targetSize: CGSize(width: 300, height: 300), contentMode: .aspectFill, options: nil) { image, _ in
@@ -132,44 +167,6 @@ extension ShowLocalImagesVC: UICollectionViewDataSource, UICollectionViewDelegat
     }
 }
 
-// MARK: - Button Actions
-
-extension ShowLocalImagesVC {
-    
-    @IBAction private func showEditedImagesVC(_ sender: Any) {
-        let vc = EditedImagesVC()
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
-    }
-
-    @IBAction private func editingImage(_ sender: Any) {
-        guard let image = mainImageView.image else { return }
-        let vc = TOCropViewController(croppingStyle: .default, image: image)
-        vc.toolbarPosition = .bottom
-        vc.delegate = self
-        present(vc, animated: true)
-    }
-    
-    @IBAction private func shareImage(_ sender: Any) {
-        guard let image = mainImageView.image else { return }
-        let shareUtility = ShareUtility()
-        let shareViewController = shareUtility.createShareViewController(imageToShare: image, sourceView: shareButton)
-        present(shareViewController, animated: true, completion: nil)
-    }
-    
-    @IBAction private func goBack(_ sender: Any) {
-        self.dismiss(animated: true)
-    }
-    
-    @IBAction private func zoomImage(_ sender: Any) {
-        if let image = mainImageView.image {
-            let zoomedViewController = ZoomedImageViewController(zoomableImage: image)
-            zoomedViewController.modalPresentationStyle = .fullScreen
-            present(zoomedViewController, animated: false)
-        }
-    }
-}
-
 // MARK: - Setup UI
 
 extension ShowLocalImagesVC {
@@ -188,7 +185,7 @@ extension ShowLocalImagesVC {
     }
     
     private func setupShowEditedImagesButton() {
-        showEditedImagesButton.setTitle("Edited images", for: .normal)
+        showEditedImagesButton.setTitle(AppConstants.ButtonTitleLabels.editedImages, for: .normal)
         showEditedImagesButton.setTitleColor(UIColor.hex430BE0, for: .normal)
         showEditedImagesButton.layer.borderWidth = 2
         showEditedImagesButton.layer.borderColor = UIColor.hex430BE0.cgColor
@@ -197,7 +194,7 @@ extension ShowLocalImagesVC {
     }
     
     private func setupEditImageButton() {
-        editImageButton.setTitle("Edit image", for: .normal)
+        editImageButton.setTitle(AppConstants.ButtonTitleLabels.editImage, for: .normal)
         editImageButton.backgroundColor = .white
         editImageButton.setTitleColor(UIColor.hex2D2D2D, for: .normal)
         editImageButton.setTitleColor(UIColor.hex2D2D2D, for: .highlighted)
@@ -218,7 +215,7 @@ extension ShowLocalImagesVC {
     private func setupLocalImagesCollectionView() {
         otherLocalImagesCollectionView.dataSource = self
         otherLocalImagesCollectionView.delegate = self
-        otherLocalImagesCollectionView.register(LocalImagesCollectionViewCellsCreator.self, forCellWithReuseIdentifier: "LocalImagePreviewCellId")
+        otherLocalImagesCollectionView.register(LocalImagesCollectionViewCellsCreator.self, forCellWithReuseIdentifier: AppConstants.CollectionViewCellsId.localImagePreviewCellId)
         otherLocalImagesCollectionView.overrideUserInterfaceStyle = .light
     }
 }

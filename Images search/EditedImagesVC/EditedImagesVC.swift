@@ -30,6 +30,12 @@ class EditedImagesVC: UIViewController {
         editedImagesCollectionView.isHidden = !hasEditedImages
         noImagesAlertLabel.isHidden = hasEditedImages
     }
+    
+    // MARK: - Buttons actions
+    
+    @IBAction private func goBack(_ sender: Any) {
+        self.dismiss(animated: true)
+    }
 }
 
 // MARK: - UICollectionView properties
@@ -40,7 +46,7 @@ extension EditedImagesVC: UICollectionViewDataSource, UICollectionViewDelegateFl
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = editedImagesCollectionView.dequeueReusableCell(withReuseIdentifier: "EditedImagesCellID", for: indexPath) as! EditedImagesVCCollectionViewCell
+        let cell = editedImagesCollectionView.dequeueReusableCell(withReuseIdentifier: AppConstants.CollectionViewCellsId.editedImagesCellID, for: indexPath) as! EditedImagesVCCollectionViewCell
         
         let editedImage = EditedImagesDataManager.shared.getEditedImages()[indexPath.row]
         cell.editedImageView.image = editedImage
@@ -71,14 +77,14 @@ extension EditedImagesVC: UICollectionViewDataSource, UICollectionViewDelegateFl
     
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { suggestedActions in
-            let shareAction = UIAction(title: "Share", image: UIImage(systemName: "square.and.arrow.up")) { action in
+            let shareAction = UIAction(title: AppConstants.EditedImagesVC.actionTitleShare, image: UIImage(systemName: AppConstants.ImageNames.squareAndArrow)) { action in
                 let selectedImage = EditedImagesDataManager.shared.getEditedImages()[indexPath.row]
                 let shareUtility = ShareUtility()
                 let shareViewController = shareUtility.createShareViewController(imageToShare: selectedImage, sourceView: self.editedImagesCollectionView)
                 self.present(shareViewController, animated: true, completion: nil)
             }
 
-            let editAction = UIAction(title: "Edit image", image: UIImage(systemName: "crop.rotate")) { action in
+            let editAction = UIAction(title: AppConstants.EditedImagesVC.actionTitleEditImage, image: UIImage(systemName: AppConstants.ImageNames.cropRotate)) { action in
                 let selectedImage = EditedImagesDataManager.shared.getEditedImages()[indexPath.row]
                 let vc = TOCropViewController(croppingStyle: .default, image: selectedImage)
                 vc.toolbarPosition = .bottom
@@ -86,7 +92,7 @@ extension EditedImagesVC: UICollectionViewDataSource, UICollectionViewDelegateFl
                 self.present(vc, animated: true)
             }
             
-            let deleteAction = UIAction(title: "Delete", image: UIImage(systemName: "trash"), attributes: .destructive) { action in
+            let deleteAction = UIAction(title: AppConstants.EditedImagesVC.actionTitleDelete, image: UIImage(systemName: AppConstants.ImageNames.trash), attributes: .destructive) { action in
                 EditedImagesDataManager.shared.deleteEditedImage(at: indexPath.row)
                 self.editedImagesCollectionView.deleteItems(at: [indexPath])
                 self.checkAvailableEditedImages()
@@ -128,7 +134,7 @@ extension EditedImagesVC {
     }
     
     private func setupTitleLabel() {
-        titleLabel.text = "Edited images"
+        titleLabel.text = AppConstants.EditedImagesVC.titleLabelEditedImages
         titleLabel.textColor = UIColor.hex430BE0
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont(name: AppConstants.Fonts.openSansSemibold, size: 25)
@@ -139,18 +145,12 @@ extension EditedImagesVC {
         editedImagesCollectionView.dataSource = self
         editedImagesCollectionView.overrideUserInterfaceStyle = .light
         editedImagesCollectionView.backgroundColor = .clear
-        editedImagesCollectionView.register(EditedImagesVCCollectionViewCell.self, forCellWithReuseIdentifier: "EditedImagesCellID")
+        editedImagesCollectionView.register(EditedImagesVCCollectionViewCell.self, forCellWithReuseIdentifier: AppConstants.CollectionViewCellsId.editedImagesCellID)
     }
     
     private func setupNoImagesAlertLabel() {
-        noImagesAlertLabel.text = "No edited images yet!"
+        noImagesAlertLabel.text = AppConstants.EditedImagesVC.noImagesAlertLabel
         noImagesAlertLabel.font = UIFont(name: AppConstants.Fonts.openSansBold, size: 25)
         noImagesAlertLabel.textColor = .lightGray
-    }
-    
-    // MARK: - Buttons actions
-    
-    @IBAction private func goBack(_ sender: Any) {
-        self.dismiss(animated: true)
     }
 }

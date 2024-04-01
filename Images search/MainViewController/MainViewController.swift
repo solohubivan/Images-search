@@ -44,6 +44,37 @@ class MainViewController: UIViewController {
         return false
     }
     
+    // MARK: - @objc methods
+    
+    @objc private func showMenu(_ sender: UIButton) {
+        let menuItems: [UIAction] = [
+            UIAction(title: AppConstants.MainViewController.menuCategoryVector, image: UIImage(systemName: AppConstants.ImageNames.lineDiagonalArrow), handler: { [weak self] _ in
+                self?.dismissKeyboard()
+                self?.selectedImageCategory = AppConstants.MainViewController.menuCategoryVector
+                self?.updateTFCategoryButton()
+            }),
+            UIAction(title: AppConstants.MainViewController.menuCategoryIllustration, image: UIImage(systemName: AppConstants.ImageNames.photo), handler: { [weak self] _ in
+                self?.dismissKeyboard()
+                self?.selectedImageCategory = AppConstants.MainViewController.menuCategoryIllustration
+                self?.updateTFCategoryButton()
+            }),
+            UIAction(title: AppConstants.MainViewController.menuCategoryPhoto, image: UIImage(systemName: AppConstants.ImageNames.camera), handler: { [weak self] _ in
+                self?.dismissKeyboard()
+                self?.selectedImageCategory = AppConstants.MainViewController.menuCategoryPhoto
+                self?.updateTFCategoryButton()
+            }),
+            UIAction(title: AppConstants.MainViewController.defaultCategory, image: UIImage(systemName: AppConstants.ImageNames.photoOnRectangleAngled), handler: { [weak self] _ in
+                self?.dismissKeyboard()
+                self?.selectedImageCategory = AppConstants.MainViewController.defaultCategory
+                self?.updateTFCategoryButton()
+            })
+        ]
+        
+        let menu = UIMenu(children: menuItems)
+        sender.menu = menu
+        sender.showsMenuAsPrimaryAction = true
+    }
+    
     // MARK: - Private methods
 
     private func updateTFCategoryButton() {
@@ -92,6 +123,46 @@ class MainViewController: UIViewController {
         let okAction = AlertFactory.createAlertAction(title: AppConstants.Alerts.allertActOk, style: .default)
         let alert = AlertFactory.createAlert(title: AppConstants.Alerts.allertTitleError, message: error.localizedDescription, actions: [okAction])
         self.present(alert, animated: true)
+    }
+    
+    // MARK: - Set Buttons Actions
+
+    @IBAction private func openEditedImagesVC(_ sender: Any) {
+        let editedImagesVC = EditedImagesVC()
+        editedImagesVC.modalPresentationStyle = .fullScreen
+        present(editedImagesVC, animated: false)
+    }
+        
+    @IBAction private func openLocalImages(_ sender: Any) {
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.delegate = self
+        picker.modalPresentationStyle = .fullScreen
+        present(picker, animated: false)
+    }
+
+    @IBAction private func showResults(_ sender: Any) {
+        guard let pixabayDataManager = pixabayDataManager,
+                let searchText = searchTextField.text else { return }
+        let resultsRepresentVC = ResultsRepresentVC()
+        resultsRepresentVC.pixabayDataManager = pixabayDataManager
+        resultsRepresentVC.modalPresentationStyle = .fullScreen
+
+        let request = pixabayDataManager.createSearchRequest(userRequest: searchText, selectedImageCategory, page: nil)
+
+        pixabayDataManager.getPixabayData(request: request) { [weak resultsRepresentVC] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let pixabayData):
+                    resultsRepresentVC?.updateUI(with: pixabayData)
+                    resultsRepresentVC?.currentSearchRequest = request
+                    resultsRepresentVC?.currentSearchImageCategorie = self.selectedImageCategory
+                case .failure(let error):
+                    self.showErrorAlert(error: error)
+                }
+            }
+        }
+        present(resultsRepresentVC, animated: false)
     }
 }
 
@@ -244,7 +315,7 @@ extension MainViewController {
     }
     
     private func setupOpenEditedImagesButton() {
-        openEditedImagesButton.setTitle("Edited images", for: .normal)
+        openEditedImagesButton.setTitle(AppConstants.MainViewController.editedImages, for: .normal)
         openEditedImagesButton.setTitleColor(UIColor.hex00C7BE, for: .normal)
         
         openEditedImagesButton.layer.borderWidth = 2
@@ -264,77 +335,5 @@ extension MainViewController {
         bottomInfoLabel.text = AppConstants.MainViewController.bottomInfoLabel
         bottomInfoLabel.textColor = UIColor.hexE5E5E5
         bottomInfoLabel.font = UIFont(name: AppConstants.Fonts.openSansLight, size: 12)
-    }
-}
-
-// MARK: - Set Buttons Actions
-
-extension MainViewController {
-    
-    @IBAction private func openEditedImagesVC(_ sender: Any) {
-        let editedImagesVC = EditedImagesVC()
-        editedImagesVC.modalPresentationStyle = .fullScreen
-        present(editedImagesVC, animated: false)
-    }
-    
-    @IBAction private func openLocalImages(_ sender: Any) {
-        let picker = UIImagePickerController()
-        picker.sourceType = .photoLibrary
-        picker.delegate = self
-        picker.modalPresentationStyle = .fullScreen
-        present(picker, animated: false)
-    }
-
-    @IBAction private func showResults(_ sender: Any) {
-        guard let pixabayDataManager = pixabayDataManager,
-              let searchText = searchTextField.text else { return }
-        let resultsRepresentVC = ResultsRepresentVC()
-        resultsRepresentVC.pixabayDataManager = pixabayDataManager
-        resultsRepresentVC.modalPresentationStyle = .fullScreen
-
-        let request = pixabayDataManager.createSearchRequest(userRequest: searchText, selectedImageCategory, page: nil)
-
-        pixabayDataManager.getPixabayData(request: request) { [weak resultsRepresentVC] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let pixabayData):
-                    resultsRepresentVC?.updateUI(with: pixabayData)
-                    resultsRepresentVC?.currentSearchRequest = request
-                    resultsRepresentVC?.currentSearchImageCategorie = self.selectedImageCategory
-                case .failure(let error):
-                    self.showErrorAlert(error: error)
-                }
-            }
-        }
-        present(resultsRepresentVC, animated: false)
-    }
-
-    @objc private func showMenu(_ sender: UIButton) {
-        let menuItems: [UIAction] = [
-            UIAction(title: AppConstants.MainViewController.menuCategoryVector, image: UIImage(systemName: AppConstants.ImageNames.lineDiagonalArrow), handler: { [weak self] _ in
-                self?.dismissKeyboard()
-                self?.selectedImageCategory = AppConstants.MainViewController.menuCategoryVector
-                self?.updateTFCategoryButton()
-            }),
-            UIAction(title: AppConstants.MainViewController.menuCategoryIllustration, image: UIImage(systemName: AppConstants.ImageNames.photo), handler: { [weak self] _ in
-                self?.dismissKeyboard()
-                self?.selectedImageCategory = AppConstants.MainViewController.menuCategoryIllustration
-                self?.updateTFCategoryButton()
-            }),
-            UIAction(title: AppConstants.MainViewController.menuCategoryPhoto, image: UIImage(systemName: AppConstants.ImageNames.camera), handler: { [weak self] _ in
-                self?.dismissKeyboard()
-                self?.selectedImageCategory = AppConstants.MainViewController.menuCategoryPhoto
-                self?.updateTFCategoryButton()
-            }),
-            UIAction(title: AppConstants.MainViewController.defaultCategory, image: UIImage(systemName: AppConstants.ImageNames.photoOnRectangleAngled), handler: { [weak self] _ in
-                self?.dismissKeyboard()
-                self?.selectedImageCategory = AppConstants.MainViewController.defaultCategory
-                self?.updateTFCategoryButton()
-            })
-        ]
-        
-        let menu = UIMenu(children: menuItems)
-        sender.menu = menu
-        sender.showsMenuAsPrimaryAction = true
     }
 }

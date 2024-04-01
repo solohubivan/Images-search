@@ -86,6 +86,64 @@ class ShowImageVC: UIViewController {
         let fileExtension = url.pathExtension.uppercased()
         pictureFormatLabel.text = "Photo in ." + fileExtension + " format"
     }
+    
+    // MARK: - Buttons actions
+    
+    @IBAction private func editingImage(_ sender: Any) {
+        guard let image = mainImageView.image else { return }
+        let vc = TOCropViewController(croppingStyle: .default, image: image)
+        vc.toolbarPosition = .bottom
+        vc.delegate = self
+        present(vc, animated: true)
+    }
+    
+    @IBAction private func showEditedImages(_ sender: Any) {
+        let vc = EditedImagesVC()
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true)
+    }
+    
+    @IBAction private func shareFullSizeImage(_ sender: Any) {
+        guard let image = mainImageView.image else { return }
+        let shareUtility = ShareUtility()
+        let shareViewController = shareUtility.createShareViewController(imageToShare: image, sourceView: shareButton)
+        present(shareViewController, animated: true, completion: nil)
+    }
+    
+    @IBAction private func zoomImage(_ sender: Any) {
+        if let image = mainImageView.image {
+            let zoomedViewController = ZoomedImageViewController(zoomableImage: image)
+            zoomedViewController.modalPresentationStyle = .fullScreen
+            present(zoomedViewController, animated: false)
+        }
+    }
+    
+    @IBAction private func backToResultRepresentVC(_ sender: Any) {
+        let transition = CATransition()
+        transition.duration = 0.2
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromLeft
+        self.view.window!.layer.add(transition, forKey: kCATransition)
+            
+        self.dismiss(animated: false, completion: nil)
+    }
+    
+    @IBAction private func downloadTheImage(_ sender: Any) {
+        guard let image = mainImageView.image else { return }
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(savedImage(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+    
+    @objc private func savedImage(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        let alertController: UIAlertController
+        if let error = error {
+            let action = AlertFactory.createAlertAction(title: AppConstants.Alerts.allertActOk, style: .default)
+            alertController = AlertFactory.createAlert(title: AppConstants.Alerts.allertTitleSaveError, message: error.localizedDescription, actions: [action])
+        } else {
+            let action = AlertFactory.createAlertAction(title: AppConstants.Alerts.allertActOk, style: .default)
+            alertController = AlertFactory.createAlert(title: "\(AppConstants.Alerts.allertTitleSaved)!", message: AppConstants.Alerts.allertMessageSaved, actions: [action])
+        }
+        present(alertController, animated: true)
+    }
 }
 
 // MARK: - TextField Properties
@@ -268,7 +326,7 @@ extension ShowImageVC {
     }
     
     private func setupOpenEditedImagesVCButton() {
-        openEditedImagesVCButton.setTitle("Edited images", for: .normal)
+        openEditedImagesVCButton.setTitle(AppConstants.ShowImageVC.editedImages, for: .normal)
         openEditedImagesVCButton.setTitleColor(UIColor.hex430BE0, for: .normal)
         openEditedImagesVCButton.layer.borderWidth = 2
         openEditedImagesVCButton.layer.borderColor = UIColor.hex430BE0.cgColor
@@ -283,7 +341,7 @@ extension ShowImageVC {
     }
     
     private func setupEditImagesButton() {
-        editImageButton.setTitle("Edit", for: .normal)
+        editImageButton.setTitle(AppConstants.ButtonTitleLabels.editButton, for: .normal)
         editImageButton.backgroundColor = .white
         editImageButton.setTitleColor(UIColor.hex2D2D2D, for: .normal)
         editImageButton.setTitleColor(UIColor.hex2D2D2D, for: .highlighted)
@@ -328,66 +386,5 @@ extension ShowImageVC {
         relatedImagesCollectionView.register(UICollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: AppConstants.ShowImageVC.relatedImagesCellsHeader)
         relatedImagesCollectionView.backgroundColor = UIColor.hexF6F6F6
         relatedImagesCollectionView.overrideUserInterfaceStyle = .light
-    }
-}
-
-// MARK: - Set Buttons Actions
-
-extension ShowImageVC {
-    
-    @IBAction private func editingImage(_ sender: Any) {
-        guard let image = mainImageView.image else { return }
-        let vc = TOCropViewController(croppingStyle: .default, image: image)
-        vc.toolbarPosition = .bottom
-        vc.delegate = self
-        present(vc, animated: true)
-    }
-    
-    @IBAction private func showEditedImages(_ sender: Any) {
-        let vc = EditedImagesVC()
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true)
-    }
-    
-    @IBAction private func shareFullSizeImage(_ sender: Any) {
-        guard let image = mainImageView.image else { return }
-        let shareUtility = ShareUtility()
-        let shareViewController = shareUtility.createShareViewController(imageToShare: image, sourceView: shareButton)
-        present(shareViewController, animated: true, completion: nil)
-    }
-    
-    @IBAction private func zoomImage(_ sender: Any) {
-        if let image = mainImageView.image {
-            let zoomedViewController = ZoomedImageViewController(zoomableImage: image)
-            zoomedViewController.modalPresentationStyle = .fullScreen
-            present(zoomedViewController, animated: false)
-        }
-    }
-    
-    @IBAction private func backToResultRepresentVC(_ sender: Any) {
-        let transition = CATransition()
-        transition.duration = 0.2
-        transition.type = CATransitionType.push
-        transition.subtype = CATransitionSubtype.fromLeft
-        self.view.window!.layer.add(transition, forKey: kCATransition)
-            
-        self.dismiss(animated: false, completion: nil)
-    }
-    
-    @IBAction private func downloadTheImage(_ sender: Any) {
-        guard let image = mainImageView.image else { return }
-        UIImageWriteToSavedPhotosAlbum(image, self, #selector(savedImage(_:didFinishSavingWithError:contextInfo:)), nil)
-    }
-    
-    @objc private func savedImage(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        let alertController: UIAlertController
-        if let error = error {
-            let action = AlertFactory.createAlertAction(title: AppConstants.Alerts.allertActOk, style: .default)
-            alertController = AlertFactory.createAlert(title: AppConstants.Alerts.allertTitleSaveError, message: error.localizedDescription, actions: [action])
-        } else {
-            let action = AlertFactory.createAlertAction(title: AppConstants.Alerts.allertActOk, style: .default)
-            alertController = AlertFactory.createAlert(title: "\(AppConstants.Alerts.allertTitleSaved)!", message: AppConstants.Alerts.allertMessageSaved, actions: [action])
-        }
-        present(alertController, animated: true)
     }
 }
