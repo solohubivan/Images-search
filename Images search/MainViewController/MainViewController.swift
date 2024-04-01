@@ -115,7 +115,7 @@ extension MainViewController: UIImagePickerControllerDelegate, UINavigationContr
         let showLocalImagesVC = ShowLocalImagesVC()
         showLocalImagesVC.selectedLocalImage = image
         showLocalImagesVC.modalPresentationStyle = .fullScreen
-        present(showLocalImagesVC, animated: false)
+        present(showLocalImagesVC, animated: true)
     }
 }
 

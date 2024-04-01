@@ -10,9 +10,9 @@
 		220A83372BA1D14400ACDE1E /* ImageViewModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220A83362BA1D14400ACDE1E /* ImageViewModelData.swift */; };
 		22101BBB2BB5CC39003068C1 /* ShowLocalImagesVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22101BBA2BB5CC39003068C1 /* ShowLocalImagesVC.xib */; };
 		22101BBC2BB5CC39003068C1 /* ShowLocalImagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22101BB92BB5CC39003068C1 /* ShowLocalImagesVC.swift */; };
-		22101BBF2BB5E728003068C1 /* HowToSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22101BBE2BB5E728003068C1 /* HowToSave.swift */; };
 		2211DADA2BA09635009F8A57 /* ShowImageVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2211DAD92BA09635009F8A57 /* ShowImageVC.xib */; };
 		2211DADB2BA09635009F8A57 /* ShowImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2211DAD82BA09635009F8A57 /* ShowImageVC.swift */; };
+		222E6EBB2BB9E368008E2588 /* EditedImagesDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222E6EBA2BB9E368008E2588 /* EditedImagesDataManager.swift */; };
 		223A47E92BA7BC14005AC582 /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = 223A47E82BA7BC14005AC582 /* Config.plist */; };
 		223A47EB2BA7CDC7005AC582 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223A47EA2BA7CDC7005AC582 /* NetworkMonitor.swift */; };
 		223A47ED2BA7CE09005AC582 /* AlertFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223A47EC2BA7CE09005AC582 /* AlertFactory.swift */; };
@@ -36,6 +36,9 @@
 		2291F0FF2B856922004FF5EB /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2291F0FE2B856922004FF5EB /* UIColor+Extension.swift */; };
 		2291F1012B8571B3004FF5EB /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2291F1002B8571B3004FF5EB /* OpenSans-Light.ttf */; };
 		22A8DE122BA0FA9700BE608E /* NumberFormatter+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A8DE112BA0FA9700BE608E /* NumberFormatter+Extension.swift */; };
+		22B44AC02BB718370073DE00 /* EditedImagesVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22B44ABF2BB718370073DE00 /* EditedImagesVC.xib */; };
+		22B44AC12BB718370073DE00 /* EditedImagesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B44ABE2BB718370073DE00 /* EditedImagesVC.swift */; };
+		22B44AC32BB72EFA0073DE00 /* EditedImagesVCCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B44AC22BB72EFA0073DE00 /* EditedImagesVCCollectionViewCell.swift */; };
 		22C04C322BACCD51004D0864 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22C04C312BACCD51004D0864 /* ApiService.swift */; };
 		22D82B8E2B8EF5A1003BA27A /* ResultsRepresentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D82B8C2B8EF5A1003BA27A /* ResultsRepresentVC.swift */; };
 		22D82B8F2B8EF5A1003BA27A /* ResultsRepresentVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 22D82B8D2B8EF5A1003BA27A /* ResultsRepresentVC.xib */; };
@@ -51,9 +54,9 @@
 		220A83362BA1D14400ACDE1E /* ImageViewModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewModelData.swift; sourceTree = "<group>"; };
 		22101BB92BB5CC39003068C1 /* ShowLocalImagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowLocalImagesVC.swift; sourceTree = "<group>"; };
 		22101BBA2BB5CC39003068C1 /* ShowLocalImagesVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowLocalImagesVC.xib; sourceTree = "<group>"; };
-		22101BBE2BB5E728003068C1 /* HowToSave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToSave.swift; sourceTree = "<group>"; };
 		2211DAD82BA09635009F8A57 /* ShowImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowImageVC.swift; sourceTree = "<group>"; };
 		2211DAD92BA09635009F8A57 /* ShowImageVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowImageVC.xib; sourceTree = "<group>"; };
+		222E6EBA2BB9E368008E2588 /* EditedImagesDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditedImagesDataManager.swift; sourceTree = "<group>"; };
 		223A47E82BA7BC14005AC582 /* Config.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		223A47EA2BA7CDC7005AC582 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		223A47EC2BA7CE09005AC582 /* AlertFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertFactory.swift; sourceTree = "<group>"; };
@@ -79,6 +82,9 @@
 		2291F0FE2B856922004FF5EB /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		2291F1002B8571B3004FF5EB /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		22A8DE112BA0FA9700BE608E /* NumberFormatter+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NumberFormatter+Extension.swift"; sourceTree = "<group>"; };
+		22B44ABE2BB718370073DE00 /* EditedImagesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditedImagesVC.swift; sourceTree = "<group>"; };
+		22B44ABF2BB718370073DE00 /* EditedImagesVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditedImagesVC.xib; sourceTree = "<group>"; };
+		22B44AC22BB72EFA0073DE00 /* EditedImagesVCCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditedImagesVCCollectionViewCell.swift; sourceTree = "<group>"; };
 		22C04C312BACCD51004D0864 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
 		22D82B8C2B8EF5A1003BA27A /* ResultsRepresentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsRepresentVC.swift; sourceTree = "<group>"; };
 		22D82B8D2B8EF5A1003BA27A /* ResultsRepresentVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResultsRepresentVC.xib; sourceTree = "<group>"; };
@@ -120,8 +126,6 @@
 				2211DAD82BA09635009F8A57 /* ShowImageVC.swift */,
 				2211DAD92BA09635009F8A57 /* ShowImageVC.xib */,
 				22F518A92BA2085E00293387 /* RelatedImagesCollectionViewCellsCreator.swift */,
-				227A06172BA2F953001AB9ED /* ZoomedImageVC.swift */,
-				22101BBE2BB5E728003068C1 /* HowToSave.swift */,
 			);
 			path = ShowImageVC;
 			sourceTree = "<group>";
@@ -150,6 +154,8 @@
 			isa = PBXGroup;
 			children = (
 				2256B4622B83F5680055C284 /* Images search */,
+				222E6EBA2BB9E368008E2588 /* EditedImagesDataManager.swift */,
+				227A06172BA2F953001AB9ED /* ZoomedImageVC.swift */,
 				2256B4612B83F5680055C284 /* Products */,
 				5CB947F21946C859FDD6C14C /* Pods */,
 				D7100DFB2CE64322FE45239A /* Frameworks */,
@@ -178,9 +184,10 @@
 				223E1E112B97686600B70BBB /* Networking */,
 				22C04C302BACA854004D0864 /* Models */,
 				22F979F72B8413B5004CF466 /* MainViewController */,
-				22101BBD2BB5CD6B003068C1 /* ShowLocalImagesVC */,
 				22D82B8B2B8EF498003BA27A /* ResultsRepresentVC */,
 				2211DAD72BA0957C009F8A57 /* ShowImageVC */,
+				22101BBD2BB5CD6B003068C1 /* ShowLocalImagesVC */,
+				22B44AC42BB736240073DE00 /* EditedImagesVC */,
 			);
 			path = "Images search";
 			sourceTree = "<group>";
@@ -216,6 +223,16 @@
 				22A8DE112BA0FA9700BE608E /* NumberFormatter+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		22B44AC42BB736240073DE00 /* EditedImagesVC */ = {
+			isa = PBXGroup;
+			children = (
+				22B44ABE2BB718370073DE00 /* EditedImagesVC.swift */,
+				22B44ABF2BB718370073DE00 /* EditedImagesVC.xib */,
+				22B44AC22BB72EFA0073DE00 /* EditedImagesVCCollectionViewCell.swift */,
+			);
+			path = EditedImagesVC;
 			sourceTree = "<group>";
 		};
 		22C04C302BACA854004D0864 /* Models */ = {
@@ -333,6 +350,7 @@
 				2211DADA2BA09635009F8A57 /* ShowImageVC.xib in Resources */,
 				22849B652B9A382E00B315A7 /* OpenSans-Medium.ttf in Resources */,
 				2291F1012B8571B3004FF5EB /* OpenSans-Light.ttf in Resources */,
+				22B44AC02BB718370073DE00 /* EditedImagesVC.xib in Resources */,
 				22101BBB2BB5CC39003068C1 /* ShowLocalImagesVC.xib in Resources */,
 				22E173F02B85880B0021200B /* OpenSans-Regular.ttf in Resources */,
 				2256B46D2B83F5690055C284 /* Assets.xcassets in Resources */,
@@ -389,6 +407,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22E2123F2B99144400E750BB /* RelatedRequstCollectionViewCellsCreator.swift in Sources */,
+				22B44AC12BB718370073DE00 /* EditedImagesVC.swift in Sources */,
 				223A47ED2BA7CE09005AC582 /* AlertFactory.swift in Sources */,
 				226024DC2B8EAF02008DF799 /* UIViewController+KeyboardHandling.swift in Sources */,
 				22F518AA2BA2085E00293387 /* RelatedImagesCollectionViewCellsCreator.swift in Sources */,
@@ -398,16 +417,17 @@
 				22A8DE122BA0FA9700BE608E /* NumberFormatter+Extension.swift in Sources */,
 				22F979F52B8412ED004CF466 /* MainViewController.swift in Sources */,
 				227A06182BA2F953001AB9ED /* ZoomedImageVC.swift in Sources */,
-				22101BBF2BB5E728003068C1 /* HowToSave.swift in Sources */,
 				226024E32B8EB225008DF799 /* UIImage+AdaptiveResizing.swift in Sources */,
 				224242452B9CF5290018E69B /* ShareUtility.swift in Sources */,
 				22639C022BB69A1D00DC5AC0 /* LocalImagesCollectionViewCellsCreator.swift in Sources */,
 				2291F0FF2B856922004FF5EB /* UIColor+Extension.swift in Sources */,
 				223E1E152B976BCF00B70BBB /* PixabayDataManager.swift in Sources */,
+				22B44AC32BB72EFA0073DE00 /* EditedImagesVCCollectionViewCell.swift in Sources */,
 				2256B4642B83F5680055C284 /* AppDelegate.swift in Sources */,
 				2211DADB2BA09635009F8A57 /* ShowImageVC.swift in Sources */,
 				220A83372BA1D14400ACDE1E /* ImageViewModelData.swift in Sources */,
 				226024E12B8EB204008DF799 /* UIView+Extensions.swift in Sources */,
+				222E6EBB2BB9E368008E2588 /* EditedImagesDataManager.swift in Sources */,
 				223E1E0C2B94FB3800B70BBB /* PixabayData.swift in Sources */,
 				223A47EB2BA7CDC7005AC582 /* NetworkMonitor.swift in Sources */,
 				22D82B8E2B8EF5A1003BA27A /* ResultsRepresentVC.swift in Sources */,

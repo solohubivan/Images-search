@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -10,13 +11,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShowLocalImagesVC" customModule="Images_search" customModuleProvider="target">
             <connections>
-                <outlet property="editImageButton" destination="5BV-ir-Hmu" id="N7a-9S-zWO"/>
+                <outlet property="editImageButton" destination="mT3-K2-x8r" id="BeN-GN-x84"/>
                 <outlet property="goBackButton" destination="9rt-CY-kyo" id="Ido-Nu-xip"/>
                 <outlet property="imageView" destination="WNv-8b-O8m" id="jC8-rm-SrV"/>
                 <outlet property="mainImageView" destination="3KD-WJ-VcF" id="afk-Qa-vlk"/>
                 <outlet property="otherLocalImagesCollectionView" destination="sws-Lq-Nl7" id="KvK-gc-p5J"/>
                 <outlet property="shareButton" destination="fDG-hr-voa" id="a8p-Eg-eHg"/>
+                <outlet property="showEditedImagesButton" destination="q8G-0N-X1q" id="hKu-dl-Zv2"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="zoomImageButton" destination="MVF-aR-ffU" id="eK9-L0-JXS"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -36,6 +39,17 @@
                         <action selector="goBack:" destination="-1" eventType="touchUpInside" id="eHZ-Mh-5Rx"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q8G-0N-X1q" userLabel="Show edited images Button">
+                    <rect key="frame" x="245.66666666666663" y="59" width="131.33333333333337" height="52"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="52" id="bNj-qT-g37"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="edited images"/>
+                    <connections>
+                        <action selector="showEditedImagesVC:" destination="-1" eventType="touchUpInside" id="otD-hX-n9d"/>
+                    </connections>
+                </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WNv-8b-O8m" userLabel="mainImage View">
                     <rect key="frame" x="0.0" y="121" width="393" height="221"/>
                     <subviews>
@@ -43,21 +57,30 @@
                             <rect key="frame" x="0.0" y="0.0" width="393" height="221"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MVF-aR-ffU" userLabel="Zoom Button">
+                            <rect key="frame" x="345" y="173" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="Dr3-Qx-MHY"/>
+                                <constraint firstAttribute="height" constant="32" id="OMG-lx-PxT"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="zoom"/>
+                            <connections>
+                                <action selector="zoomImage:" destination="-1" eventType="touchUpInside" id="mot-nu-k0u"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="MVF-aR-ffU" secondAttribute="trailing" constant="16" id="5EE-rd-bQQ"/>
                         <constraint firstItem="3KD-WJ-VcF" firstAttribute="leading" secondItem="WNv-8b-O8m" secondAttribute="leading" id="Kv2-4D-VyZ"/>
                         <constraint firstAttribute="trailing" secondItem="3KD-WJ-VcF" secondAttribute="trailing" id="Osh-cR-VhZ"/>
+                        <constraint firstAttribute="bottom" secondItem="MVF-aR-ffU" secondAttribute="bottom" constant="16" id="PZt-a8-7Sq"/>
                         <constraint firstItem="3KD-WJ-VcF" firstAttribute="top" secondItem="WNv-8b-O8m" secondAttribute="top" id="fEs-Lq-rhw"/>
                         <constraint firstAttribute="width" secondItem="WNv-8b-O8m" secondAttribute="height" multiplier="16:9" id="hDK-sf-qVN"/>
                         <constraint firstAttribute="bottom" secondItem="3KD-WJ-VcF" secondAttribute="bottom" id="rn6-zb-4XY"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5BV-ir-Hmu" userLabel="edit images Button">
-                    <rect key="frame" x="16" y="356.66666666666669" width="104" height="35"/>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Edit image"/>
-                </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fDG-hr-voa" userLabel="share Button">
                     <rect key="frame" x="253" y="358" width="124" height="32"/>
                     <constraints>
@@ -66,6 +89,9 @@
                     </constraints>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain" image="ShareBigButton"/>
+                    <connections>
+                        <action selector="shareImage:" destination="-1" eventType="touchUpInside" id="Bkx-uK-L8Q"/>
+                    </connections>
                 </button>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="sws-Lq-Nl7" userLabel="rest pictures Collection View">
                     <rect key="frame" x="0.0" y="406" width="393" height="446"/>
@@ -77,24 +103,40 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mT3-K2-x8r">
+                    <rect key="frame" x="16" y="358" width="124" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="1tO-EW-NUF"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="124" id="VFu-Wu-Jst"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Edit Image"/>
+                    <connections>
+                        <action selector="editingImage:" destination="-1" eventType="touchUpInside" id="P5Q-Fz-GmT"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="q8G-0N-X1q" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9rt-CY-kyo" secondAttribute="trailing" constant="20" id="125-pr-32a"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9rt-CY-kyo" secondAttribute="trailing" constant="16" id="87z-xU-JO5"/>
-                <constraint firstItem="fDG-hr-voa" firstAttribute="centerY" secondItem="5BV-ir-Hmu" secondAttribute="centerY" id="B49-9V-40b"/>
                 <constraint firstAttribute="trailing" secondItem="WNv-8b-O8m" secondAttribute="trailing" id="Bfg-uv-cW3"/>
                 <constraint firstAttribute="bottom" secondItem="sws-Lq-Nl7" secondAttribute="bottom" id="FqB-VM-2rG"/>
                 <constraint firstItem="WNv-8b-O8m" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="L9n-Ca-3h5"/>
-                <constraint firstItem="5BV-ir-Hmu" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="RHN-4T-7xn"/>
+                <constraint firstItem="fDG-hr-voa" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mT3-K2-x8r" secondAttribute="trailing" constant="16" id="OyD-pO-VFL"/>
                 <constraint firstItem="sws-Lq-Nl7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="T3y-6a-oFa"/>
                 <constraint firstItem="fDG-hr-voa" firstAttribute="top" secondItem="WNv-8b-O8m" secondAttribute="bottom" constant="16" id="XXo-0Z-9iR"/>
+                <constraint firstItem="q8G-0N-X1q" firstAttribute="centerY" secondItem="9rt-CY-kyo" secondAttribute="centerY" id="bTo-li-G0T"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="q8G-0N-X1q" secondAttribute="trailing" constant="16" id="csw-lO-AjL"/>
                 <constraint firstItem="sws-Lq-Nl7" firstAttribute="top" secondItem="fDG-hr-voa" secondAttribute="bottom" constant="16" id="dfH-LX-EQu"/>
+                <constraint firstItem="mT3-K2-x8r" firstAttribute="centerY" secondItem="fDG-hr-voa" secondAttribute="centerY" id="dpu-cb-KFW"/>
                 <constraint firstAttribute="trailing" secondItem="sws-Lq-Nl7" secondAttribute="trailing" id="dsi-ri-bGE"/>
                 <constraint firstAttribute="trailing" secondItem="fDG-hr-voa" secondAttribute="trailing" constant="16" id="gMO-yF-KWq"/>
                 <constraint firstItem="9rt-CY-kyo" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="jmA-DL-FBw"/>
                 <constraint firstItem="9rt-CY-kyo" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="pTe-ZU-6lO"/>
                 <constraint firstItem="WNv-8b-O8m" firstAttribute="top" secondItem="9rt-CY-kyo" secondAttribute="bottom" constant="10" id="pbN-nV-5h1"/>
+                <constraint firstItem="mT3-K2-x8r" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="smQ-Xt-ToH"/>
             </constraints>
             <point key="canvasLocation" x="-5.343511450381679" y="19.718309859154932"/>
         </view>
@@ -102,6 +144,7 @@
     <resources>
         <image name="ShareBigButton" width="124" height="32"/>
         <image name="logo" width="52" height="53"/>
+        <image name="zoom" width="40" height="40"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
