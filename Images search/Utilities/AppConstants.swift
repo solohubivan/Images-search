@@ -111,4 +111,8 @@ enum AppConstants {
         static let localImagePreviewCellId: String = "LocalImagePreviewCellId"
         static let editedImagesCellID: String = "EditedImagesCellID"
     }
+    
+    enum EditedImagesDataManager {
+        static let imageFileExtension = "jpeg"
+    }
 }

@@ -146,6 +146,7 @@
 				224242442B9CF5290018E69B /* ShareUtility.swift */,
 				223A47EC2BA7CE09005AC582 /* AlertFactory.swift */,
 				223C81192BA86AC200FC45DD /* AppConstants.swift */,
+				222E6EBA2BB9E368008E2588 /* EditedImagesDataManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -154,8 +155,6 @@
 			isa = PBXGroup;
 			children = (
 				2256B4622B83F5680055C284 /* Images search */,
-				222E6EBA2BB9E368008E2588 /* EditedImagesDataManager.swift */,
-				227A06172BA2F953001AB9ED /* ZoomedImageVC.swift */,
 				2256B4612B83F5680055C284 /* Products */,
 				5CB947F21946C859FDD6C14C /* Pods */,
 				D7100DFB2CE64322FE45239A /* Frameworks */,
@@ -183,11 +182,7 @@
 				2268E4DA2B85516E00792F66 /* Resources */,
 				223E1E112B97686600B70BBB /* Networking */,
 				22C04C302BACA854004D0864 /* Models */,
-				22F979F72B8413B5004CF466 /* MainViewController */,
-				22D82B8B2B8EF498003BA27A /* ResultsRepresentVC */,
-				2211DAD72BA0957C009F8A57 /* ShowImageVC */,
-				22101BBD2BB5CD6B003068C1 /* ShowLocalImagesVC */,
-				22B44AC42BB736240073DE00 /* EditedImagesVC */,
+				228C5CC32BBDD35C0073066D /* ViewControllers */,
 			);
 			path = "Images search";
 			sourceTree = "<group>";
@@ -211,6 +206,19 @@
 				22849B662B9A38B300B315A7 /* OpenSans-SemiBold.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		228C5CC32BBDD35C0073066D /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				22F979F72B8413B5004CF466 /* MainViewController */,
+				22101BBD2BB5CD6B003068C1 /* ShowLocalImagesVC */,
+				22D82B8B2B8EF498003BA27A /* ResultsRepresentVC */,
+				2211DAD72BA0957C009F8A57 /* ShowImageVC */,
+				22B44AC42BB736240073DE00 /* EditedImagesVC */,
+				227A06172BA2F953001AB9ED /* ZoomedImageVC.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		2291F0FD2B8568F3004FF5EB /* Extensions */ = {

@@ -29,8 +29,53 @@ class ZoomedImageViewController: UIViewController {
         view.backgroundColor = .black
         setupUI()
     }
+
+    // MARK: - @objc methods
     
-    // MARK: - setup UI
+    @objc private func handleDoubleTap(_ recognizer: UITapGestureRecognizer) {
+        if scrollView.zoomScale == scrollView.minimumZoomScale {
+            let center = recognizer.location(in: mainImageView)
+            let zoomRect = CGRect(x: center.x, y: center.y, width: 1, height: 1)
+            scrollView.zoom(to: zoomRect, animated: true)
+        } else {
+            scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
+        }
+    }
+    
+    @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
+        
+        let translation = recognizer.translation(in: scrollView)
+
+        switch recognizer.state {
+        case .changed:
+            if scrollView.contentOffset.y <= .zero && translation.y > .zero {
+                view.alpha = 1 - translation.y / 100
+            }
+        case .ended:
+            if scrollView.contentOffset.y <= .zero && translation.y > 100 {
+                dismiss(animated: true, completion: nil)
+            } else {
+                UIView.animate(withDuration: 0.3) {
+                    self.view.alpha = 1.0
+                }
+            }
+        default:
+            break
+        }
+    }
+}
+
+// MARK: - ScrollView properties
+
+extension ZoomedImageViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return mainImageView
+    }
+}
+
+// MARK: - setup UI
+
+extension ZoomedImageViewController {
     
     private func setupUI() {
         setupScrollView()
@@ -69,47 +114,5 @@ class ZoomedImageViewController: UIViewController {
     private func setupPanGesture() {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
         mainImageView.addGestureRecognizer(panGesture)
-    }
-
-    // MARK: - actions
-    
-    @objc private func handleDoubleTap(_ recognizer: UITapGestureRecognizer) {
-        if scrollView.zoomScale == scrollView.minimumZoomScale {
-            let center = recognizer.location(in: mainImageView)
-            let zoomRect = CGRect(x: center.x, y: center.y, width: 1, height: 1)
-            scrollView.zoom(to: zoomRect, animated: true)
-        } else {
-            scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
-        }
-    }
-    
-    @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
-        
-        let translation = recognizer.translation(in: scrollView)
-
-        switch recognizer.state {
-        case .changed:
-            if scrollView.contentOffset.y <= .zero && translation.y > .zero {
-                view.alpha = 1 - translation.y / 100
-            }
-        case .ended:
-            if scrollView.contentOffset.y <= .zero && translation.y > 100 {
-                dismiss(animated: true, completion: nil)
-            } else {
-                UIView.animate(withDuration: 0.3) {
-                    self.view.alpha = 1.0
-                }
-            }
-        default:
-            break
-        }
-    }
-}
-
-// MARK: - extensions
-
-extension ZoomedImageViewController: UIScrollViewDelegate {
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return mainImageView
     }
 }

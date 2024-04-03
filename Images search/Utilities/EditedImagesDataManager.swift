@@ -11,7 +11,7 @@ import UIKit
 class EditedImagesDataManager {
     
     static let shared = EditedImagesDataManager()
-    
+    private let fileManager = FileManager.default
     private var editedImages: [UIImage] = []
     
     private init() {
@@ -22,15 +22,18 @@ class EditedImagesDataManager {
     
     func deleteEditedImage(at index: Int) {
         guard index < editedImages.count else { return }
-        editedImages.remove(at: index)
-
-        let fileManager = FileManager.default
+        
         let documentsURL = getDocumentsDirectory()
-        guard let fileURLs = try? fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil) else { return }
-            
-        if index < fileURLs.count {
-            let fileURL = fileURLs[index]
-            try? fileManager.removeItem(at: fileURL)
+        do {
+            let fileURLs = try fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil)
+            editedImages.remove(at: index)
+                
+            if index < fileURLs.count {
+                let fileURL = fileURLs[index]
+                try fileManager.removeItem(at: fileURL)
+            }
+        } catch {
+
         }
     }
     
@@ -38,9 +41,13 @@ class EditedImagesDataManager {
         guard let data = image.jpegData(compressionQuality: 1.0) else { return }
         let uniqueID = UUID().uuidString
         let filename = getDocumentsDirectory().appendingPathComponent("\(uniqueID).jpeg")
-        try? data.write(to: filename)
         
-        editedImages.append(image)
+        do {
+            try data.write(to: filename)
+            editedImages.append(image)
+        } catch {
+
+        }
     }
     
     func getEditedImages() -> [UIImage] {
@@ -54,19 +61,21 @@ class EditedImagesDataManager {
     // MARK: - Private methods
     
     private func loadEditedImages() {
-        let fileManager = FileManager.default
         let documentsURL = getDocumentsDirectory()
-        guard let fileURLs = try? fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil) else { return }
-            
-        for fileURL in fileURLs where fileURL.pathExtension == "jpeg" {
-            if let image = UIImage(contentsOfFile: fileURL.path) {
-                editedImages.append(image)
+        do {
+
+            let fileURLs = try fileManager.contentsOfDirectory(at: documentsURL, includingPropertiesForKeys: nil)
+            for fileURL in fileURLs where fileURL.pathExtension == AppConstants.EditedImagesDataManager.imageFileExtension {
+                if let image = UIImage(contentsOfFile: fileURL.path) {
+                    editedImages.append(image)
+                }
             }
+        } catch {
+
         }
     }
-        
+
     private func getDocumentsDirectory() -> URL {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        return paths[0]
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first ?? URL(fileURLWithPath: "/")
     }
 }
