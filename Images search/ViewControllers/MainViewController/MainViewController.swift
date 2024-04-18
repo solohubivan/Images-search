@@ -5,7 +5,6 @@
 //  Created by Ivan Solohub on 20.02.2024.
 //
 
-//test to create remote repository
 import UIKit
 
 class MainViewController: UIViewController {
