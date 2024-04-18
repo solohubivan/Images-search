@@ -8,6 +8,6 @@ target 'Images search' do
   # Pods for Images search
   pod 'SDWebImage'
   pod 'netfox'
-  pod 'TOCropViewController'
+  pod 'TOCropViewController', :git => 'https://github.com/solohubivan/TOCropViewController.git'
 
 end

@@ -13,13 +13,12 @@
             <connections>
                 <outlet property="appLicenseInfoLabel" destination="hWH-Bv-0f2" id="JHP-hb-F34"/>
                 <outlet property="appLicenseLabel" destination="lNe-eF-bHr" id="Hyh-Kr-idn"/>
+                <outlet property="cropImageButton" destination="9vN-1C-vRA" id="E7J-M9-YsU"/>
                 <outlet property="downloadButton" destination="tmI-xb-np2" id="ZeA-Uz-GAZ"/>
-                <outlet property="editImageButton" destination="4ai-53-tM0" id="KDq-Pe-7ej"/>
                 <outlet property="filterButton" destination="fSb-tZ-B6D" id="ryx-QH-4UY"/>
                 <outlet property="logoButton" destination="6wJ-Te-UEr" id="Dv9-My-B42"/>
                 <outlet property="mainImageBackgroundView" destination="n27-AQ-Q9j" id="45s-mA-aAW"/>
                 <outlet property="mainImageView" destination="UDG-QF-hm8" id="Pfz-zv-ptN"/>
-                <outlet property="openEditedImagesVCButton" destination="C1J-mV-mZj" id="lLn-Og-AUe"/>
                 <outlet property="pictureFormatLabel" destination="s9g-jJ-3Zp" id="TYJ-Gm-6MI"/>
                 <outlet property="relatedImagesCollectionView" destination="PAC-48-SGc" id="tPg-3Z-eQ6"/>
                 <outlet property="searchTextField" destination="eac-bg-2zJ" id="R5r-eO-EUb"/>
@@ -89,56 +88,46 @@
                                 <action selector="zoomImage:" destination="-1" eventType="touchUpInside" id="Ug4-dQ-bdd"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9vN-1C-vRA" userLabel="crop image button">
+                            <rect key="frame" x="345" y="125" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="32" id="0Ap-vc-DSt"/>
+                                <constraint firstAttribute="height" constant="32" id="tXZ-0I-s1T"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="cropImageIcon"/>
+                            <connections>
+                                <action selector="cropingImage:" destination="-1" eventType="touchUpInside" id="4gh-Ic-Lkd"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="K93-u1-Wtb" secondAttribute="trailing" constant="16" id="1PI-cb-o9l"/>
                         <constraint firstAttribute="trailing" secondItem="UDG-QF-hm8" secondAttribute="trailing" id="6Ap-ES-reG"/>
                         <constraint firstAttribute="bottom" secondItem="UDG-QF-hm8" secondAttribute="bottom" id="6Xp-aO-Hip"/>
+                        <constraint firstAttribute="trailing" secondItem="9vN-1C-vRA" secondAttribute="trailing" constant="16" id="H8g-xq-pBc"/>
                         <constraint firstItem="UDG-QF-hm8" firstAttribute="top" secondItem="n27-AQ-Q9j" secondAttribute="top" constant="8" id="JON-5F-PrV"/>
                         <constraint firstItem="UDG-QF-hm8" firstAttribute="leading" secondItem="n27-AQ-Q9j" secondAttribute="leading" id="gsh-2Z-af4"/>
+                        <constraint firstItem="K93-u1-Wtb" firstAttribute="top" secondItem="9vN-1C-vRA" secondAttribute="bottom" constant="16" id="jsF-UC-3Xz"/>
                         <constraint firstAttribute="bottom" secondItem="K93-u1-Wtb" secondAttribute="bottom" constant="16" id="nQg-pY-LYf"/>
                         <constraint firstAttribute="width" secondItem="n27-AQ-Q9j" secondAttribute="height" multiplier="16:9" id="xiH-Ad-LmG"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ai-53-tM0" userLabel="Edit image ">
-                    <rect key="frame" x="253" y="361" width="124" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="32" id="d2Q-dd-352"/>
-                        <constraint firstAttribute="width" constant="124" id="itU-ES-usd"/>
-                    </constraints>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="edit"/>
-                    <connections>
-                        <action selector="editingImage:" destination="-1" eventType="touchUpInside" id="6hX-rs-8gx"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C1J-mV-mZj" userLabel="openEditedImagesButton">
-                    <rect key="frame" x="16" y="361" width="124" height="32"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="124" id="8bq-T7-mei"/>
-                        <constraint firstAttribute="height" constant="32" id="eW1-NN-tBH"/>
-                    </constraints>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                    <connections>
-                        <action selector="showEditedImages:" destination="-1" eventType="touchUpInside" id="Isg-f7-jHN"/>
-                    </connections>
-                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App License" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lNe-eF-bHr" userLabel="App License">
-                    <rect key="frame" x="16" y="403" width="94" height="21"/>
+                    <rect key="frame" x="16" y="371" width="94" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="format info" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s9g-jJ-3Zp" userLabel="Photo format info">
-                    <rect key="frame" x="294" y="403" width="83" height="21"/>
+                    <rect key="frame" x="294" y="371" width="83" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hWH-Bv-0f2" userLabel="App Licence Info">
-                    <rect key="frame" x="16.000000000000004" y="432" width="41.333333333333343" height="20.333333333333314"/>
+                    <rect key="frame" x="16.000000000000004" y="400" width="41.333333333333343" height="20.333333333333314"/>
                     <attributedString key="attributedText">
                         <fragment content="Label">
                             <attributes>
@@ -150,7 +139,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pMb-Ox-EfP" userLabel="Share Button">
-                    <rect key="frame" x="253" y="444" width="124" height="32"/>
+                    <rect key="frame" x="253" y="412" width="124" height="32"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="124" id="7He-50-Piw"/>
                         <constraint firstAttribute="height" constant="32" id="egt-UF-eCh"/>
@@ -162,7 +151,7 @@
                     </connections>
                 </button>
                 <button clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tmI-xb-np2" userLabel="Download Button">
-                    <rect key="frame" x="16" y="500" width="361" height="52"/>
+                    <rect key="frame" x="16" y="468" width="361" height="52"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="52" id="6dV-fh-OUs"/>
                     </constraints>
@@ -173,7 +162,7 @@
                     </connections>
                 </button>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="PAC-48-SGc" userLabel="Related CollectionView">
-                    <rect key="frame" x="0.0" y="572" width="393" height="280"/>
+                    <rect key="frame" x="0.0" y="540" width="393" height="312"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="dg1-iD-SIC">
                         <size key="itemSize" width="128" height="128"/>
@@ -189,15 +178,11 @@
                 <constraint firstItem="n27-AQ-Q9j" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="2iS-9d-oRb"/>
                 <constraint firstAttribute="bottom" secondItem="PAC-48-SGc" secondAttribute="bottom" id="2kd-xO-ejK"/>
                 <constraint firstItem="n27-AQ-Q9j" firstAttribute="top" secondItem="Wzh-I8-ShB" secondAttribute="bottom" id="AB0-PK-GFS"/>
-                <constraint firstItem="C1J-mV-mZj" firstAttribute="centerY" secondItem="4ai-53-tM0" secondAttribute="centerY" id="Bty-L3-Yrb"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="4ai-53-tM0" secondAttribute="trailing" constant="16" id="Bwv-ts-VQh"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pMb-Ox-EfP" secondAttribute="trailing" constant="16" id="C8L-q4-sdU"/>
                 <constraint firstItem="Wzh-I8-ShB" firstAttribute="top" secondItem="eac-bg-2zJ" secondAttribute="bottom" constant="16" id="CRp-Sw-WkO"/>
-                <constraint firstItem="C1J-mV-mZj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="EMK-Vz-jfm"/>
                 <constraint firstItem="tmI-xb-np2" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="EMe-87-VZO"/>
                 <constraint firstItem="6wJ-Te-UEr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="GqZ-Tz-vuN"/>
                 <constraint firstItem="s9g-jJ-3Zp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="lNe-eF-bHr" secondAttribute="trailing" constant="16" id="Hup-bo-Kqn"/>
-                <constraint firstItem="4ai-53-tM0" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="C1J-mV-mZj" secondAttribute="trailing" constant="16" id="J5B-kb-doC"/>
                 <constraint firstItem="Wzh-I8-ShB" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="MFJ-TU-lxf"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="fSb-tZ-B6D" secondAttribute="trailing" constant="16" id="MLj-dh-MJm"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="tmI-xb-np2" secondAttribute="trailing" constant="16" id="POZ-Si-a4m"/>
@@ -210,17 +195,16 @@
                 <constraint firstItem="6wJ-Te-UEr" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="6" id="YVD-ID-9Rs"/>
                 <constraint firstItem="lNe-eF-bHr" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="ceT-qk-cXb"/>
                 <constraint firstAttribute="trailing" secondItem="n27-AQ-Q9j" secondAttribute="trailing" id="eJA-1T-AxI"/>
-                <constraint firstItem="4ai-53-tM0" firstAttribute="top" secondItem="n27-AQ-Q9j" secondAttribute="bottom" constant="6" id="iUR-g3-pIW"/>
                 <constraint firstItem="hWH-Bv-0f2" firstAttribute="top" secondItem="lNe-eF-bHr" secondAttribute="bottom" constant="8" id="jWc-5k-qzn"/>
                 <constraint firstItem="lNe-eF-bHr" firstAttribute="centerY" secondItem="s9g-jJ-3Zp" secondAttribute="centerY" id="mvv-uY-5ic"/>
                 <constraint firstItem="pMb-Ox-EfP" firstAttribute="top" secondItem="s9g-jJ-3Zp" secondAttribute="bottom" constant="20" id="p21-ST-QHr"/>
                 <constraint firstAttribute="trailing" secondItem="Wzh-I8-ShB" secondAttribute="trailing" id="rfX-xw-y9l"/>
                 <constraint firstItem="eac-bg-2zJ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="6" id="t29-qI-BRV"/>
                 <constraint firstItem="eac-bg-2zJ" firstAttribute="leading" secondItem="6wJ-Te-UEr" secondAttribute="trailing" constant="16" id="tvx-Db-nL8"/>
-                <constraint firstItem="lNe-eF-bHr" firstAttribute="top" secondItem="4ai-53-tM0" secondAttribute="bottom" constant="10" id="uSg-UM-bNH"/>
                 <constraint firstItem="fSb-tZ-B6D" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="6" id="wjN-gt-p1n"/>
                 <constraint firstItem="hWH-Bv-0f2" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="xY2-4R-aBt"/>
                 <constraint firstAttribute="trailing" secondItem="PAC-48-SGc" secondAttribute="trailing" id="y2D-ZO-ULl"/>
+                <constraint firstItem="lNe-eF-bHr" firstAttribute="top" secondItem="n27-AQ-Q9j" secondAttribute="bottom" constant="16" id="zkH-xF-XDZ"/>
             </constraints>
             <point key="canvasLocation" x="-37.404580152671755" y="19.718309859154932"/>
         </view>
@@ -228,6 +212,7 @@
     <resources>
         <image name="Download" width="343" height="52"/>
         <image name="ShareBigButton" width="124" height="32"/>
+        <image name="cropImageIcon" width="40" height="40"/>
         <image name="filters" width="52" height="52"/>
         <image name="logo" width="52" height="53"/>
         <image name="zoom" width="40" height="40"/>

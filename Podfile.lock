@@ -3,24 +3,32 @@ PODS:
   - SDWebImage (5.19.0):
     - SDWebImage/Core (= 5.19.0)
   - SDWebImage/Core (5.19.0)
-  - TOCropViewController (2.6.1)
+  - TOCropViewController (2.7.2)
 
 DEPENDENCIES:
   - netfox
   - SDWebImage
-  - TOCropViewController
+  - TOCropViewController (from `https://github.com/solohubivan/TOCropViewController.git`)
 
 SPEC REPOS:
   trunk:
     - netfox
     - SDWebImage
-    - TOCropViewController
+
+EXTERNAL SOURCES:
+  TOCropViewController:
+    :git: https://github.com/solohubivan/TOCropViewController.git
+
+CHECKOUT OPTIONS:
+  TOCropViewController:
+    :commit: 9ee0508cede5a8a120efe35f6dc32b18e7513188
+    :git: https://github.com/solohubivan/TOCropViewController.git
 
 SPEC CHECKSUMS:
   netfox: 9d5cc727fe7576c4c7688a2504618a156b7d44b7
   SDWebImage: 981fd7e860af070920f249fd092420006014c3eb
-  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
+  TOCropViewController: bf38459e9da6efe414de22087ebd5c530640f4bd
 
-PODFILE CHECKSUM: 6f0becfc820424fa6cc2c81f0eb38dce6e69347c
+PODFILE CHECKSUM: 997a83532d2544acb8a682b98cf8eaaed3813b17
 
 COCOAPODS: 1.12.1

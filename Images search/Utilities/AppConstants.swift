@@ -55,6 +55,7 @@ enum AppConstants {
         static let editButton: String = "Edit"
         static let editedImages: String = "Edited images"
         static let editImage: String = "Edit image"
+        static let saveImage: String = "Save"
     }
     
     enum SearchTFParameters {
